@@ -1,0 +1,105 @@
+import React, { useState } from "react";
+import logo from "./../../../../assets/Images/LogoImages/logo.png";
+import styles from "./MainHeader.module.css";
+
+function MainHeader() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const toggleDropdown = (index) => {
+    setActiveDropdown(activeDropdown === index ? null : index);
+  };
+
+  const navItems = [
+    { name: "Home", hasDropdown: true },
+    { name: "Features", hasDropdown: true },
+    { name: "Categories", hasDropdown: true },
+    { name: "Elements", hasDropdown: true },
+    { name: "Pages", hasDropdown: true },
+    { name: "Shop", hasDropdown: true },
+    { name: "Contact", hasDropdown: false },
+  ];
+
+  return (
+    <header className={styles.container}>
+      <div className={styles.logoContainer}>
+        <div className={styles.logoImg}>
+          <img src={logo} alt="Website Logo" />
+        </div>
+        <div className={styles.titleAndDesc}>
+          <span>NEEON</span>
+          <span>Blog Site</span>
+        </div>
+      </div>
+
+      {/* Mobile menu button (hamburger) */}
+      <div className={styles.mobileMenuButton} onClick={toggleMenu}>
+        <span className={isMenuOpen ? styles.bar1Open : styles.bar1}></span>
+        <span className={isMenuOpen ? styles.bar2Open : styles.bar2}></span>
+        <span className={isMenuOpen ? styles.bar3Open : styles.bar3}></span>
+      </div>
+
+      <nav
+        className={`${styles.navigator} ${isMenuOpen ? styles.navOpen : ""}`}
+      >
+        {/* Close button in sidebar */}
+        <div className={styles.closeButton} onClick={closeMenu}>
+          <span></span>
+          <span></span>
+        </div>
+
+        <ul>
+          {navItems.map((item, index) => (
+            <li
+              key={index}
+              onClick={() => item.hasDropdown && toggleDropdown(index)}
+              className={item.hasDropdown ? styles.hasDropdown : ""}
+            >
+              {item.name}{" "}
+              {item.hasDropdown && <i className="fa-solid fa-chevron-down"></i>}
+              {item.hasDropdown && (
+                <div
+                  className={`${styles.dropdown} ${
+                    activeDropdown === index ? styles.dropdownOpen : ""
+                  }`}
+                >
+                  <div className={styles.dropdownContent}>
+                    <a href="#">Option 1</a>
+                    <a href="#">Option 2</a>
+                    <a href="#">Option 3</a>
+                  </div>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div
+        className={`${styles.iconsWrapper} ${
+          isMenuOpen ? styles.iconsOpen : ""
+        }`}
+      >
+        <span>
+          <i className="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <span>
+          <i className="fa-solid fa-cart-shopping"></i>
+        </span>
+        <span>
+          <i className="fa-solid fa-bars-staggered"></i>
+        </span>
+      </div>
+    </header>
+  );
+}
+
+export default MainHeader;

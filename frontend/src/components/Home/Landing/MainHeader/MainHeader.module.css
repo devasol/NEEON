@@ -1,0 +1,552 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #2c3e50 0%, #1a1f25 100%);
+  color: white;
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  position: relative;
+  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    #ff6b6b,
+    #4ecdc4,
+    #45b7d1,
+    #96ceb4,
+    #ffeaa7,
+    #ff6b6b
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite linear;
+  z-index: 1001;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s ease;
+  z-index: 1002;
+}
+
+.logoContainer:hover {
+  transform: translateY(-2px);
+}
+
+.logoImg {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 2px solid transparent;
+  /* background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  padding: 3px; */
+  background: #fff;
+}
+
+.logoImg:hover {
+  transform: rotate(10deg) scale(1.05);
+  border-color: #fff;
+}
+
+.logoImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  transition: transform 0.5s ease;
+}
+
+.logoImg:hover img {
+  transform: scale(1.1);
+}
+
+.titleAndDesc {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleAndDesc span:first-child {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 4s ease infinite;
+  transition: all 0.3s ease;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.titleAndDesc span:last-child {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.logoContainer:hover .titleAndDesc span:last-child {
+  opacity: 1;
+  transform: translateX(5px);
+}
+
+.navigator {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  transition: all 0.4s ease;
+}
+
+.navigator ul {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navigator li {
+  position: relative;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.navigator li::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+  transition: width 0.3s ease;
+}
+
+.navigator li:hover::before {
+  width: 100%;
+}
+
+.navigator li:hover {
+  color: #4ecdc4;
+  transform: translateY(-2px);
+}
+
+.navigator li i {
+  font-size: 0.7rem;
+  transition: transform 0.3s ease;
+}
+
+.navigator li.hasDropdown:hover i {
+  transform: rotate(180deg);
+}
+
+/* Dropdown styles */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 200px;
+  background: #2c3e50;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.dropdownOpen {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdownContent {
+  padding: 1rem 0;
+}
+
+.dropdownContent a {
+  display: block;
+  padding: 0.7rem 1.5rem;
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.dropdownContent a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  padding-left: 2rem;
+}
+
+.iconsWrapper {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-right: 50px;
+  transition: all 0.4s ease;
+  z-index: 1002;
+}
+
+.iconsWrapper span {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.iconsWrapper span::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.iconsWrapper span:hover::before {
+  opacity: 1;
+}
+
+.iconsWrapper span:hover {
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+.iconsWrapper span i {
+  transition: transform 0.3s ease;
+}
+
+.iconsWrapper span:hover i {
+  transform: scale(1.2);
+}
+
+.iconsWrapper span:nth-child(1):hover i {
+  transform: rotate(15deg) scale(1.2);
+}
+
+.iconsWrapper span:nth-child(2):hover {
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+}
+
+.iconsWrapper span:nth-child(2):hover i {
+  animation: bounce 0.5s ease infinite alternate;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-3px);
+  }
+}
+
+.iconsWrapper span:nth-child(3):hover i {
+  animation: spin 0.5s ease;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(90deg);
+  }
+}
+
+/* Mobile menu button (hidden by default) */
+.mobileMenuButton {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  margin-right: 50px;
+  z-index: 1003;
+  position: relative;
+}
+
+.mobileMenuButton span {
+  width: 30px;
+  height: 3px;
+  background: #fff;
+  margin: 3px 0;
+  transition: 0.4s;
+  border-radius: 2px;
+}
+
+.bar1Open {
+  transform: rotate(-45deg) translate(-6px, 6px);
+  background: #ff6b6b !important;
+}
+
+.bar2Open {
+  opacity: 0;
+}
+
+.bar3Open {
+  transform: rotate(45deg) translate(-6px, -6px);
+  background: #ff6b6b !important;
+}
+
+/* Close button in sidebar */
+.closeButton {
+  display: none;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 1010;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.closeButton span {
+  width: 30px;
+  height: 3px;
+  background: #ff6b6b;
+  margin: 3px 0;
+  border-radius: 2px;
+  position: absolute;
+  transition: 0.4s;
+}
+
+.closeButton span:first-child {
+  transform: rotate(45deg);
+}
+
+.closeButton span:last-child {
+  transform: rotate(-45deg);
+}
+
+.closeButton:hover span {
+  background: #fff;
+  transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .navigator ul {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .mobileMenuButton {
+    display: flex;
+  }
+
+  .closeButton {
+    display: flex;
+  }
+
+  .navigator {
+    position: fixed;
+    top: 50px;
+    right: -100%;
+    width: 70%;
+    height: calc(100vh - 50px);
+    background: #2c3e50;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 60px; /* Increased padding to account for close button */
+    transition: right 0.4s ease;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.3);
+    z-index: 1010; /* Higher z-index */
+    overflow-y: auto;
+  }
+
+  .navOpen {
+    right: 0;
+  }
+
+  .navigator ul {
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    padding: 0 2rem;
+  }
+
+  .navigator li {
+    width: 100%;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .navigator li:last-child {
+    border-bottom: none;
+  }
+
+  .dropdown {
+    position: static;
+    width: 100%;
+    margin-top: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: none;
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  .dropdownOpen {
+    max-height: 300px;
+  }
+
+  .iconsWrapper {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    justify-content: center;
+    background: #2c3e50;
+    padding: 1.5rem;
+    transition: bottom 0.4s ease;
+    box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+  }
+
+  .iconsOpen {
+    bottom: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .logoContainer {
+    flex-direction: row;
+  }
+
+  .titleAndDesc span:first-child {
+    font-size: 1.5rem;
+  }
+
+  .navigator {
+    width: 80%;
+    top: 50px;
+    height: calc(100vh - 50px);
+    z-index: 1010; /* Higher z-index */
+  }
+
+  .iconsWrapper span {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 400px) {
+  .logoImg {
+    width: 50px;
+    height: 50px;
+  }
+
+  .titleAndDesc span:first-child {
+    font-size: 1.3rem;
+  }
+
+  .titleAndDesc span:last-child {
+    font-size: 0.7rem;
+  }
+
+  .navigator {
+    width: 100%;
+    top: 50px;
+    height: calc(100vh - 50px);
+    z-index: 1010; /* Higher z-index */
+  }
+
+  .closeButton {
+    top: 15px;
+    right: 15px;
+  }
+
+  .iconsWrapper span {
+    width: 30px;
+    height: 30px;
+  }
+
+  .iconsWrapper span i {
+    font-size: 0.8rem;
+  }
+}
+
+/* Focus states for accessibility */
+.navigator li:focus,
+.iconsWrapper span:focus,
+.mobileMenuButton:focus,
+.closeButton:focus {
+  outline: 2px solid #4ecdc4;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

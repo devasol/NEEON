@@ -1,0 +1,284 @@
+.container {
+  width: 100vw;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--primary-grey);
+  color: var(--primary-white);
+  font-family: "Rubik", sans-serif;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--primary-white),
+    transparent
+  );
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.logoContainer:hover {
+  transform: translateX(5px);
+}
+
+.logoAndTitle {
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.logoAndTitle:hover {
+  transform: scale(1.02);
+}
+
+.logoAndTitle img {
+  width: 100px;
+  height: 100px;
+  margin-left: 20px;
+  padding-top: 10px;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.logoAndTitle img:hover {
+  transform: rotate(-5deg) scale(1.1);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+.logoAndTitle span {
+  font-size: 18px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-right: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.logoAndTitle span::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary-white);
+  transition: width 0.3s ease;
+}
+
+.logoAndTitle span:hover::after {
+  width: 100%;
+}
+
+.descritption {
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+.descritption:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.linksContainer {
+  display: flex;
+  align-items: center;
+  margin-right: 50px;
+  transition: all 0.3s ease;
+}
+
+.linksContainer span {
+  padding-right: 15px;
+  transition: all 0.3s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.linksContainer span:not(:has(i)):hover {
+  color: #f0f0f0;
+  transform: translateY(-1px);
+}
+
+.linksContainer span i {
+  transition: all 0.3s ease;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.linksContainer span:hover i {
+  transform: scale(1.2);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.linksContainer span:nth-child(1) i:hover {
+  /* Calendar */
+  color: #ff6b6b;
+  transform: rotate(10deg) scale(1.3);
+}
+
+.linksContainer span:nth-child(5) i:hover {
+  /* Facebook */
+  color: #3b5998;
+  transform: translateY(-2px) scale(1.3);
+}
+
+.linksContainer span:nth-child(6) i:hover {
+  /* Twitter */
+  color: #1da1f2;
+  transform: translateY(-2px) scale(1.3);
+}
+
+.linksContainer span:nth-child(7) i:hover {
+  /* Second Twitter */
+  color: #1da1f2;
+  transform: translateY(-2px) scale(1.3);
+}
+
+.linksContainer span:nth-child(8) i:hover {
+  /* Pinterest */
+  color: #bd081c;
+  transform: translateY(-2px) scale(1.3);
+}
+
+.linksContainer span:nth-child(9) i:hover {
+  /* Skype */
+  color: #00aff0;
+  transform: translateY(-2px) scale(1.3);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .container {
+    height: auto;
+    padding: 10px 0;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .logoContainer {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .logoAndTitle {
+    margin-bottom: 10px;
+  }
+
+  .linksContainer {
+    margin-right: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .linksContainer span {
+    padding: 0 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .logoAndTitle img {
+    width: 80px;
+    height: 80px;
+    margin-left: 10px;
+  }
+
+  .logoAndTitle span {
+    font-size: 16px;
+    margin-right: 10px;
+  }
+
+  .linksContainer {
+    font-size: 14px;
+  }
+
+  .linksContainer span {
+    padding: 0 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logoAndTitle {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .logoAndTitle img {
+    margin-left: 0;
+    width: 60px;
+    height: 60px;
+  }
+
+  .linksContainer {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .linksContainer span:not(:last-child) {
+    padding-right: 0;
+  }
+}
+
+/* Animation for date update */
+@keyframes dateUpdate {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.linksContainer span:nth-child(2) {
+  animation: dateUpdate 0.5s ease;
+}
+
+/* Hover effects for separator */
+.linksContainer span:nth-child(3) {
+  transition: all 0.3s ease;
+}
+
+.linksContainer span:nth-child(3):hover {
+  transform: scale(1.2);
+  color: #ccc;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Focus states for accessibility */
+.linksContainer span:focus-visible,
+.logoAndTitle:focus-visible {
+  outline: 2px solid var(--primary-white);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
