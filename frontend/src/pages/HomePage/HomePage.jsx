@@ -5,6 +5,7 @@ import Categories from "../../components/Home/Landing/Categories/Categories";
 import LandingMain from "../../components/Home/Landing/LandingMain/LandingMain";
 import ProductCard from "../../components/Home/ProductCard/ProductCard";
 import TopStories from "../../components/Home/TopStories/TopStories";
+import NewsSection from "../../components/Home/NewsSection/NewsSection";
 
 function HomePage() {
   return (
@@ -15,6 +16,7 @@ function HomePage() {
       <LandingMain />
       <ProductCard />
       <TopStories />
+      <NewsSection />
     </>
   );
 }
