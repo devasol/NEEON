@@ -13,6 +13,31 @@
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* Sticky header styles */
+.container.sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(44, 62, 80, 0.98);
+  backdrop-filter: blur(10px);
+  animation: slideDown 0.5s ease-out;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .container::before {
   content: "";
   position: absolute;
@@ -63,8 +88,6 @@
   transition: all 0.4s ease;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   border: 2px solid transparent;
-  /* background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-  padding: 3px; */
   background: #fff;
 }
 
@@ -347,7 +370,7 @@
   background: #ff6b6b !important;
 }
 
-/* Close button in sidebar */
+/* Close button in sidebar - FIXED Z-INDEX */
 .closeButton {
   display: none;
   position: absolute;
@@ -356,7 +379,7 @@
   width: 40px;
   height: 40px;
   cursor: pointer;
-  z-index: 1010;
+  z-index: 2010; /* Increased z-index to be above sticky header */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -399,21 +422,22 @@
 
   .closeButton {
     display: flex;
+    margin-right: 55px;
   }
 
   .navigator {
     position: fixed;
-    top: 50px;
+    top: 0;
     right: -100%;
     width: 70%;
-    height: calc(100vh - 50px);
+    height: 100vh;
     background: #2c3e50;
     flex-direction: column;
     justify-content: flex-start;
-    padding-top: 60px; /* Increased padding to account for close button */
+    padding-top: 80px;
     transition: right 0.4s ease;
     box-shadow: -5px 0 25px rgba(0, 0, 0, 0.3);
-    z-index: 1010; /* Higher z-index */
+    z-index: 2005; /* Increased z-index to be above sticky header */
     overflow-y: auto;
   }
 
@@ -462,7 +486,7 @@
     padding: 1.5rem;
     transition: bottom 0.4s ease;
     box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.2);
-    z-index: 1001;
+    z-index: 2001; /* Increased z-index to be above sticky header */
   }
 
   .iconsOpen {
@@ -475,6 +499,10 @@
     padding: 1rem;
   }
 
+  .container.sticky {
+    padding: 0.8rem 1rem;
+  }
+
   .logoContainer {
     flex-direction: row;
   }
@@ -485,9 +513,9 @@
 
   .navigator {
     width: 80%;
-    top: 50px;
-    height: calc(100vh - 50px);
-    z-index: 1010; /* Higher z-index */
+    top: 0;
+    height: 100vh;
+    z-index: 2005; /* Increased z-index to be above sticky header */
   }
 
   .iconsWrapper span {
@@ -512,9 +540,9 @@
 
   .navigator {
     width: 100%;
-    top: 50px;
-    height: calc(100vh - 50px);
-    z-index: 1010; /* Higher z-index */
+    top: 0;
+    height: 100vh;
+    z-index: 2005; /* Increased z-index to be above sticky header */
   }
 
   .closeButton {
@@ -548,5 +576,9 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .container.sticky {
+    animation: none;
   }
 }

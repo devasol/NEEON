@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FirstHeader from "../../components/Home/Landing/FirstHeader/FirstHeader";
 import MainHeader from "../../components/Home/Landing/MainHeader/MainHeader";
 import Categories from "../../components/Home/Landing/Categories/Categories";
@@ -8,6 +8,9 @@ import TopStories from "../../components/Home/TopStories/TopStories";
 import NewsSection from "../../components/Home/NewsSection/NewsSection";
 
 function HomePage() {
+  useEffect(function () {
+    document.title = "Neeon | Home";
+  }, []);
   return (
     <>
       <FirstHeader />

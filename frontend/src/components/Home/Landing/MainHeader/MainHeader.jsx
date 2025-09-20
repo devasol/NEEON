@@ -1,10 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import logo from "./../../../../assets/Images/LogoImages/logo.png";
 import styles from "./MainHeader.module.css";
 
 function MainHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [isSticky, setIsSticky] = useState(false);
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!headerRef.current) return;
+
+      // Get the height of the landing page (first section)
+      const landingPage =
+        document.querySelector("section:first-of-type") ||
+        document.querySelector(".landing-page") ||
+        document.querySelector("#landing");
+
+      // Default to viewport height if no specific landing page element is found
+      const landingHeight = landingPage
+        ? landingPage.offsetHeight
+        : window.innerHeight;
+
+      // Check if we've scrolled past the landing page
+      setIsSticky(window.scrollY > landingHeight - 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    // Initial check
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -29,7 +59,10 @@ function MainHeader() {
   ];
 
   return (
-    <header className={styles.container}>
+    <header
+      ref={headerRef}
+      className={`${styles.container} ${isSticky ? styles.sticky : ""}`}
+    >
       <div className={styles.logoContainer}>
         <div className={styles.logoImg}>
           <img src={logo} alt="Website Logo" />
