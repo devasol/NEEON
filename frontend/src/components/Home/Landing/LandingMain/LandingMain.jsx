@@ -123,7 +123,8 @@ function LandingMain() {
       </main>
 
       {/* Modal Popup rendered via portal */}
-      {isModalOpen && selectedItem &&
+      {isModalOpen &&
+        selectedItem &&
         createPortal(
           <div className={styles.modalOverlay} onClick={closeModal}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -153,7 +154,8 @@ function LandingMain() {
                 <div className={styles.modalMeta}>
                   <span className={styles.modalBy}>By {selectedItem.by}</span>
                   <span className={styles.modalDate}>
-                    <i className="fa-solid fa-calendar-days"></i> {selectedItem.date}
+                    <i className="fa-solid fa-calendar-days"></i>{" "}
+                    {selectedItem.date}
                   </span>
                 </div>
                 <div className={styles.modalText}>
