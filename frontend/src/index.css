@@ -5,12 +5,16 @@
   padding: 0;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   overflow-x: hidden; /* prevent horizontal scroll */
+  font-family: "Rubik", sans-serif;
 }
 
 body {

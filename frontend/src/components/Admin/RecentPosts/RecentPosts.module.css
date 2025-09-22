@@ -1,0 +1,32 @@
+/* RecentPosts.module.css */
+.recentPosts {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.postItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.65rem 0.25rem;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+}
+
+.postTitle {
+  font-weight: 700;
+}
+.postMeta {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+.postActions {
+  display: flex;
+  gap: 0.5rem;
+}
+.smallBtn {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 0.35rem 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
