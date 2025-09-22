@@ -1,0 +1,37 @@
+@import "../../index.css";
+
+.page {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f7f9fc 0%, #ffffff 100%);
+}
+
+.main {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.gridRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .statsRow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gridRow {
+    grid-template-columns: 1fr;
+  }
+}
