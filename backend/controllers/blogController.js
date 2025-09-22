@@ -1,0 +1,105 @@
+const BlogNewsModel = require("./../models/blogModel");
+const path = require("path");
+const fs = require("fs");
+//Get All Blogs
+exports.getAllBlogs = async (req, res) => {
+  try {
+    const allBlogs = await BlogNewsModel.find().select("-image");
+
+    res.status(200).json({
+      status: "success",
+      blogs: {
+        allBlogs,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: "Can't Get All Blogs!",
+    });
+  }
+};
+
+exports.createBlog = async (req, res) => {
+  try {
+    let imageValue = null;
+    if (req.file) {
+      // If multer memoryStorage is used, file.buffer will be present
+      if (req.file.buffer) {
+        imageValue = { data: req.file.buffer, contentType: req.file.mimetype };
+      } else if (req.file.path) {
+        // disk storage - read file into buffer
+        const filePath = path.join(__dirname, "..", req.file.path);
+        if (fs.existsSync(filePath)) {
+          const fileBuffer = fs.readFileSync(filePath);
+          imageValue = { data: fileBuffer, contentType: req.file.mimetype };
+          // NOTE: previously we removed the uploaded file from disk here.
+          // To preserve uploads in the `uploads/` folder, we intentionally do NOT unlink the file.
+        }
+      }
+    }
+
+    const newBlog = await BlogNewsModel.create({
+      ...req.body,
+      image: imageValue,
+    });
+
+    res.status(200).json({
+      status: "success",
+      message: "Blog post created successfully",
+      blog: {
+        newBlog,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
+
+exports.getImage = async (req, res) => {
+  try {
+    const blog = await BlogNewsModel.findById(req.params.id);
+
+    if (!blog || !blog.image) {
+      return res.status(404).send("Image not found");
+    }
+
+    // If image stored in MongoDB as { data: Buffer, contentType: String }
+    if (blog.image.data) {
+      // blog.image.data may already be a Buffer or a plain object when serialized
+      let buffer;
+      if (Buffer.isBuffer(blog.image.data)) {
+        buffer = blog.image.data;
+      } else if (Array.isArray(blog.image.data)) {
+        buffer = Buffer.from(blog.image.data);
+      } else if (blog.image.data.data && Array.isArray(blog.image.data.data)) {
+        // sometimes it's { data: { type: 'Buffer', data: [...] } }
+        buffer = Buffer.from(blog.image.data.data);
+      }
+
+      if (buffer) {
+        const contentType =
+          blog.image.contentType || "application/octet-stream";
+        res.set("Content-Type", contentType);
+        return res.send(buffer);
+      }
+    }
+
+    // If image stored as a path string (e.g. 'uploads/xxx.jpg')
+    if (typeof blog.image === "string") {
+      const imagePath = path.join(__dirname, "..", blog.image);
+      if (!fs.existsSync(imagePath)) {
+        return res.status(404).send("Image file missing");
+      }
+      return res.sendFile(imagePath);
+    }
+
+    // Fallback: not a recognized format
+    return res.status(404).send("Image not available");
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
