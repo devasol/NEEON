@@ -259,7 +259,202 @@
   color: #2c3e50;
   gap: 0.8rem;
 }
+/* Modal Styles */
+.modalOverlay {
+  font-family: "Rubik", sans-serif;
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* align to top */
+  z-index: 99999; /* very high to be above other stacking contexts */
+  padding: 3rem 1rem 1rem; /* push modal down from very top */
+  animation: fadeIn 0.3s ease;
+}
 
+/* ensure modal sits nicely near top on small screens */
+@media (max-width: 768px) {
+  .modalOverlay {
+    padding: 2rem 0.5rem 0.5rem;
+  }
+}
+
+.modal {
+  background: white;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 100%;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  position: relative;
+  animation: scaleIn 0.3s ease;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.closeButton:hover {
+  background: #ff6b6b;
+  color: white;
+}
+
+.modalImage {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.modalImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modalType {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+
+.modalContent {
+  padding: 2rem;
+}
+
+.modalTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.modalMeta {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.modalBy,
+.modalDate {
+  font-size: 0.9rem;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modalText {
+  margin-bottom: 2rem;
+  line-height: 1.7;
+  color: #4a5568;
+}
+
+.modalText p {
+  margin-bottom: 1rem;
+}
+
+.modalCloseBtn {
+  background: linear-gradient(135deg, #4ecdc4, #ff6b6b);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modalCloseBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments for modal */
+@media (max-width: 768px) {
+  .modal {
+    max-height: 95vh;
+  }
+
+  .modalImage {
+    height: 200px;
+  }
+
+  .modalContent {
+    padding: 1.5rem;
+  }
+
+  .modalTitle {
+    font-size: 1.4rem;
+  }
+
+  .modalMeta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .modalOverlay {
+    padding: 0.5rem;
+  }
+
+  .modalContent {
+    padding: 1rem;
+  }
+
+  .modalTitle {
+    font-size: 1.2rem;
+  }
+}
 /* Responsive Design */
 @media (max-width: 1024px) {
   .container {
