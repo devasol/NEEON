@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import logo from "./../../../../assets/Images/LogoImages/logo.png";
 import styles from "./MainHeader.module.css";
+import Login from "../../Login/Login";
 
 function MainHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isSticky, setIsSticky] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const headerRef = useRef(null);
+  const loginIconRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,6 +38,28 @@ function MainHeader() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  // Close modal on Escape and return focus to the login icon
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape" && showLogin) {
+        setShowLogin(false);
+      }
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [showLogin]);
+
+  useEffect(() => {
+    if (!showLogin && loginIconRef.current) {
+      try {
+        loginIconRef.current.focus();
+      } catch {
+        // ignore
+      }
+    }
+  }, [showLogin]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -130,10 +155,30 @@ function MainHeader() {
         <span>
           <i className="fa-solid fa-bars-staggered"></i>
         </span>
-        <span>
-          <i class="fa-solid fa-user"></i>
+        <span
+          ref={loginIconRef}
+          className={styles.loginIcon}
+          tabIndex={0}
+          aria-label="Login"
+          role="button"
+          onClick={() => setShowLogin(true)}
+          onKeyDown={(e) => e.key === "Enter" && setShowLogin(true)}
+        >
+          <i className="fa-solid fa-user"></i>
         </span>
       </div>
+      {showLogin && (
+        <div
+          className={styles.loginModalOverlay}
+          onClick={() => setShowLogin(false)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className={`${styles.loginModal} embedded clean`} onClick={(e) => e.stopPropagation()}>
+            <Login noContainer onClose={() => setShowLogin(false)} />
+          </div>
+        </div>
+      )}
     </header>
   );
 }

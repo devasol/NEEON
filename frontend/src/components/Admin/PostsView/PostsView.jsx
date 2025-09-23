@@ -270,13 +270,17 @@ const PostsView = () => {
       }
 
       if (res.status >= 200 && res.status < 300) {
-        const b = res.data.blog || res.data.blog?.updatedBlog || res.data.blog?.blog;
+        const b =
+          res.data.blog || res.data.blog?.updatedBlog || res.data.blog?.blog;
         // If editing, update the existing post in state
         if (isEditing && selectedPost && selectedPost.id) {
           const updated = {
             id: selectedPost.id,
             title: form.get("newsTitle") || newTitle,
-            excerpt: (form.get("newsDescription") || newDescription).slice(0, 140),
+            excerpt: (form.get("newsDescription") || newDescription).slice(
+              0,
+              140
+            ),
             content: form.get("newsDescription") || newDescription,
             category: form.get("category") || newCategory,
             status: form.get("status") || newStatus,
@@ -284,9 +288,14 @@ const PostsView = () => {
             date: selectedPost.date || new Date().toISOString(),
             views: selectedPost.views || 0,
             comments: selectedPost.comments || 0,
-            image: newImagePreview || (b && (b.imageUrl || b.image)) || selectedPost.image,
+            image:
+              newImagePreview ||
+              (b && (b.imageUrl || b.image)) ||
+              selectedPost.image,
           };
-          setPosts((prev) => prev.map((p) => (p.id === selectedPost.id ? updated : p)));
+          setPosts((prev) =>
+            prev.map((p) => (p.id === selectedPost.id ? updated : p))
+          );
           resetForm();
           setNewOpen(false);
           setIsEditing(false);
