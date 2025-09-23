@@ -1,0 +1,815 @@
+/* Variables */
+:root {
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --google-red: #db4437;
+  --google-blue: #4285f4;
+  --google-green: #0f9d58;
+  --google-yellow: #f4b400;
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --border-light: #e5e7eb;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f3f4f6;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+/* Base Styles */
+.loginContainer {
+  /* Default standalone/full-page layout */
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-secondary);
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.loginContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 20% 80%,
+      rgba(102, 126, 234, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(118, 75, 162, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 40%,
+      rgba(16, 185, 129, 0.05) 0%,
+      transparent 50%
+    );
+  animation: gradientShift 8s ease-in-out infinite;
+}
+
+/* Embedded variant: when Login is shown inside a modal, avoid full-screen backgrounds
+   and centering that conflict with the modal container. The wrapper used in the
+   header is a plain global class `embedded`, so we scope that as :global to match
+   the module-scoped .loginContainer below. */
+:global(.embedded) .loginContainer {
+  min-height: auto;
+  background: transparent;
+  padding: 0;
+  overflow: visible;
+}
+
+:global(.embedded) .loginContainer::before {
+  display: none;
+}
+
+/* Ensure the login card sizes correctly inside a modal wrapper */
+:global(.embedded) .loginCard {
+  max-width: 100%;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 10px;
+  transform: none !important;
+  opacity: 1 !important;
+  box-shadow: var(--shadow-lg);
+}
+
+:global(.embedded) .loginCard .backgroundElements,
+:global(.embedded) .loginCard .floatingCircle,
+:global(.embedded) .loginCard .sparkle {
+  display: none !important;
+}
+
+/* Clean embedded theme: minimal, white card with subtle shadow */
+:global(.embedded.clean) .loginCard {
+  background: var(--bg-primary);
+  padding: 2rem 2rem; /* larger padding for cleaner look */
+  border-radius: 12px;
+  box-shadow: 0 14px 40px rgba(15, 23, 36, 0.12);
+  max-width: 600px; /* wider card */
+}
+
+@media (max-width: 600px) {
+  :global(.embedded.clean) .loginCard {
+    padding: 1rem 1rem;
+    max-width: 100%;
+  }
+
+  .loginModal {
+    padding: 1rem;
+    margin: 0 0.5rem;
+  }
+}
+
+:global(.embedded.clean) .loginCard .header h1 {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: unset;
+  color: var(--text-primary);
+}
+
+:global(.embedded.clean) .loginCard .logoIcon {
+  display: none;
+}
+
+:global(.embedded.clean) .loginCard .demoHint,
+:global(.embedded.clean) .loginCard .backgroundElements {
+  display: none !important;
+}
+
+/* Inner close button inside the login card */
+.innerClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.innerClose:hover {
+  color: var(--text-primary);
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(180deg);
+  }
+}
+
+/* Animated Background Elements */
+.backgroundElements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.floatingCircle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--primary-gradient);
+  opacity: 0.1;
+  animation: float 6s ease-in-out infinite;
+}
+
+.floatingCircle:nth-child(1) {
+  width: 100px;
+  height: 100px;
+  top: 10%;
+  left: 10%;
+  animation-delay: var(--delay);
+}
+
+.floatingCircle:nth-child(2) {
+  width: 150px;
+  height: 150px;
+  top: 60%;
+  right: 10%;
+  animation-delay: var(--delay);
+}
+
+.floatingCircle:nth-child(3) {
+  width: 80px;
+  height: 80px;
+  bottom: 20%;
+  left: 20%;
+  animation-delay: var(--delay);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+.sparkle {
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  width: 24px;
+  height: 24px;
+  fill: #667eea;
+  opacity: 0.3;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.2) rotate(180deg);
+  }
+}
+
+/* Login Card */
+.loginCard {
+  background: var(--bg-primary);
+  padding: 3rem;
+  border-radius: 24px;
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 560px;
+  position: relative;
+  z-index: 10;
+  /* border removed for a cleaner, borderless card look */
+  backdrop-filter: blur(20px);
+  transform: translateY(50px);
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.loginContainer.animate .loginCard {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.logoIcon {
+  width: 48px;
+  height: 48px;
+  background: var(--primary-gradient);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Google Button */
+.googleButton {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border: 2px solid var(--border-light);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.googleButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.googleButton:hover::before {
+  left: 100%;
+}
+
+.googleButton:hover {
+  border-color: var(--google-blue);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.googleButton:active {
+  transform: translateY(0);
+}
+
+.googleButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.googleIcon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Divider */
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 2rem 0;
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border-light);
+  z-index: 1;
+}
+
+.divider span {
+  background: var(--bg-primary);
+  padding: 0 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* Form Styles */
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.9rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 1rem;
+  width: 20px;
+  height: 20px;
+  fill: var(--text-primary);
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.input {
+  width: 100%;
+  padding: 1.25rem 1.25rem 1.25rem 3.25rem;
+  border: 2px solid var(--border-light);
+  border-radius: 12px;
+  font-size: 1rem;
+  background: var(--bg-primary);
+  color: #ffffff; /* make typed text white */
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  transform: translateY(-1px);
+}
+
+.input.focused {
+  border-color: #667eea;
+}
+
+.input.error {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.label {
+  position: absolute;
+  left: 3.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #b6c0d1; /* lighter label color for contrast */
+  font-size: 1rem;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 2;
+  background: var(--bg-primary);
+  padding: 0 0.25rem;
+}
+
+.input:focus + .label,
+.input:not(:placeholder-shown) + .label {
+  top: 0;
+  font-size: 0.8rem;
+  color: #667eea;
+  transform: translateY(-50%);
+}
+
+.input.error:focus + .label,
+.input.error:not(:placeholder-shown) + .label {
+  color: var(--error);
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.passwordToggle:hover {
+  background: var(--bg-tertiary);
+}
+
+.passwordToggle:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.eyeIcon {
+  width: 20px;
+  height: 20px;
+  fill: var(--text-tertiary);
+  transition: fill 0.3s ease;
+}
+
+.passwordToggle:hover .eyeIcon {
+  fill: var(--text-primary);
+}
+
+.errorText {
+  color: var(--error);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* Options Row */
+.optionsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+}
+
+.checkboxLabel:hover {
+  color: var(--text-primary);
+}
+
+.checkbox {
+  display: none;
+}
+
+.checkmark {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border-light);
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.checkbox:checked + .checkmark {
+  background: var(--primary-gradient);
+  border-color: transparent;
+}
+
+.checkbox:checked + .checkmark::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.forgotPassword {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.forgotPassword:hover {
+  color: #5a6fd8;
+  text-decoration: underline;
+}
+
+.forgotPassword:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Submit Button */
+.submitButton {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.submitButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.submitButton:hover::before {
+  left: 100%;
+}
+
+.submitButton:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submitButton.loading {
+  pointer-events: none;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  margin-top: 2rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.signupLink {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.signupLink:hover {
+  color: #5a6fd8;
+  text-decoration: underline;
+}
+
+/* Demo Hint */
+.demoHint {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .loginContainer {
+    padding: 0.5rem;
+  }
+
+  .loginCard {
+    padding: 2rem 1.5rem;
+    margin: 1rem;
+  }
+
+  .header h1 {
+    font-size: 1.75rem;
+  }
+
+  .logo {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .optionsRow {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .loginCard {
+    padding: 1.5rem 1rem;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .input {
+    padding: 0.875rem 0.875rem 0.875rem 2.5rem;
+  }
+
+  .label {
+    left: 2.5rem;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .loginCard,
+  .googleButton,
+  .submitButton,
+  .input,
+  .floatingCircle,
+  .sparkle {
+    animation: none;
+    transition: none;
+  }
+
+  .loginContainer::before {
+    animation: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --text-tertiary: #9ca3af;
+    --border-light: #374151;
+    --bg-primary: #1f2937;
+    --bg-secondary: #111827;
+    --bg-tertiary: #374151;
+  }
+
+  .loginCard {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}

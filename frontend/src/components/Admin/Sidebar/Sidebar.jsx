@@ -9,7 +9,6 @@ const UsersIcon = () => <span>👥</span>;
 const SettingsIcon = () => <span>⚙️</span>;
 
 const Sidebar = ({ selectedView, setSelectedView }) => {
-
   const items = [
     {
       id: "dashboard",
