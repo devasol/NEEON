@@ -7,7 +7,7 @@ exports.getAllUsers = async (req, res) => {
     const allUsers = await userModel.find().select("-image");
     res.status(200).json({
       status: "success",
-      message: "Successfully got all Blogs.",
+      message: "Successfully got all Users.",
       users: {
         allUsers,
       },
@@ -86,7 +86,7 @@ exports.getUser = async (req, res) => {
 
     res.status(200).json({
       status: "success",
-      message: "Successfully got a Blog.",
+      message: "Successfully got a User.",
       user: {
         user,
       },
@@ -94,57 +94,61 @@ exports.getUser = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       status: "fail",
-      message: `Can't Get Blog! ${err}`,
+      message: `Can't Get User! ${err}`,
     });
   }
 };
-// //Updating a Blog
-// exports.updateBlog = async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     const body = req.body;
-//     const updatedBlog = await BlogNewsModel.findOneAndUpdate(
-//       { _id: id },
-//       { $set: body },
-//       { new: true, runValidators: true }
-//     ).select("-image");
-//     res.status(200).json({
-//       status: "success",
-//       message: "Blog updated successfully.",
-//       blog: {
-//         updatedBlog,
-//       },
-//     });
-//   } catch (err) {
-//     res.status(404).json({
-//       status: "fail",
-//       message: `Can't Update Blog! ${err}`,
-//     });
-//   }
-// };
+//Updating a Blog
+exports.updateUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const body = req.body;
+    const updatedUser = await userModel
+      .findOneAndUpdate(
+        { _id: id },
+        { $set: body },
+        { new: true, runValidators: true }
+      )
+      .select("-image");
+    res.status(200).json({
+      status: "success",
+      message: "User updated successfully.",
+      user: {
+        updatedUser,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: `Can't Update User! ${err}`,
+    });
+  }
+};
 
-// //Deleting a Blog
-// exports.deleteBlog = async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     const deletedBlog = await BlogNewsModel.findOneAndDelete({
-//       _id: id,
-//     }).select("-image");
+// Deleting a Blog
+exports.deleteUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deletedUser = await userModel
+      .findOneAndDelete({
+        _id: id,
+      })
+      .select("-image");
 
-//     res.status(200).json({
-//       status: "success",
-//       message: "Blog deleted successfully.",
-//       blog: {
-//         deletedBlog,
-//       },
-//     });
-//   } catch (err) {
-//     res.status(404).json({
-//       status: "fail",
-//       message: `Can't Update Blog! ${err}`,
-//     });
-//   }
-// };
+    res.status(200).json({
+      status: "success",
+      message: "User deleted successfully.",
+      blog: {
+        deletedUser,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: `Can't Update User! ${err}`,
+    });
+  }
+};
 // exports.getImage = async (req, res) => {
 //   try {
 //     const blog = await BlogNewsModel.findById(req.params.id);
@@ -152,7 +156,6 @@ exports.getUser = async (req, res) => {
 //     if (!blog || !blog.image) {
 //       return res.status(404).send("Image not found");
 //     }
-
 //     // If image stored in MongoDB as { data: Buffer, contentType: String }
 //     if (blog.image.data) {
 //       // blog.image.data may already be a Buffer or a plain object when serialized
