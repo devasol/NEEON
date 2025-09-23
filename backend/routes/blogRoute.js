@@ -5,15 +5,8 @@ const router = express.Router();
 
 const blogController = require("./../controllers/blogController");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
-
+// use memory storage so files are available in req.file.buffer and not saved to disk
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 router
@@ -24,6 +17,7 @@ router.route("/:id/image").get(blogController.getImage);
 router
   .route("/:id")
   .get(blogController.getBlog)
-  .patch(blogController.updateBlog);
+  .patch(blogController.updateBlog)
+  .delete(blogController.deleteBlog);
 
 module.exports = router;

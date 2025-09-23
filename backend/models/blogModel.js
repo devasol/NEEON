@@ -23,8 +23,11 @@ const blogNewsSchema = new mongoose.Schema({
     default: Date.now,
   },
   image: {
-    data: Buffer,
-    contentType: String,
+    type: {
+      data: Buffer,
+      contentType: String,
+    },
+    select: false,
   },
 });
 
