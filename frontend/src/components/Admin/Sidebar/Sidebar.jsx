@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Sidebar.module.css";
 
 // Icons for each section (you can replace with actual icon components)
@@ -9,8 +9,6 @@ const UsersIcon = () => <span>👥</span>;
 const SettingsIcon = () => <span>⚙️</span>;
 
 const Sidebar = ({ selectedView, setSelectedView }) => {
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const items = [
     {
@@ -62,21 +60,9 @@ const Sidebar = ({ selectedView, setSelectedView }) => {
 
   const handleItemClick = (item) => {
     setSelectedView(item.id);
-    setSelectedItem(item);
-    setIsModalOpen(true);
-    document.body.style.overflow = "hidden";
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedItem(null);
-    document.body.style.overflow = "unset";
-  };
-
-  const handleQuickAction = (action, item) => {
-    alert(`Performing ${action} for ${item.label}`);
-    // Add your action logic here
-  };
+  // quick actions removed — sidebar now directly changes views on click
 
   return (
     <>
@@ -100,98 +86,7 @@ const Sidebar = ({ selectedView, setSelectedView }) => {
         <div className={styles.footer}>Logged in as Admin</div>
       </aside>
 
-      {/* Section Detail Modal */}
-      {isModalOpen && selectedItem && (
-        <div className={styles.modalOverlay} onClick={closeModal}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.closeButton} onClick={closeModal}>
-              ×
-            </button>
-
-            <div className={styles.modalHeader}>
-              <div className={styles.modalIcon}>{selectedItem.icon}</div>
-              <div className={styles.modalTitle}>
-                <h2>{selectedItem.label}</h2>
-                <p className={styles.modalDescription}>
-                  {selectedItem.description}
-                </p>
-              </div>
-            </div>
-
-            <div className={styles.modalContent}>
-              <div className={styles.sectionStats}>
-                <span className={styles.statsLabel}>Current Status</span>
-                <span className={styles.statsValue}>{selectedItem.stats}</span>
-              </div>
-
-              <div className={styles.sectionDetails}>
-                <h3>About this Section</h3>
-                <p>{selectedItem.details}</p>
-              </div>
-
-              <div className={styles.quickActions}>
-                <h3>Quick Actions</h3>
-                <div className={styles.actionButtons}>
-                  <button
-                    className={styles.actionBtn}
-                    onClick={() => handleQuickAction("view", selectedItem)}
-                  >
-                    View All
-                  </button>
-                  <button
-                    className={styles.actionBtn}
-                    onClick={() => handleQuickAction("create", selectedItem)}
-                  >
-                    Create New
-                  </button>
-                  <button
-                    className={styles.actionBtn}
-                    onClick={() => handleQuickAction("manage", selectedItem)}
-                  >
-                    Manage
-                  </button>
-                </div>
-              </div>
-
-              <div className={styles.recentActivity}>
-                <h3>Recent Activity</h3>
-                <div className={styles.activityList}>
-                  <div className={styles.activityItem}>
-                    <span className={styles.activityTime}>2 hours ago</span>
-                    <span className={styles.activityText}>
-                      New user registered
-                    </span>
-                  </div>
-                  <div className={styles.activityItem}>
-                    <span className={styles.activityTime}>5 hours ago</span>
-                    <span className={styles.activityText}>
-                      Post published successfully
-                    </span>
-                  </div>
-                  <div className={styles.activityItem}>
-                    <span className={styles.activityTime}>Yesterday</span>
-                    <span className={styles.activityText}>
-                      Settings updated
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.modalFooter}>
-              <button
-                className={styles.primaryBtn}
-                onClick={() => setSelectedView(selectedItem.id)}
-              >
-                Open {selectedItem.label}
-              </button>
-              <button className={styles.secondaryBtn} onClick={closeModal}>
-                Close Preview
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Removed preview/quick-action modal per user request */}
     </>
   );
 };

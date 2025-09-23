@@ -17,7 +17,8 @@ router.route("/:id/image").get(blogController.getImage);
 router
   .route("/:id")
   .get(blogController.getBlog)
-  .patch(blogController.updateBlog)
+  // allow image upload on patch as well (multer memoryStorage)
+  .patch(upload.single("image"), blogController.updateBlog)
   .delete(blogController.deleteBlog);
 
 module.exports = router;

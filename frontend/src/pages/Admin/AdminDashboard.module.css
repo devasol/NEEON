@@ -14,6 +14,13 @@
   gap: 1.5rem;
 }
 
+/* Reserve left space for the sticky sidebar on wider screens */
+@media (min-width: 901px) {
+  .main {
+    margin-left: 0; /* changed per request */
+  }
+}
+
 .statsRow {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

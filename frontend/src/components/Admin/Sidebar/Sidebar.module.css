@@ -17,7 +17,13 @@
   flex-direction: column;
   gap: 1rem;
   box-shadow: 0 10px 30px rgba(2, 6, 23, 0.4);
-  position: relative;
+  /* make the sidebar stick to the viewport while the main content scrolls */
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: 100vh;
+  overflow: auto;
   z-index: 100;
 }
 

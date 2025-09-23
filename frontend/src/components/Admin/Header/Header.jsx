@@ -70,8 +70,13 @@ const Header = () => {
   };
 
   const handleNewPost = () => {
-    // Add your new post logic here
-    alert("Creating new post...");
+    // Dispatch a global event so PostsView (or others) can open the new post modal
+    try {
+      window.dispatchEvent(new CustomEvent("open-new-post"));
+    } catch {
+      // fallback for older browsers
+      alert("Creating new post...");
+    }
   };
 
   const searchSuggestions = [
