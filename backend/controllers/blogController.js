@@ -73,11 +73,33 @@ exports.getBlog = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       status: "fail",
-      message: `Can't Get the Blog! ${err}`,
+      message: `Can't Get Blog! ${err}`,
     });
   }
 };
 //Updating a Blog
+exports.updateBlog = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const body = req.body;
+    const updatedBlog = await BlogNewsModel.findOneAndUpdate(
+      { _id: id },
+      { $set: body },
+      { new: true, runValidators: true }
+    ).select("-image");
+    res.status(200).json({
+      status: "success",
+      blog: {
+        updatedBlog,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: `Can't Update Blog! ${err}`,
+    });
+  }
+};
 //Deleting a Blog
 
 exports.getImage = async (req, res) => {
