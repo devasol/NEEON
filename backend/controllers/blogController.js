@@ -5,9 +5,9 @@ const fs = require("fs");
 exports.getAllBlogs = async (req, res) => {
   try {
     const allBlogs = await BlogNewsModel.find().select("-image");
-
     res.status(200).json({
       status: "success",
+      message: "Successfully got all Blogs.",
       blogs: {
         allBlogs,
       },
@@ -44,12 +44,13 @@ exports.createBlog = async (req, res) => {
       image: imageValue,
     });
 
+    const blogResponse = newBlog.toObject();
+    if (blogResponse.image) delete blogResponse.image;
+
     res.status(200).json({
       status: "success",
       message: "Blog post created successfully",
-      blog: {
-        newBlog,
-      },
+      blog: blogResponse,
     });
   } catch (err) {
     res.status(500).json({
@@ -66,6 +67,7 @@ exports.getBlog = async (req, res) => {
 
     res.status(200).json({
       status: "success",
+      message: "Successfully got a Blog.",
       blog: {
         blog,
       },
@@ -89,6 +91,7 @@ exports.updateBlog = async (req, res) => {
     ).select("-image");
     res.status(200).json({
       status: "success",
+      message: "Blog updated successfully.",
       blog: {
         updatedBlog,
       },
@@ -100,8 +103,29 @@ exports.updateBlog = async (req, res) => {
     });
   }
 };
-//Deleting a Blog
 
+//Deleting a Blog
+exports.deleteBlog = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deletedBlog = await BlogNewsModel.findOneAndDelete({
+      _id: id,
+    }).select("-image");
+
+    res.status(200).json({
+      status: "success",
+      message: "Blog deleted successfully.",
+      blog: {
+        deletedBlog,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: `Can't Update Blog! ${err}`,
+    });
+  }
+};
 exports.getImage = async (req, res) => {
   try {
     const blog = await BlogNewsModel.findById(req.params.id);
