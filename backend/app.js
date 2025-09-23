@@ -1,10 +1,21 @@
 const express = require("express");
+const cors = require("cors");
 const path = require("path");
 const blogRoute = require("./routes/blogRoute");
 const userRoute = require("./routes/userRoute");
 
 const app = express();
 app.use(express.json());
+
+app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PATCH", "dELETE"],
+    credentials: true,
+  })
+);
+
 // serve uploaded files from the uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
