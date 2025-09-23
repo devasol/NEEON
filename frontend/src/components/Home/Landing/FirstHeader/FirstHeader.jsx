@@ -43,9 +43,6 @@ function FirstHeader() {
         <span>
           <i class="fa-brands fa-pinterest"></i>
         </span>
-        <span>
-          <i class="fa-brands fa-skype"></i>
-        </span>
       </div>
     </header>
   );

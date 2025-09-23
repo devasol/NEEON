@@ -130,6 +130,9 @@ function MainHeader() {
         <span>
           <i className="fa-solid fa-bars-staggered"></i>
         </span>
+        <span>
+          <i class="fa-solid fa-user"></i>
+        </span>
       </div>
     </header>
   );

@@ -83,17 +83,34 @@ exports.getBlog = async (req, res) => {
 exports.updateBlog = async (req, res) => {
   try {
     const id = req.params.id;
-    const body = req.body;
+    const body = { ...req.body };
+
+    // handle image if uploaded via multer memoryStorage
+    if (req.file) {
+      if (req.file.buffer) {
+        body.image = { data: req.file.buffer, contentType: req.file.mimetype };
+      } else if (req.file.path) {
+        // disk-based upload
+        const filePath = path.join(__dirname, "..", req.file.path);
+        if (fs.existsSync(filePath)) {
+          const fileBuffer = fs.readFileSync(filePath);
+          body.image = { data: fileBuffer, contentType: req.file.mimetype };
+        }
+      }
+    }
+
     const updatedBlog = await BlogNewsModel.findOneAndUpdate(
       { _id: id },
       { $set: body },
       { new: true, runValidators: true }
     ).select("-image");
+
+    const response = updatedBlog ? updatedBlog.toObject() : null;
     res.status(200).json({
       status: "success",
       message: "Blog updated successfully.",
       blog: {
-        updatedBlog,
+        updatedBlog: response,
       },
     });
   } catch (err) {

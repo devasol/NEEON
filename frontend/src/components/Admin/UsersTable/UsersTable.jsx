@@ -15,6 +15,11 @@ const UsersTable = () => {
         console.log("Error fetching users:", err);
       });
   }, []);
+
+  useEffect(() => {
+    // removed stray patch effect
+  });
+
   //   const [users, setUsers] = useState([
   //     {
   //       id: 1,
@@ -61,6 +66,9 @@ const UsersTable = () => {
   });
   const [selectedUser, setSelectedUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [pendingDelete, setPendingDelete] = useState(null);
 
   // Simulate loading
   useEffect(() => {
@@ -93,8 +101,40 @@ const UsersTable = () => {
     }));
   };
 
-  const handleRemoveUser = (userId) => {
-    setUsers((prev) => prev.filter((user) => user.id !== userId));
+  const handleRemoveUser = async (userId) => {
+    // Optimistic UI: keep current users in case of rollback
+    const previous = users;
+    setDeletingId(userId);
+    try {
+      // remove optimistically (match either _id or id)
+      console.debug("Attempting to delete userId:", userId);
+      setUsers((prev) =>
+        prev.filter((user) => (user._id || user.id) !== userId)
+      );
+
+      const res = await axios.delete(
+        `http://localhost:9000/api/v1/users/${userId}`
+      );
+      console.debug("Delete response:", res.status, res.data);
+
+      // accept any 2xx response as success
+      if (!(res.status >= 200 && res.status < 300)) {
+        // rollback on non-OK
+        setUsers(previous);
+        console.error("Failed to delete user", res.data);
+        alert("Failed to delete user");
+      }
+      setDeletingId(null);
+    } catch (err) {
+      // rollback and show error
+      setUsers(previous);
+      console.error("Error deleting user:", err);
+      // give clearer message when CORS or network error occurs
+      const msg =
+        err.response?.data?.message || err.message || "Network or CORS error";
+      alert("Error deleting user: " + msg);
+      setDeletingId(null);
+    }
   };
 
   const handleViewUser = (user) => {
@@ -205,9 +245,12 @@ const UsersTable = () => {
           <tbody>
             {filteredUsers.map((user) => (
               <tr
-                key={user.id}
+                key={user._id || user.id}
                 className={`${styles.tableRow} ${
-                  selectedUser?.id === user.id ? styles.selected : ""
+                  (selectedUser?._id || selectedUser?.id) ===
+                  (user._id || user.id)
+                    ? styles.selected
+                    : ""
                 }`}
               >
                 <td>
@@ -244,9 +287,17 @@ const UsersTable = () => {
                     </button>
                     <button
                       className={`${styles.smallBtn} ${styles.removeBtn}`}
-                      onClick={() => handleRemoveUser(user.id)}
+                      onClick={() => {
+                        setPendingDelete(user._id || user.id);
+                        setConfirmOpen(true);
+                      }}
+                      disabled={
+                        deletingId === (user._id || user.id) || confirmOpen
+                      }
                     >
-                      🗑️ Remove
+                      {deletingId === (user._id || user.id)
+                        ? "Deleting..."
+                        : "🗑️ Remove"}
                     </button>
                   </div>
                 </td>
@@ -284,12 +335,13 @@ const UsersTable = () => {
                   className={styles.largeAvatar}
                   style={{ backgroundColor: getRoleColor(selectedUser.role) }}
                 >
-                  {selectedUser.name.charAt(0)}
+                  {(selectedUser.fullName || selectedUser.name || "").charAt(0)}
                 </div>
               </div>
               <div className={styles.userDetails}>
                 <p>
-                  <strong>Name:</strong> {selectedUser.name}
+                  <strong>Name:</strong>{" "}
+                  {selectedUser.fullName || selectedUser.name}
                 </p>
                 <p>
                   <strong>Email:</strong> {selectedUser.email}
@@ -301,6 +353,63 @@ const UsersTable = () => {
                   <strong>Status:</strong> {getStatusBadge(selectedUser.status)}
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {confirmOpen && (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => {
+            setConfirmOpen(false);
+            setPendingDelete(null);
+          }}
+        >
+          <div
+            className={styles.modal}
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+          >
+            <h4>Confirm delete</h4>
+            <p>
+              Are you sure you want to delete this user? This action cannot be
+              undone.
+            </p>
+            <div
+              style={{
+                display: "flex",
+                gap: "0.5rem",
+                justifyContent: "flex-end",
+                marginTop: "1rem",
+              }}
+            >
+              <button
+                className={`${styles.smallBtn} ${styles.viewBtn}`}
+                onClick={() => {
+                  setConfirmOpen(false);
+                  setPendingDelete(null);
+                }}
+                disabled={deletingId !== null}
+              >
+                Cancel
+              </button>
+              <button
+                className={`${styles.smallBtn} ${styles.removeBtn}`}
+                onClick={() => {
+                  setConfirmOpen(false);
+                  // call delete handler
+                  if (pendingDelete) handleRemoveUser(pendingDelete);
+                  setPendingDelete(null);
+                }}
+                disabled={deletingId !== null}
+              >
+                {deletingId && deletingId === pendingDelete
+                  ? "Deleting..."
+                  : "Confirm"}
+              </button>
             </div>
           </div>
         </div>

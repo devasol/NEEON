@@ -22,6 +22,22 @@ const blogNewsSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  category: {
+    type: String,
+    default: "Uncategorized",
+  },
+  status: {
+    type: String,
+    default: "Draft",
+  },
+  views: {
+    type: Number,
+    default: 0,
+  },
+  comments: {
+    type: Number,
+    default: 0,
+  },
   image: {
     type: {
       data: Buffer,
@@ -30,6 +46,8 @@ const blogNewsSchema = new mongoose.Schema({
     select: false,
   },
 });
+// enable timestamps so createdAt is available
+blogNewsSchema.set("timestamps", true);
 
 const BlogNewsModel = mongoose.model("Blog", blogNewsSchema);
 module.exports = BlogNewsModel;

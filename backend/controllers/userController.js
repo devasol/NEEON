@@ -7,7 +7,7 @@ exports.getAllUsers = async (req, res) => {
     const allUsers = await userModel.find().select("-image");
     res.status(200).json({
       status: "success",
-      message: "Successfully got all Users.",
+      message: "Successfully got all users.",
       users: {
         allUsers,
       },
