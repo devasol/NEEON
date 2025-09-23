@@ -1,44 +1,57 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import styles from "./UsersTable.module.css";
 
 const UsersTable = () => {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "Alice",
-      email: "alice@example.com",
-      role: "Editor",
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Bob",
-      email: "bob@example.com",
-      role: "Author",
-      status: "active",
-    },
-    {
-      id: 3,
-      name: "Charlie",
-      email: "charlie@example.com",
-      role: "Subscriber",
-      status: "inactive",
-    },
-    {
-      id: 4,
-      name: "Diana",
-      email: "diana@example.com",
-      role: "Admin",
-      status: "active",
-    },
-    {
-      id: 5,
-      name: "Ethan",
-      email: "ethan@example.com",
-      role: "Subscriber",
-      status: "pending",
-    },
-  ]);
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:9000/api/v1/users")
+      .then((res) => {
+        setUsers(res.data.users.allUsers);
+        // console.log(res.data.users.allUsers);
+      })
+      .catch((err) => {
+        console.log("Error fetching users:", err);
+      });
+  }, []);
+  //   const [users, setUsers] = useState([
+  //     {
+  //       id: 1,
+  //       name: "Alice",
+  //       email: "alice@example.com",
+  //       role: "Editor",
+  //       status: "active",
+  //     },
+  //     {
+  //       id: 2,
+  //       name: "Bob",
+  //       email: "bob@example.com",
+  //       role: "Author",
+  //       status: "active",
+  //     },
+  //     {
+  //       id: 3,
+  //       name: "Charlie",
+  //       email: "charlie@example.com",
+  //       role: "Subscriber",
+  //       status: "inactive",
+  //     },
+  //     {
+  //       id: 4,
+  //       name: "Diana",
+  //       email: "diana@example.com",
+  //       role: "Admin",
+  //       status: "active",
+  //     },
+  //     {
+  //       id: 5,
+  //       name: "Ethan",
+  //       email: "ethan@example.com",
+  //       role: "Subscriber",
+  //       status: "pending",
+  //     },
+  //   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filterRole, setFilterRole] = useState("all");
@@ -59,7 +72,7 @@ const UsersTable = () => {
   const filteredUsers = users
     .filter(
       (user) =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter((user) => filterRole === "all" || user.role === filterRole)
@@ -203,9 +216,9 @@ const UsersTable = () => {
                       className={styles.avatar}
                       style={{ backgroundColor: getRoleColor(user.role) }}
                     >
-                      {user.name.charAt(0)}
+                      {user.fullName.charAt(0)}
                     </div>
-                    {user.name}
+                    {user.fullName}
                   </div>
                 </td>
                 <td>{user.email}</td>
