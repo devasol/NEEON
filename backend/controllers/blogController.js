@@ -58,6 +58,27 @@ exports.createBlog = async (req, res) => {
     });
   }
 };
+//Get a Blog
+exports.getBlog = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const blog = await BlogNewsModel.findById(id).select("-image");
+
+    res.status(200).json({
+      status: "success",
+      blog: {
+        blog,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: `Can't Get the Blog! ${err}`,
+    });
+  }
+};
+//Updating a Blog
+//Deleting a Blog
 
 exports.getImage = async (req, res) => {
   try {
