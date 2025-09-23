@@ -21,6 +21,9 @@ router
   .get(blogController.getAllBlogs)
   .post(upload.single("image"), blogController.createBlog);
 router.route("/:id/image").get(blogController.getImage);
-router.route("/:id").get(blogController.getBlog);
+router
+  .route("/:id")
+  .get(blogController.getBlog)
+  .patch(blogController.updateBlog);
 
 module.exports = router;
