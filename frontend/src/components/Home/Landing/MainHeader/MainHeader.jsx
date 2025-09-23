@@ -174,7 +174,10 @@ function MainHeader() {
           role="dialog"
           aria-modal="true"
         >
-          <div className={`${styles.loginModal} embedded clean`} onClick={(e) => e.stopPropagation()}>
+          <div
+            className={`${styles.loginModal} embedded clean`}
+            onClick={(e) => e.stopPropagation()}
+          >
             <Login noContainer onClose={() => setShowLogin(false)} />
           </div>
         </div>
