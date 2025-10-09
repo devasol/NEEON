@@ -24,3 +24,60 @@ body {
   --primary-grey: rgb(53, 52, 52);
   --primary-white: #fff;
 }
+
+/* Global image loading styles ------------------------------------------------- */
+.img--loading {
+  /* keep layout size but hide crisp details while loading */
+  filter: blur(6px) saturate(0.9);
+  transition: filter 300ms ease, opacity 300ms ease;
+  opacity: 0.95;
+  position: relative;
+}
+
+.img--loading::after {
+  /* shimmer using a pseudo-element on the img wrapper is not possible on img itself
+     so we use a background linear-gradient on a parent in many cases; however
+     some browsers allow it on replaced elements — keep a lightweight fallback */
+  content: "";
+  pointer-events: none;
+}
+
+/* When image is fully loaded the class is removed — remove blur */
+img:not(.img--loading) {
+  filter: none;
+  opacity: 1;
+}
+
+/* Add a subtle animated shimmer on a wrapping container when needed.
+   For images that can't have pseudo children, you can put the class on the
+   wrapper element in components. The global script will also add .img--loading
+   directly to <img>, so the blur fallback covers most cases. */
+.img-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+.img-wrapper.img--loading::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-100%);
+  animation: shimmer 1s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Error state */
+.img--error {
+  opacity: 0.8;
+  filter: grayscale(1) contrast(0.9) brightness(0.9);
+}

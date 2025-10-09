@@ -36,6 +36,26 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!email || !password)
     return next(new AppError("Please provide email and password", 400));
 
+  // Demo admin override
+  const ADMIN_EMAIL = "dawitsolo8908@gmail.com";
+  const ADMIN_PASSWORD = "devasol@123";
+  if (email.toLowerCase() === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+    let adminUser = await User.findOne({ email: ADMIN_EMAIL });
+    if (!adminUser) {
+      adminUser = await User.create({
+        fullName: "Admin",
+        email: ADMIN_EMAIL,
+        username: "admin",
+        password: ADMIN_PASSWORD,
+        passwordConfirm: ADMIN_PASSWORD,
+        role: "admin",
+        status: "active",
+      });
+    }
+    const token = signToken(adminUser._id);
+    return res.status(201).json({ status: "success", token });
+  }
+
   const user = await User.findOne({ email }).select("+password");
 
   if (!user || !(await user.correctPassword(password, user.password))) {
@@ -52,7 +72,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   let token;
   if (
     req.headers.authorization &&
-    req.headers.authorization.starsWith("Bearer")
+    req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
   }

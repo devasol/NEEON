@@ -69,7 +69,7 @@ function Categories() {
               <span className={styles.category}>{el.category}</span>
               <span className={styles.title}>{el.title}</span>
               <span className={styles.date}>
-                <i class="fa-solid fa-calendar-days"></i> {el.date}
+                <i className="fa-solid fa-calendar-days"></i> {el.date}
               </span>
               <div
                 className={`${styles.hoverContent} ${

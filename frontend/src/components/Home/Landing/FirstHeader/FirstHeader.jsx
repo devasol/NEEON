@@ -26,22 +26,22 @@ function FirstHeader() {
       </div>
       <div className={styles.linksContainer}>
         <span>
-          <i class="fa-solid fa-calendar-days"></i>
+          <i className="fa-solid fa-calendar-days"></i>
         </span>
         <span>{formattedDate}</span>
         <span> | </span>
         <span>follow us</span>
         <span>
-          <i class="fa-brands fa-facebook-f"></i>
+          <i className="fa-brands fa-facebook-f"></i>
         </span>
         <span>
-          <i class="fa-brands fa-twitter"></i>
+          <i className="fa-brands fa-twitter"></i>
         </span>
         <span>
-          <i class="fa-brands fa-twitter"></i>
+          <i className="fa-brands fa-twitter"></i>
         </span>
         <span>
-          <i class="fa-brands fa-pinterest"></i>
+          <i className="fa-brands fa-pinterest"></i>
         </span>
       </div>
     </header>

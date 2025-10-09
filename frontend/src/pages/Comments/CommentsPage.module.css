@@ -1,0 +1,110 @@
+.page {
+	min-height: 100vh;
+	padding: 24px;
+	background: linear-gradient(180deg, #111827, #0b1220);
+	color: #e5e7eb;
+}
+
+.card {
+	max-width: 760px;
+	margin: 0 auto;
+	background: rgba(255,255,255,0.06);
+	border: 1px solid rgba(255,255,255,0.08);
+	border-radius: 16px;
+	padding: 18px;
+	box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+}
+
+.title { margin: 0 0 6px 0; }
+
+.headerRow {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+
+}
+
+.authBtn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	height: 38px;
+	padding: 0 14px;
+	border-radius: 10px;
+	border: 0;
+	cursor: pointer;
+	font-weight: 700;
+}
+
+.loginBtn {
+	background: linear-gradient(135deg, #4ecdc4, #7c3aed);
+	color: #fff;
+}
+
+.logoutBtn {
+	background: linear-gradient(135deg, #ff6b6b, #7c3aed);
+	color: #fff;
+}
+
+.metaRow {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-top: 6px;
+}
+
+.stat { display: inline-flex; align-items: center; gap: 6px; }
+.stat i { color: #ffd166; opacity: 1; }
+.stat span { font-weight: 700; }
+
+.separator { height: 1px; background: rgba(255,255,255,0.1); margin: 12px 0; }
+
+.commentEditor { margin-top: 8px; }
+
+.textarea {
+	width: 100%;
+	background: rgba(0,0,0,0.3);
+	border: 1px solid rgba(255,255,255,0.15);
+	border-radius: 12px;
+	color: #e5e7eb;
+	padding: 10px 12px;
+}
+
+.actionRow { display: flex; justify-content: flex-end; margin-top: 8px; }
+
+.postBtn, .likeBtn {
+	background: linear-gradient(135deg, #4ecdc4, #7c3aed);
+	color: #fff;
+	border: 0;
+	border-radius: 10px;
+	height: 38px;
+	padding: 0 14px;
+	cursor: pointer;
+	font-weight: 700;
+}
+
+.likeBtn { background: linear-gradient(135deg, #ff6b6b, #7c3aed); }
+
+.toast {
+	margin-top: 8px;
+	background: rgba(0,0,0,0.5);
+	padding: 8px 10px;
+	border-radius: 10px;
+}
+
+.commentsList { margin-top: 14px; display: grid; gap: 10px; }
+
+.commentItem {
+	background: rgba(255,255,255,0.07);
+	border: 1px solid rgba(255,255,255,0.1);
+	border-radius: 12px;
+	padding: 10px;
+}
+
+.commentText { white-space: pre-wrap; }
+.commentTime { opacity: 0.7; font-size: 0.85rem; margin-top: 4px; }
+
+.empty { opacity: 0.85; }
+
+

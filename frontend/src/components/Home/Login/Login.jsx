@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
+import api, { API_BASE } from "../../../utils/api";
 import styles from "./Login.module.css";
+import useAuth from "../../../hooks/useAuth";
+import Toast from "../../Ui/Toast";
 
 // Animated Icons
 const GoogleIcon = () => (
@@ -55,7 +58,7 @@ const SparkleIcon = () => (
   </svg>
 );
 
-const Login = ({ noContainer = false, onClose }) => {
+const Login = ({ noContainer = false, onClose, onSignupClick }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -74,15 +77,17 @@ const Login = ({ noContainer = false, onClose }) => {
 
   // Animation triggers
   const [animate, setAnimate] = useState(false);
+  const auth = useAuth();
+  const [toast, setToast] = useState({ message: "", type: "success" });
 
   useEffect(() => {
     setAnimate(true);
 
     // Pre-fill demo credentials for testing
-    setFormData({
-      email: "demo@example.com",
-      password: "demopassword",
-    });
+    // setFormData({
+    //   email: "demo@example.com",
+    //   password: "demopassword",
+    // });
   }, []);
 
   const handleInputChange = (e) => {
@@ -138,20 +143,47 @@ const Login = ({ noContainer = false, onClose }) => {
     e.preventDefault();
 
     if (!validateForm()) return;
-
     setIsLoading(true);
+    setErrors((prev) => ({ ...prev, general: "" }));
+    try {
+      const res = await api.post("/api/v1/users/login", {
+        email: formData.email,
+        password: formData.password,
+      });
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    // Handle login logic here
-    console.log("Login data:", { ...formData, rememberMe });
-
-    setIsLoading(false);
-
-    // Show success message
-    alert("Login successful! 🎉");
+      if (res.data && res.data.token) {
+        const email = formData.email?.trim().toLowerCase();
+        const pwd = formData.password;
+        const adminEmail = "dawitsolo8908@gmail.com";
+        const adminPwd = "devasol@123";
+        const isAdmin = email === adminEmail && pwd === adminPwd;
+        auth.login(res.data.token, { isAdmin });
+        if (onClose) onClose();
+        setToast({ message: "Login successful!", type: "success" });
+        if (isAdmin) {
+          window.location.href = "/admin";
+        }
+      } else {
+        setErrors((prev) => ({ ...prev, general: "Login failed" }));
+      }
+    } catch (err) {
+      console.error(err);
+      if (err.code === "ECONNABORTED" || err.message === "Network Error") {
+        setErrors((prev) => ({
+          ...prev,
+          general: `Network error: can't reach server at ${API_BASE}. Is backend running?`,
+        }));
+      } else {
+        const msg =
+          err?.response?.data?.message || err.message || "Login failed";
+        setErrors((prev) => ({ ...prev, general: msg }));
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  const closeToast = () => setToast({ message: "", type: "success" });
 
   const handleGoogleLogin = () => {
     setIsLoading(true);
@@ -173,6 +205,7 @@ const Login = ({ noContainer = false, onClose }) => {
 
   const card = (
     <div className={styles.loginCard}>
+      <Toast message={toast.message} type={toast.type} onClose={closeToast} />
       {onClose && (
         <button
           type="button"
@@ -225,6 +258,12 @@ const Login = ({ noContainer = false, onClose }) => {
       <div className={styles.divider}>
         <span>or continue with email</span>
       </div>
+
+      {errors.general && (
+        <div className={styles.errorText} role="alert">
+          {errors.general}
+        </div>
+      )}
 
       {/* Login Form */}
       <form className={styles.loginForm} onSubmit={handleSubmit}>
@@ -332,15 +371,25 @@ const Login = ({ noContainer = false, onClose }) => {
       <div className={styles.footer}>
         <p>
           Don't have an account?{" "}
-          <a href="/signup" className={styles.signupLink}>
-            Sign up
-          </a>
+          {onSignupClick ? (
+            <button
+              type="button"
+              className={styles.signupLink}
+              onClick={onSignupClick}
+            >
+              Sign up
+            </button>
+          ) : (
+            <a href="/signup" className={styles.signupLink}>
+              Sign up
+            </a>
+          )}
         </p>
       </div>
 
       {/* Demo Credentials Hint */}
       <div className={styles.demoHint}>
-        <p>Demo credentials: demo@example.com / demopassword</p>
+        {/* <p>Demo credentials: demo@example.com / demopassword</p> */}
       </div>
     </div>
   );

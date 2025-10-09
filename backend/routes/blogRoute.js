@@ -22,4 +22,21 @@ router
   .patch(upload.single("image"), blogController.updateBlog)
   .delete(blogController.deleteBlog);
 
+// interactions
+router.post(
+  "/:id/like",
+  authController.protect,
+  blogController.likeBlog
+);
+router.post(
+  "/:id/unlike",
+  authController.protect,
+  blogController.unlikeBlog
+);
+router.post(
+  "/:id/comments",
+  authController.protect,
+  blogController.addComment
+);
+
 module.exports = router;

@@ -1,0 +1,31 @@
+.toast {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  min-width: 200px;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  color: white;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 9999;
+}
+.success {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+.error {
+  background: linear-gradient(90deg, #ef4444, #f97316);
+}
+.info {
+  background: linear-gradient(90deg, #3b82f6, #6366f1);
+}
+.close {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}

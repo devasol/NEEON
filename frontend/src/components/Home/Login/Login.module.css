@@ -702,6 +702,12 @@
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
+  background: transparent; /* ensure anchors and buttons have no white background */
+  border: none; /* remove default button border */
+  padding: 0; /* remove default button padding */
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .signupLink:hover {
