@@ -183,7 +183,7 @@ function MainHeader() {
             title="Admin"
           >
             <i className="fa-solid fa-gauge"></i>
-            <span>Admin</span>
+            Admin
           </button>
         )}
         {token ? (
@@ -194,7 +194,7 @@ function MainHeader() {
             title="Logout"
           >
             <i className="fa-solid fa-right-from-bracket"></i>
-            <span>Logout</span>
+            Logout
           </button>
         ) : (
           <button
@@ -205,7 +205,7 @@ function MainHeader() {
             onClick={() => setShowLogin(true)}
           >
             <i className="fa-solid fa-right-to-bracket"></i>
-            <span>Login</span>
+            Login
           </button>
         )}
       </div>
