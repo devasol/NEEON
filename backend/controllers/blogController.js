@@ -143,6 +143,55 @@ exports.deleteBlog = async (req, res) => {
     });
   }
 };
+
+// Like a blog (increment likes)
+exports.likeBlog = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updated = await BlogNewsModel.findByIdAndUpdate(
+      id,
+      { $inc: { likes: 1 } },
+      { new: true }
+    ).select("-image");
+    res.status(200).json({ status: "success", likes: updated?.likes ?? 0 });
+  } catch (err) {
+    res.status(400).json({ status: "fail", message: err.message });
+  }
+};
+
+// Unlike a blog (decrement likes not below 0)
+exports.unlikeBlog = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const blog = await BlogNewsModel.findById(id).select("likes");
+    if (!blog) return res.status(404).json({ status: "fail", message: "Not found" });
+    const next = Math.max(0, (blog.likes || 0) - 1);
+    blog.likes = next;
+    await blog.save();
+    res.status(200).json({ status: "success", likes: next });
+  } catch (err) {
+    res.status(400).json({ status: "fail", message: err.message });
+  }
+};
+
+// Add a comment
+exports.addComment = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { text } = req.body;
+    if (!text || !text.trim()) {
+      return res.status(400).json({ status: "fail", message: "Comment text required" });
+    }
+    const updated = await BlogNewsModel.findByIdAndUpdate(
+      id,
+      { $push: { commentsList: { text } }, $inc: { comments: 1 } },
+      { new: true }
+    ).select("-image");
+    res.status(201).json({ status: "success", comments: updated?.comments ?? 0 });
+  } catch (err) {
+    res.status(400).json({ status: "fail", message: err.message });
+  }
+};
 exports.getImage = async (req, res) => {
   try {
     const blog = await BlogNewsModel.findById(req.params.id);

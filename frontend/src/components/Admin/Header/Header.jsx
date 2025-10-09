@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import useAuth from "../../../hooks/useAuth";
 import styles from "./Header.module.css";
 
 // Icons (you can replace with actual icon components)
@@ -87,6 +88,8 @@ const Header = () => {
     "Settings configuration",
   ];
 
+  const { logout } = useAuth();
+
   return (
     <header className={styles.header}>
       <div className={styles.headerLeft}>
@@ -97,6 +100,13 @@ const Header = () => {
       </div>
 
       <div className={styles.headerRight}>
+        <button
+          className={styles.actionBtn}
+          onClick={() => (window.location.href = "/")}
+          title="Website"
+        >
+          ↩ Website
+        </button>
         {/* Search Bar with Suggestions */}
         <div className={styles.searchContainer}>
           <div
@@ -241,7 +251,7 @@ const Header = () => {
                   <span>🔒</span> Privacy
                 </button>
                 <div className={styles.menuDivider}></div>
-                <button className={styles.menuItem}>
+                <button className={styles.menuItem} onClick={logout}>
                   <span>🚪</span> Sign Out
                 </button>
               </div>

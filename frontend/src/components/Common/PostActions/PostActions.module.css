@@ -1,0 +1,115 @@
+.actions {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-top: 10px;
+}
+
+.actionBtn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	height: 38px;
+	padding: 0 14px;
+	border-radius: 9999px;
+	border: 0;
+	background: rgba(255, 255, 255, 0.1);
+	color: #111827; /* fallback */
+	cursor: pointer;
+	backdrop-filter: blur(6px);
+	transition: transform 0.16s ease, background 0.16s ease;
+}
+
+.actionBtn:hover {
+	transform: translateY(-2px);
+	background: rgba(0, 0, 0, 0.1);
+}
+
+.label {
+	font-weight: 600;
+	letter-spacing: 0.2px;
+}
+
+.count {
+	font-weight: 700;
+	background: rgba(255, 255, 255, 0.14);
+	padding: 2px 8px;
+	border-radius: 9999px;
+}
+
+.liked {
+	background: linear-gradient(135deg, rgba(255,107,107,0.18), rgba(124,58,237,0.12));
+}
+
+.message {
+	margin-left: 8px;
+	color: #e5e7eb;
+	background: rgba(0,0,0,0.5);
+	padding: 6px 10px;
+	border-radius: 8px;
+	font-size: 0.9rem;
+	animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+	from { opacity: 0 }
+	to { opacity: 1 }
+}
+
+/* Icons adopt button text color for proper contrast */
+.actionBtn i {
+	color: currentColor;
+	opacity: 1;
+	filter: none;
+}
+
+.liked i.fa-heart { color: #b91c1c; }
+
+.commentBox {
+	width: 100%;
+	background: rgba(255,255,255,0.06);
+	border: 1px solid rgba(255,255,255,0.1);
+	border-radius: 12px;
+	padding: 10px;
+	margin-top: 10px;
+}
+
+.commentInput {
+	width: 100%;
+	resize: vertical;
+	background: rgba(0,0,0,0.25);
+	border: 1px solid rgba(255,255,255,0.12);
+	color: #e5e7eb;
+	border-radius: 10px;
+	padding: 8px 10px;
+}
+
+.commentActions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 8px;
+}
+
+.cancelComment {
+	background: transparent;
+	color: #e5e7eb;
+	border: 1px solid rgba(255,255,255,0.18);
+	border-radius: 10px;
+	height: 36px;
+	padding: 0 12px;
+	cursor: pointer;
+}
+
+.submitComment {
+	background: linear-gradient(135deg, #4ecdc4, #7c3aed);
+	color: #fff;
+	border: 0;
+	border-radius: 10px;
+	height: 36px;
+	padding: 0 14px;
+	cursor: pointer;
+	font-weight: 700;
+}
+
+

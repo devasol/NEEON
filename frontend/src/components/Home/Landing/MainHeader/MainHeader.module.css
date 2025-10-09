@@ -301,10 +301,11 @@
 
 /* Unique styling for the login/user icon on the home page header */
 .loginIcon {
-  width: 44px;
+  width: 100px;
   height: 44px;
   background: linear-gradient(135deg, #ff6b6b 0%, #7c3aed 100%);
-  border-radius: 50%;
+  border: none;
+  border-radius: 10%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -315,7 +316,7 @@
   transform-origin: center;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
   position: relative;
-  z-index: 3; /* ensure login icon sits above the decorative pseudo-elements */
+  z-index: 3;
 }
 
 .loginIcon:hover {
@@ -326,6 +327,206 @@
 .loginIcon:focus-visible {
   outline: 3px solid rgba(124, 58, 237, 0.18);
   outline-offset: 3px;
+}
+
+/* New explicit button styling for Login in header */
+.loginButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 18px;
+  height: 44px;
+  border-radius: 9999px;
+  border: 0;
+  cursor: pointer;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: linear-gradient(135deg, #4ecdc4 0%, #7c3aed 100%);
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.12),
+    0 10px 25px rgba(18, 18, 23, 0.25);
+  transition: transform 0.18s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.loginButton:hover {
+  transform: translateY(-3px);
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.12),
+    0 16px 40px rgba(18, 18, 23, 0.35);
+  filter: saturate(1.08);
+}
+
+.loginButton:focus-visible {
+  outline: 3px solid rgba(76, 205, 196, 0.45);
+  outline-offset: 3px;
+}
+
+/* Gorgeous logout button styles */
+.logoutButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  height: 44px;
+  border-radius: 9999px;
+  border: 0;
+  cursor: pointer;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #7c3aed 100%);
+  box-shadow: 0 10px 25px rgba(18, 18, 23, 0.25);
+  transition: transform 0.18s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  position: relative;
+  z-index: 2;
+}
+
+/* icon removed per request */
+
+.logoutButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(18, 18, 23, 0.35);
+  filter: saturate(1.08);
+}
+
+.logoutButton:active {
+  transform: translateY(0);
+  box-shadow: inset 0 -1px 3px rgba(0, 0, 0, 0.12),
+    0 8px 18px rgba(18, 18, 23, 0.28);
+}
+
+.logoutButton:focus-visible {
+  outline: 3px solid rgba(76, 205, 196, 0.45);
+  outline-offset: 3px;
+}
+
+.logoutButton i,
+.loginButton i {
+  color: currentColor;
+}
+
+/* Confirmation Modal Styles */
+.confirmOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.confirmModal {
+  width: 100%;
+  max-width: 480px;
+  background: linear-gradient(180deg, #1f2937 0%, #0b1220 100%);
+  color: #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  transform: translateY(6px);
+  animation: riseIn 0.22s ease forwards;
+}
+
+.confirmHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(76, 205, 196, 0.25),
+    rgba(124, 58, 237, 0.2)
+  );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.confirmHeader span {
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.confirmClose {
+  background: transparent;
+  border: 0;
+  color: #e5e7eb;
+  font-size: 22px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.confirmClose:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.confirmBody {
+  padding: 20px 18px 6px 18px;
+}
+
+.confirmBody p {
+  margin: 0;
+  line-height: 1.5;
+  color: #d1d5db;
+}
+
+.confirmActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 18px 18px 18px;
+}
+
+.cancelBtn {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e5e7eb;
+  border: 0;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.cancelBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.confirmBtn {
+  background: linear-gradient(135deg, #ff6b6b 0%, #7c3aed 100%);
+  color: #fff;
+  border: 0;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.25);
+}
+
+.confirmBtn:hover {
+  filter: brightness(1.05);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes riseIn {
+  from {
+    transform: translateY(6px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 /* optional small badge for login state (e.g., notification) */

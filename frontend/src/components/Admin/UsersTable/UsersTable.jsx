@@ -142,6 +142,29 @@ const UsersTable = () => {
     setTimeout(() => setSelectedUser(null), 3000); // Auto-close after 3 seconds
   };
 
+  const handleEditRole = async (user) => {
+    try {
+      const current = user.role || "Subscriber";
+      const next = prompt(
+        "Enter role (Admin, Editor, Author, Subscriber):",
+        current
+      );
+      if (!next || next === current) return;
+      await axios.patch(
+        `http://localhost:9000/api/v1/users/${user._id || user.id}`,
+        { role: next }
+      );
+      setUsers((prev) =>
+        prev.map((u) =>
+          (u._id || u.id) === (user._id || user.id) ? { ...u, role: next } : u
+        )
+      );
+    } catch (err) {
+      console.error("Error updating role:", err);
+      alert("Failed to update role");
+    }
+  };
+
   const getRoleColor = (role) => {
     const colors = {
       Admin: "#ef4444",
@@ -284,6 +307,12 @@ const UsersTable = () => {
                       onClick={() => handleViewUser(user)}
                     >
                       👁️ View
+                    </button>
+                    <button
+                      className={`${styles.smallBtn} ${styles.viewBtn}`}
+                      onClick={() => handleEditRole(user)}
+                    >
+                      ✏️ Edit Role
                     </button>
                     <button
                       className={`${styles.smallBtn} ${styles.removeBtn}`}

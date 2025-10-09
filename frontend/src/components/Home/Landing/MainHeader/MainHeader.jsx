@@ -1,13 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import logo from "./../../../../assets/Images/LogoImages/logo.png";
 import styles from "./MainHeader.module.css";
 import Login from "../../Login/Login";
+import Signup from "../../Signup/Signup";
+import useAuth from "../../../../hooks/useAuth";
 
 function MainHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isSticky, setIsSticky] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [showSignup, setShowSignup] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const headerRef = useRef(null);
   const loginIconRef = useRef(null);
 
@@ -61,6 +66,19 @@ function MainHeader() {
     }
   }, [showLogin]);
 
+  // Prevent body scroll while either modal is open
+  useEffect(() => {
+    const original = document.body.style.overflow;
+    if (showLogin || showSignup) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = original;
+    }
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, [showLogin, showSignup]);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -72,6 +90,8 @@ function MainHeader() {
   const toggleDropdown = (index) => {
     setActiveDropdown(activeDropdown === index ? null : index);
   };
+
+  const { token, isAdmin, logout } = useAuth();
 
   const navItems = [
     { name: "Home", hasDropdown: true },
@@ -155,33 +175,135 @@ function MainHeader() {
         <span>
           <i className="fa-solid fa-bars-staggered"></i>
         </span>
-        <span
-          ref={loginIconRef}
-          className={styles.loginIcon}
-          tabIndex={0}
-          aria-label="Login"
-          role="button"
-          onClick={() => setShowLogin(true)}
-          onKeyDown={(e) => e.key === "Enter" && setShowLogin(true)}
-        >
-          <i className="fa-solid fa-user"></i>
-        </span>
-      </div>
-      {showLogin && (
-        <div
-          className={styles.loginModalOverlay}
-          onClick={() => setShowLogin(false)}
-          role="dialog"
-          aria-modal="true"
-        >
-          <div
-            className={`${styles.loginModal} embedded clean`}
-            onClick={(e) => e.stopPropagation()}
+        {isAdmin && (
+          <button
+            className={styles.loginButton}
+            onClick={() => (window.location.href = "/admin")}
+            aria-label="Admin"
+            title="Admin"
           >
-            <Login noContainer onClose={() => setShowLogin(false)} />
-          </div>
-        </div>
-      )}
+            <i className="fa-solid fa-gauge"></i>
+            <span>Admin</span>
+          </button>
+        )}
+        {token ? (
+          <button
+            className={styles.logoutButton}
+            onClick={() => setShowLogoutConfirm(true)}
+            aria-label="Logout"
+            title="Logout"
+          >
+            <i className="fa-solid fa-right-from-bracket"></i>
+            <span>Logout</span>
+          </button>
+        ) : (
+          <button
+            ref={loginIconRef}
+            className={styles.loginButton}
+            aria-label="Login"
+            title="Login"
+            onClick={() => setShowLogin(true)}
+          >
+            <i className="fa-solid fa-right-to-bracket"></i>
+            <span>Login</span>
+          </button>
+        )}
+      </div>
+      {showLogoutConfirm &&
+        createPortal(
+          <div
+            className={styles.confirmOverlay}
+            role="dialog"
+            aria-modal="true"
+            onClick={() => setShowLogoutConfirm(false)}
+          >
+            <div
+              className={styles.confirmModal}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={styles.confirmHeader}>
+                <span>Confirm Logout</span>
+                <button
+                  className={styles.confirmClose}
+                  aria-label="Close"
+                  onClick={() => setShowLogoutConfirm(false)}
+                >
+                  ×
+                </button>
+              </div>
+              <div className={styles.confirmBody}>
+                <p>Are you sure you want to log out?</p>
+              </div>
+              <div className={styles.confirmActions}>
+                <button
+                  className={styles.cancelBtn}
+                  onClick={() => setShowLogoutConfirm(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className={styles.confirmBtn}
+                  onClick={() => {
+                    setShowLogoutConfirm(false);
+                    logout();
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
+      {showLogin &&
+        createPortal(
+          <div
+            className={styles.loginModalOverlay}
+            onClick={() => setShowLogin(false)}
+            role="dialog"
+            aria-modal="true"
+          >
+            <div
+              className={`${styles.loginModal} embedded clean`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Login
+                noContainer
+                onClose={() => setShowLogin(false)}
+                onSignupClick={() => {
+                  setShowLogin(false);
+                  setShowSignup(true);
+                }}
+              />
+            </div>
+          </div>,
+          document.body
+        )}
+
+      {showSignup &&
+        createPortal(
+          <div
+            className={styles.loginModalOverlay}
+            onClick={() => setShowSignup(false)}
+            role="dialog"
+            aria-modal="true"
+          >
+            <div
+              className={`${styles.loginModal} embedded clean`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Signup
+                noContainer
+                onClose={() => setShowSignup(false)}
+                onLoginClick={() => {
+                  setShowSignup(false);
+                  setShowLogin(true);
+                }}
+              />
+            </div>
+          </div>,
+          document.body
+        )}
     </header>
   );
 }

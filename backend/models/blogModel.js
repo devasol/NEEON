@@ -34,10 +34,20 @@ const blogNewsSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  likes: {
+    type: Number,
+    default: 0,
+  },
   comments: {
     type: Number,
     default: 0,
   },
+  commentsList: [
+    {
+      text: { type: String, required: true },
+      createdAt: { type: Date, default: Date.now },
+    },
+  ],
   image: {
     type: {
       data: Buffer,

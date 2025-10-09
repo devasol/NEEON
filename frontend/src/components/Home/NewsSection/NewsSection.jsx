@@ -9,6 +9,7 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import styles from "./NewsSection.module.css";
+import PostActions from "../../Common/PostActions/PostActions";
 
 const NewsSection = () => {
   const [activeTab, setActiveTab] = useState("Travel");
@@ -234,6 +235,10 @@ const NewsSection = () => {
                     Read More →
                   </button>
                 </div>
+                <PostActions
+                  postId={filteredArticles[0].id || 0}
+                  postTitle={filteredArticles[0].title}
+                />
               </div>
             </div>
 
@@ -256,6 +261,10 @@ const NewsSection = () => {
                         Read More →
                       </button>
                     </div>
+                    <PostActions
+                      postId={article.id || index + 1}
+                      postTitle={article.title}
+                    />
                   </div>
                 </div>
               ))}

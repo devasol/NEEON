@@ -4,6 +4,7 @@ import food from "./../../../../assets/Images/Items/food.webp";
 import technology from "./../../../../assets/Images/Items/technology.jpg";
 import travel from "./../../../../assets/Images/Items/travel.webp";
 import styles from "./LandingMain.module.css";
+import PostActions from "../../../Common/PostActions/PostActions";
 
 function LandingMain() {
   const [hoveredItem, setHoveredItem] = useState(null);
@@ -95,6 +96,7 @@ function LandingMain() {
                     <i className="fa-solid fa-calendar-days"></i> {item.date}
                   </span>
                 </div>
+                <PostActions postId={item.id || index} postTitle={item.title} />
                 <button
                   className={styles.readMoreBtn}
                   onClick={() => handleReadMore(item)}
