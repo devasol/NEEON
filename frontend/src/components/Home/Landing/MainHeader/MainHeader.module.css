@@ -318,7 +318,6 @@
   position: relative;
   z-index: 3;
 }
-
 .loginIcon:hover {
   transform: translateY(-4px) scale(1.05);
   box-shadow: 0 16px 40px rgba(124, 58, 237, 0.22);
@@ -379,7 +378,7 @@
   box-shadow: 0 10px 25px rgba(18, 18, 23, 0.25);
   transition: transform 0.18s ease, box-shadow 0.2s ease, filter 0.2s ease;
   position: relative;
-  z-index: 2;
+  z-index: 1000;
 }
 
 /* icon removed per request */
