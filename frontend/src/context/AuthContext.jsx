@@ -1,9 +1,11 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 
 const TOKEN_KEY = "token";
 const ADMIN_KEY = "isAdmin";
 
 const AuthContext = createContext({ token: null, login: () => {}, logout: () => {} });
+
+export { AuthContext };
 
 export function AuthProvider({ children }) {
 	const [token, setToken] = useState(() => {
@@ -40,7 +42,9 @@ export function AuthProvider({ children }) {
 			} else {
 				localStorage.removeItem(ADMIN_KEY);
 			}
-		} catch {}
+		} catch {
+			// ignore storage errors
+		}
 	}, [isAdmin]);
 
 	const login = (newToken, options = {}) => {
@@ -60,9 +64,4 @@ export function AuthProvider({ children }) {
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuthContext() {
-	return useContext(AuthContext);
-}
-
-export default AuthContext;
 

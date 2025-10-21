@@ -10,6 +10,8 @@ import {
 } from "react-icons/fa";
 import styles from "./NewsSection.module.css";
 import PostActions from "../../Common/PostActions/PostActions";
+import useAuth from "../../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const NewsSection = () => {
   const [activeTab, setActiveTab] = useState("Travel");
@@ -17,6 +19,7 @@ const NewsSection = () => {
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const containerRef = useRef(null);
+  const { token } = useAuth();
 
   useEffect(() => {
     // Animation on component mount
@@ -187,6 +190,16 @@ const NewsSection = () => {
 
   const filteredArticles = articles[activeTab] || [];
 
+  const articlesToShow = token ? filteredArticles : filteredArticles.slice(0, 1);
+
+  const LoginPrompt = () => (
+    <div className={styles.loginPrompt}>
+      <p>
+        <Link to="/login">Login</Link> to read all posts.
+      </p>
+    </div>
+  );
+
   return (
     <div
       ref={containerRef}
@@ -211,39 +224,39 @@ const NewsSection = () => {
           ))}
         </div>
 
-        {filteredArticles.length > 0 ? (
+        {articlesToShow.length > 0 ? (
           <>
             <div className={styles.mainArticle}>
               <div className={styles.imageContainer}>
-                <img src={filteredArticles[0].image} alt="main" />
+                <img src={articlesToShow[0].image} alt="main" />
                 <div className={styles.overlay}></div>
                 <div className={styles.categoryBadge}>
-                  {filteredArticles[0].category}
+                  {articlesToShow[0].category}
                 </div>
               </div>
               <div className={styles.articleContent}>
-                <h3>{filteredArticles[0].title}</h3>
-                <p className={styles.excerpt}>{filteredArticles[0].excerpt}</p>
+                <h3>{articlesToShow[0].title}</h3>
+                <p className={styles.excerpt}>{articlesToShow[0].excerpt}</p>
                 <div className={styles.articleMeta}>
                   <span className={styles.date}>
-                    {filteredArticles[0].date}
+                    {articlesToShow[0].date}
                   </span>
                   <button
                     className={styles.readMore}
-                    onClick={() => handleReadMore(filteredArticles[0])}
+                    onClick={() => handleReadMore(articlesToShow[0])}
                   >
                     Read More →
                   </button>
                 </div>
                 <PostActions
-                  postId={filteredArticles[0].id || 0}
-                  postTitle={filteredArticles[0].title}
+                  postId={articlesToShow[0].id || 0}
+                  postTitle={articlesToShow[0].title}
                 />
               </div>
             </div>
 
             <div className={styles.articleList}>
-              {filteredArticles.slice(1).map((article, index) => (
+              {articlesToShow.slice(1).map((article, index) => (
                 <div key={index} className={styles.articleItem}>
                   <div className={styles.imageContainer}>
                     <img src={article.image} alt={article.title} />
@@ -269,6 +282,7 @@ const NewsSection = () => {
                 </div>
               ))}
             </div>
+            {!token && <LoginPrompt />}
           </>
         ) : (
           <div className={styles.noArticles}>

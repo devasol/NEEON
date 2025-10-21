@@ -26,7 +26,7 @@ function CommentsPage() {
 			try {
 				const res = await api.get(`/api/v1/blogs/${postId}`);
 				if (!ignore) setBlog(res?.data?.blog?.blog || null);
-			} catch (e) {
+			} catch {
 				if (!ignore) setError("Failed to load post");
 			} finally {
 				if (!ignore) setLoading(false);

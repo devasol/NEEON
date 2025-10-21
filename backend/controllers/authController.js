@@ -83,5 +83,16 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   console.log(token);
+
+  const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+
+  const freshUser = await User.findById(decoded.id);
+  if (!freshUser) {
+    return next(
+      new AppError("The user belonging to this token does no longer exist.", 401)
+    );
+  }
+
+  req.user = freshUser;
   next();
 });
