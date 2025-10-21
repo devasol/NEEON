@@ -160,6 +160,12 @@ function LandingMain() {
                     {selectedItem.date}
                   </span>
                 </div>
+                <PostActions 
+                  postId={selectedItem.id || items.indexOf(selectedItem)} 
+                  postTitle={selectedItem.title}
+                  initialLikes={selectedItem.likes || 0}
+                  initialComments={selectedItem.comments || 0}
+                />
                 <div className={styles.modalText}>
                   <p>{selectedItem.content}</p>
                   <p>

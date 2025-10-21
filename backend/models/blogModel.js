@@ -38,6 +38,12 @@ const blogNewsSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  likedBy: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
+    }
+  ],
   comments: {
     type: Number,
     default: 0,
@@ -45,6 +51,8 @@ const blogNewsSchema = new mongoose.Schema({
   commentsList: [
     {
       text: { type: String, required: true },
+      user: { type: mongoose.Schema.ObjectId, ref: 'User', required: true },
+      username: { type: String, required: true },
       createdAt: { type: Date, default: Date.now },
     },
   ],

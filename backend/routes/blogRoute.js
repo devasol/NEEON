@@ -29,14 +29,13 @@ router.post(
   blogController.likeBlog
 );
 router.post(
-  "/:id/unlike",
-  authController.protect,
-  blogController.unlikeBlog
-);
-router.post(
-  "/:id/comments",
+  "/:id/comment",
   authController.protect,
   blogController.addComment
+);
+router.get(
+  "/:id/comments",
+  blogController.getComments
 );
 
 module.exports = router;

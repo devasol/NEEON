@@ -1,3 +1,10 @@
+.postActionsContainer {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
 .actions {
 	display: flex;
 	align-items: center;
@@ -67,49 +74,120 @@
 
 .commentBox {
 	width: 100%;
-	background: rgba(255,255,255,0.06);
-	border: 1px solid rgba(255,255,255,0.1);
-	border-radius: 12px;
-	padding: 10px;
+	background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+	border: 1px solid rgba(255,255,255,0.15);
+	border-radius: 15px;
+	padding: 15px;
 	margin-top: 10px;
+	box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+	transition: all 0.3s ease;
+}
+
+.commentBox:focus-within {
+	border-color: #7c3aed;
+	box-shadow: 0 8px 30px rgba(124,58,237,0.2);
 }
 
 .commentInput {
 	width: 100%;
 	resize: vertical;
-	background: rgba(0,0,0,0.25);
-	border: 1px solid rgba(255,255,255,0.12);
+	background: rgba(0,0,0,0.3);
+	border: 1px solid rgba(255,255,255,0.1);
 	color: #e5e7eb;
 	border-radius: 10px;
-	padding: 8px 10px;
+	padding: 10px 12px;
+	font-size: 0.95rem;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.commentInput:focus {
+	outline: none;
+	border-color: #a78bfa;
+	box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.5);
 }
 
 .commentActions {
 	display: flex;
 	justify-content: flex-end;
-	gap: 8px;
-	margin-top: 8px;
+	gap: 10px;
+	margin-top: 12px;
+}
+
+.cancelComment,
+.submitComment {
+	height: 40px;
+	padding: 0 18px;
+	border-radius: 20px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
 }
 
 .cancelComment {
-	background: transparent;
+	background: rgba(255,255,255,0.1);
 	color: #e5e7eb;
-	border: 1px solid rgba(255,255,255,0.18);
-	border-radius: 10px;
-	height: 36px;
-	padding: 0 12px;
-	cursor: pointer;
+	border: 1px solid rgba(255,255,255,0.2);
+}
+
+.cancelComment:hover {
+	background: rgba(255,255,255,0.2);
 }
 
 .submitComment {
-	background: linear-gradient(135deg, #4ecdc4, #7c3aed);
-	color: #fff;
-	border: 0;
-	border-radius: 10px;
-	height: 36px;
-	padding: 0 14px;
-	cursor: pointer;
-	font-weight: 700;
+	background: linear-gradient(45deg, #8b5cf6, #a78bfa);
+	color: white;
+	border: none;
+}
+
+.submitComment:hover {
+	opacity: 0.9;
+	transform: translateY(-1px);
+}
+
+.active {
+	background: rgba(124, 58, 237, 0.2);
+}
+
+.commentsSection {
+	width: 100%;
+	margin-top: 15px;
+	background: rgba(255,255,255,0.06);
+	border: 1px solid rgba(255,255,255,0.1);
+	border-radius: 12px;
+	padding: 15px;
+}
+
+.commentsList {
+	max-height: 300px;
+	overflow-y: auto;
+}
+
+.commentItem {
+	padding: 10px;
+	border-bottom: 1px solid rgba(255,255,255,0.1);
+	margin-bottom: 10px;
+}
+
+.commentUser {
+	font-weight: 600;
+	color: #7c3aed;
+	margin-bottom: 5px;
+}
+
+.commentText {
+	color: #e5e7eb;
+	margin-bottom: 5px;
+}
+
+.commentTime {
+	font-size: 0.8rem;
+	color: #9ca3af;
+}
+
+.emptyComments {
+	text-align: center;
+	padding: 20px;
+	color: #9ca3af;
 }
 
 

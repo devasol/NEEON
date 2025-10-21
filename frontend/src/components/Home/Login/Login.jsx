@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import api, { API_BASE } from "../../../utils/api";
 import styles from "./Login.module.css";
 import useAuth from "../../../hooks/useAuth";
@@ -77,6 +78,7 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
 
   // Animation triggers
   const [animate, setAnimate] = useState(false);
+  const navigate = useNavigate();
   const auth = useAuth();
   const [toast, setToast] = useState({ message: "", type: "success" });
 
@@ -158,10 +160,12 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
         const adminPwd = "devasol@123";
         const isAdmin = email === adminEmail && pwd === adminPwd;
         auth.login(res.data.token, { isAdmin });
-        if (onClose) onClose();
         setToast({ message: "Login successful!", type: "success" });
+        if (onClose) onClose();
         if (isAdmin) {
-          window.location.href = "/admin";
+          navigate("/admin");
+        } else {
+          navigate("/");
         }
       } else {
         setErrors((prev) => ({ ...prev, general: "Login failed" }));

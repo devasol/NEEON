@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import styles from "./PostActions.module.css";
 import useAuth from "../../../hooks/useAuth";
 import api from "../../../utils/api";
+import FloatingToast from "../../Ui/FloatingToast";
 
 function PostActions({
 	postId,
@@ -9,21 +10,17 @@ function PostActions({
 	postUrl,
 	initialLikes = 0,
 	initialComments = 0,
-	onComment,
 }) {
 	const { token } = useAuth();
 	const [liked, setLiked] = useState(false);
 	const [likeCount, setLikeCount] = useState(initialLikes);
 	const [commentCount, setCommentCount] = useState(initialComments);
-	const [message, setMessage] = useState("");
+	const [toastMessage, setToastMessage] = useState("");
+	const [toastType, setToastType] = useState("info"); // 'info', 'success', 'error'
 	const [showCommentBox, setShowCommentBox] = useState(false);
 	const [commentText, setCommentText] = useState("");
-
-	useEffect(() => {
-		if (!message) return;
-		const t = setTimeout(() => setMessage(""), 2200);
-		return () => clearTimeout(t);
-	}, [message]);
+	const [comments, setComments] = useState([]);
+	const [showComments, setShowComments] = useState(false);
 
 	const shareData = useMemo(() => {
 		return {
@@ -36,7 +33,8 @@ function PostActions({
 
 	const requireAuthOr = (fn) => () => {
 		if (!token) {
-			setMessage("Please sign in first");
+			setToastMessage("Please sign in first");
+			setToastType("error");
 			return;
 		}
 		fn();
@@ -47,59 +45,90 @@ function PostActions({
     setLiked(nextLiked);
     setLikeCount((c) => (nextLiked ? c + 1 : Math.max(0, c - 1)));
     try {
-      const endpoint = nextLiked ? `/api/v1/blogs/${postId}/like` : `/api/v1/blogs/${postId}/unlike`;
+      const endpoint = `/api/v1/blogs/${postId}/like`;
       const res = await api.post(endpoint, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (typeof res?.data?.likes === "number") {
         setLikeCount(res.data.likes);
       }
-    } catch (e) {
+    } catch {
       // revert on failure
       setLiked(!nextLiked);
       setLikeCount((c) => (nextLiked ? Math.max(0, c - 1) : c + 1));
-      setMessage("Couldn't update like");
+      setToastMessage("Couldn't update like");
+      setToastType("error");
     }
 	});
 
-	const handleShare = requireAuthOr(async () => {
+	const handleShare = async () => {
     try {
 			if (navigator.share) {
 				await navigator.share(shareData);
-				setMessage("Shared!");
+				setToastMessage("Shared!");
+				setToastType("success");
 			} else {
         try {
           await navigator.clipboard.writeText(shareData.url);
         } catch {
           // some browsers require HTTPS/user gesture; show the URL fallback
-          setMessage("Copy this link: " + shareData.url);
+          setToastMessage("Copy this link: " + shareData.url);
+          setToastType("info");
           return;
         }
-				setMessage("Link copied");
+				setToastMessage("Link copied");
+				setToastType("success");
 			}
 		} catch {
-			setMessage("Couldn't share");
+			setToastMessage("Couldn't share");
+			setToastType("error");
 		}
-	});
+	};
 
-	const handleComment = requireAuthOr(() => {
-		const url = `/comments/${postId}`;
-		window.open(url, "_blank", "noopener,noreferrer");
-	});
+	const handleComment = () => {
+		if (!token) {
+			setToastMessage("Please sign in first");
+			setToastType("error");
+			return;
+		}
+		setShowCommentBox(!showCommentBox);
+		if (!showCommentBox) {
+			setShowComments(true);
+			fetchComments();
+		}
+	};
+
+	const fetchComments = async () => {
+		try {
+			const res = await api.get(`/api/v1/blogs/${postId}`);
+			const blog = res?.data?.blog?.blog;
+			if (blog && blog.commentsList) {
+				setComments(blog.commentsList);
+			}
+		} catch (error) {
+			console.error("Failed to fetch comments:", error);
+		}
+	};
 
 	const submitComment = requireAuthOr(async () => {
 		const text = commentText.trim();
-		if (!text) return setMessage("Write something first");
+		if (!text) {
+			setToastMessage("Write something first");
+			setToastType("error");
+			return;
+		}
 		try {
-			await api.post(`/api/v1/blogs/${postId}/comments`, { text }, {
+			await api.post(`/api/v1/blogs/${postId}/comment`, { text }, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			setCommentText("");
-			setShowCommentBox(false);
 			setCommentCount((c) => c + 1);
-			setMessage("Comment added");
+			setToastMessage("Comment added");
+			setToastType("success");
+			fetchComments(); // Refresh comments after adding a new one
 		} catch {
-			setMessage("Couldn't comment");
+			setToastMessage("Couldn't comment");
+			setToastType("error");
 		}
 	});
 
@@ -112,37 +141,58 @@ function PostActions({
 				if (!ignore && blog) {
 					if (typeof blog.likes === "number") setLikeCount(blog.likes);
 					if (typeof blog.comments === "number") setCommentCount(blog.comments);
+					
+					// Check if user has already liked this post
+					if (blog.likedBy && token) {
+						try {
+							const userRes = await api.get('/api/v1/users/me', {
+								headers: { Authorization: `Bearer ${token}` }
+							});
+							const userId = userRes?.data?.data?.user?._id;
+							if (userId && blog.likedBy.includes(userId)) {
+								setLiked(true);
+							}
+						} catch (error) {
+							console.error("Failed to check like status:", error);
+						}
+					}
 				}
 			} catch {
 				// ignore load failures
 			}
 		})();
 		return () => { ignore = true };
-	}, [postId]);
+	}, [postId, token]);
 
 	return (
-		<div className={styles.actions}>
-			{/* Removed header-like auth indicator from post actions per request */}
-			<button
-				className={`${styles.actionBtn} ${liked ? styles.liked : ""}`}
-				onClick={handleLike}
-				aria-pressed={liked}
-				title={liked ? "Unlike" : "Like"}
-			>
-				<i className="fa-solid fa-heart"></i>
-				<span className={styles.label}>Like</span>
-				<span className={styles.count}>{likeCount}</span>
-			</button>
-			<button className={styles.actionBtn} onClick={handleShare} title="Share">
-				<i className="fa-solid fa-share-nodes"></i>
-				<span className={styles.label}>Share</span>
-			</button>
-			<button className={styles.actionBtn} onClick={handleComment} title="Comment">
-				<i className="fa-solid fa-comment-dots"></i>
-				<span className={styles.label}>Comment</span>
-				<span className={styles.count}>{commentCount}</span>
-			</button>
-			{message && <div className={styles.message}>{message}</div>}
+		<div className={styles.postActionsContainer}>
+			<div className={styles.actions}>
+				<button
+					className={`${styles.actionBtn} ${liked ? styles.liked : ""}`}
+					onClick={handleLike}
+					aria-pressed={liked}
+					title={token ? (liked ? "Unlike" : "Like") : "Sign in to like"}
+				>
+					<i className="fa-solid fa-heart"></i>
+					<span className={styles.label}>Like</span>
+					<span className={styles.count}>{likeCount}</span>
+				</button>
+				<button className={styles.actionBtn} onClick={handleShare} title="Share">
+					<i className="fa-solid fa-share-nodes"></i>
+					<span className={styles.label}>Share</span>
+				</button>
+				<button 
+					className={`${styles.actionBtn} ${showComments ? styles.active : ""}`} 
+					onClick={handleComment} 
+					title={token ? "Comment" : "Sign in to comment"}
+				>
+					<i className="fa-solid fa-comment-dots"></i>
+					<span className={styles.label}>Comment</span>
+					<span className={styles.count}>{commentCount}</span>
+				</button>
+				<FloatingToast message={toastMessage} type={toastType} onClose={() => setToastMessage("")} />
+			</div>
+			
 			{showCommentBox && (
 				<div className={styles.commentBox}>
 					<textarea
@@ -156,6 +206,26 @@ function PostActions({
 						<button className={styles.cancelComment} onClick={() => setShowCommentBox(false)}>Cancel</button>
 						<button className={styles.submitComment} onClick={submitComment}>Post Comment</button>
 					</div>
+				</div>
+			)}
+
+			{showComments && (
+				<div className={styles.commentsSection}>
+					{comments.length > 0 ? (
+						<div className={styles.commentsList}>
+							{comments.slice().reverse().map((comment, idx) => (
+								<div key={idx} className={styles.commentItem}>
+									<div className={styles.commentUser}>{comment.username || "User"}</div>
+									<div className={styles.commentText}>{comment.text}</div>
+									<div className={styles.commentTime}>
+										{new Date(comment.createdAt).toLocaleString()}
+									</div>
+								</div>
+							))}
+						</div>
+					) : (
+						<div className={styles.emptyComments}>No comments yet. Be the first!</div>
+					)}
 				</div>
 			)}
 		</div>

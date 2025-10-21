@@ -365,6 +365,27 @@
 
 .modalContent {
   padding: 2rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.modalContent .actions {
+  margin: 1rem 0;
+  padding: 0.5rem 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.modalContent .commentsSection {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.modalContent .commentItem {
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .modalTitle {

@@ -1,11 +1,14 @@
+/* NewsSection.module.css */
+
 .container {
   display: flex;
   gap: 2rem;
-  margin: 2rem;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .container.visible {
@@ -15,110 +18,111 @@
 
 .left {
   flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .right {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
+  position: sticky;
+  top: 2rem;
+  height: fit-content;
 }
 
 .title {
   font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  position: relative;
   font-weight: 700;
-  color: #2d3748;
+  color: #333;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #f0f0f0;
+  margin-bottom: 1rem;
+  position: relative;
 }
 
 .title::after {
   content: "";
   position: absolute;
-  bottom: -8px;
+  bottom: -2px;
   left: 0;
   width: 50px;
-  height: 4px;
-  background: linear-gradient(90deg, #2563eb, #3b82f6);
-  border-radius: 2px;
+  height: 2px;
+  background-color: #e53935;
 }
 
 .tabs {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
+  gap: 1rem;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1rem;
 }
 
 .tab {
-  position: relative;
+  background: none;
   border: none;
-  background: #f8fafc;
-  padding: 0.7rem 1.5rem;
-  cursor: pointer;
-  border-radius: 50px;
-  transition: all 0.3s ease;
+  font-size: 1rem;
   font-weight: 600;
-  color: #64748b;
-  overflow: hidden;
+  color: #777;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s ease;
 }
 
 .tab:hover {
-  background: #e2e8f0;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #333;
 }
 
-.activeTab {
-  background: #2563eb;
-  color: #fff;
-  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+.tab.activeTab {
+  color: #e53935;
 }
 
 .tabIndicator {
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 3px;
-  background: #2563eb;
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #e53935;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
 }
 
-.activeTab .tabIndicator {
-  width: 70%;
+.tab.activeTab .tabIndicator {
+  transform: scaleX(1);
 }
 
 .mainArticle {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  border-radius: 12px;
+  background: #fff;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background: white;
 }
 
 .mainArticle:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .imageContainer {
   position: relative;
   width: 100%;
-  height: 250px;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
   overflow: hidden;
 }
 
 .imageContainer img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.4s ease;
 }
 
 .mainArticle:hover .imageContainer img {
@@ -129,28 +133,21 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
-}
-
-.mainArticle:hover .overlay {
-  opacity: 0.9;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
 }
 
 .categoryBadge {
   position: absolute;
   top: 1rem;
   left: 1rem;
-  background: #2563eb;
-  color: white;
-  padding: 0.4rem 0.8rem;
-  border-radius: 50px;
+  background-color: #e53935;
+  color: #fff;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
   font-size: 0.8rem;
   font-weight: 600;
-  z-index: 2;
 }
 
 .articleContent {
@@ -159,19 +156,21 @@
 
 .articleContent h3 {
   font-size: 1.5rem;
-  margin-bottom: 0.8rem;
-  color: #1e293b;
-  line-height: 1.4;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #333;
 }
 
 .articleContent h4 {
   font-size: 1.1rem;
+  font-weight: 600;
   margin-bottom: 0.5rem;
-  color: #1e293b;
+  color: #444;
 }
 
 .excerpt {
-  color: #64748b;
+  font-size: 1rem;
+  color: #666;
   margin-bottom: 1rem;
   line-height: 1.6;
 }
@@ -180,197 +179,190 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 0.9rem;
+  color: #999;
 }
 
 .date {
-  color: #94a3b8;
-  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .readMore {
   background: none;
   border: none;
-  color: #2563eb;
+  color: #e53935;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0.5rem 0;
+  transition: color 0.3s ease;
 }
 
 .readMore:hover {
-  color: #1e40af;
-  transform: translateX(5px);
+  color: #333;
 }
 
 .articleList {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
 }
 
 .articleItem {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  border-radius: 12px;
-  background: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  cursor: pointer;
+  flex-direction: column;
 }
 
 .articleItem:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .articleItem .imageContainer {
-  flex: 0 0 120px;
-  height: 90px;
-  border-radius: 8px;
-  overflow: hidden;
+  padding-top: 56.25%;
 }
 
 .articleItem .articleContent {
-  flex: 1;
-  padding: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.articleItem .articleContent h4 {
+  flex-grow: 1;
 }
 
 .noArticles {
   text-align: center;
   padding: 2rem;
-  color: #64748b;
-  font-style: italic;
+  background: #f9f9f9;
+  border-radius: 8px;
 }
 
+/* Right Section */
 .socialList {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.8rem;
 }
 
 .socialBox {
   display: flex;
   align-items: center;
   padding: 1rem;
-  border-radius: 12px;
+  border-radius: 8px;
   color: #fff;
-  font-weight: 600;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
-  transition: all 0.3s ease;
-  animation: slideIn 0.5s ease both;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.socialBox:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
-}
-
-.socialIcon {
-  font-size: 1.5rem;
-  margin-right: 1rem;
-  transition: transform 0.3s ease;
-}
-
-.socialBox:hover .socialIcon {
-  transform: scale(1.2);
-}
-
-.socialInfo {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.socialName {
-  font-size: 1rem;
-  margin-bottom: 0.2rem;
-}
-
-.socialFollowers {
-  font-size: 0.8rem;
-  opacity: 0.9;
-  font-weight: 500;
-}
-
-.socialArrow {
   opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
-}
-
-.socialBox:hover .socialArrow {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.newsletter {
-  background: #f1f5f9;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-.newsletter h3 {
-  margin-bottom: 0.5rem;
-  color: #1e293b;
-}
-
-.newsletter p {
-  color: #64748b;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-}
-
-.newsletterForm {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.newsletterForm input {
-  flex: 1;
-  padding: 0.8rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  font-size: 0.9rem;
-}
-
-.newsletterForm button {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 0 1.2rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 600;
-}
-
-.newsletterForm button:hover {
-  background: #1e40af;
+  transform: translateX(20px);
+  animation: slideIn 0.5s forwards;
 }
 
 @keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
   to {
     opacity: 1;
     transform: translateX(0);
   }
 }
+
+.socialBox:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.socialIcon {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+.socialInfo {
+  flex-grow: 1;
+}
+
+.socialName {
+  display: block;
+  font-weight: 600;
+}
+
+.socialFollowers {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.socialArrow {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.socialBox:hover .socialArrow {
+  transform: translateX(5px);
+}
+
+.newsletter {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.newsletter h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.newsletter p {
+  color: #777;
+  margin-bottom: 1rem;
+}
+
+.newsletterForm {
+  display: flex;
+}
+
+.newsletterForm input {
+  flex-grow: 1;
+  border: 1px solid #ddd;
+  padding: 0.7rem;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.newsletterForm input:focus {
+  border-color: #e53935;
+}
+
+.newsletterForm button {
+  background-color: #e53935;
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1rem;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.newsletterForm button:hover {
+  background-color: #c62828;
+}
+
 /* Modal Styles */
 .modalOverlay {
-  position: fixed; /* ensure it's fixed to viewport */
-  inset: 0; /* shorthand for top:0; right:0; bottom:0; left:0; */
-  background-color: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 99999; /* very high to avoid being behind other elements */
-  padding: 1rem;
+  justify-content: center;
+  z-index: 1000;
   animation: fadeIn 0.3s ease;
 }
 
@@ -384,24 +376,23 @@
 }
 
 .modal {
-  background: white;
-  border-radius: 12px;
+  background: #fff;
+  border-radius: 8px;
+  width: 90%;
   max-width: 800px;
-  width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  position: relative; /* keep relative for internal absolute children */
-  animation: scaleIn 0.3s ease;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: slideUp 0.4s ease;
 }
 
-@keyframes scaleIn {
+@keyframes slideUp {
   from {
-    transform: scale(0.9);
+    transform: translateY(50px);
     opacity: 0;
   }
   to {
-    transform: scale(1);
+    transform: translateY(0);
     opacity: 1;
   }
 }
@@ -410,35 +401,34 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 10;
-  transition: all 0.3s ease;
-  color: #2d3748;
-  font-size: 1.2rem;
+  transition: background 0.3s ease;
 }
 
-.closeButton:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+.closeButton:hover {
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .modalImageContainer {
   position: relative;
-  height: 300px;
-  overflow: hidden;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  width: 100%;
+  padding-top: 50%;
 }
 
 .modalImageContainer img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -448,24 +438,21 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
-  opacity: 0.7;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
 }
 
 .modalCategoryBadge {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
-  background: #2563eb;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  font-size: 0.8rem;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  background-color: #e53935;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
   font-weight: 600;
-  z-index: 2;
-  text-transform: uppercase;
 }
 
 .modalContent {
@@ -473,152 +460,82 @@
 }
 
 .modalTitle {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 700;
-  color: #1e293b;
   margin-bottom: 1rem;
-  line-height: 1.4;
 }
 
 .modalMeta {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #eaeaea;
-}
-
-.modalDate {
-  color: #94a3b8;
   font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  color: #888;
+  margin-bottom: 1.5rem;
 }
 
 .modalText {
-  margin-bottom: 2rem;
-  line-height: 1.7;
-  color: #4a5568;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #444;
 }
 
 .modalText p {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .modalCloseBtn {
-  background: linear-gradient(135deg, #4ecdc4, #ff6b6b);
-  color: white;
+  display: block;
+  margin: 2rem auto 0;
+  padding: 0.8rem 2rem;
+  background-color: #e53935;
+  color: #fff;
   border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 30px;
+  border-radius: 5px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  width: 100%;
+  transition: background-color 0.3s ease;
 }
 
 .modalCloseBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background-color: #c62828;
 }
 
-/* Responsive adjustments for modal */
-@media (max-width: 768px) {
-  .modal {
-    max-height: 95vh;
+/* Responsive */
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column;
   }
-
-  .modalImageContainer {
-    height: 200px;
+  .right {
+    position: static;
   }
-
-  .modalContent {
-    padding: 1.5rem;
-  }
-
-  .modalTitle {
-    font-size: 1.4rem;
+  .articleList {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 576px) {
-  .modalOverlay {
-    padding: 0.5rem;
-  }
-
-  .modalContent {
+  .container {
     padding: 1rem;
   }
-
+  .articleContent {
+    padding: 1rem;
+  }
+  .modalContent {
+    padding: 1.5rem;
+  }
   .modalTitle {
-    font-size: 1.2rem;
-  }
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .container {
-    flex-direction: column;
-  }
-
-  .mainArticle {
-    flex-direction: column;
-  }
-
-  .imageContainer {
-    height: 200px;
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    margin: 1rem;
-  }
-
-  .tabs {
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-  }
-
-  .articleItem {
-    flex-direction: column;
-  }
-
-  .articleItem .imageContainer {
-    width: 100%;
-    flex: auto;
-  }
-
-  .articleMeta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .newsletterForm {
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 480px) {
-  .title {
     font-size: 1.5rem;
   }
+}
+.loginPrompt {
+  text-align: center;
+  padding: 20px;
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
-  .tab {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.9rem;
-  }
-
-  .articleContent h3 {
-    font-size: 1.2rem;
-  }
-
-  .socialBox {
-    padding: 0.8rem;
-  }
-
-  .socialIcon {
-    font-size: 1.2rem;
-    margin-right: 0.8rem;
-  }
+.loginPrompt a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
 }
