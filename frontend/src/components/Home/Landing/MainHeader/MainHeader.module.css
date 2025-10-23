@@ -176,6 +176,17 @@
   gap: 0.3rem;
 }
 
+.navigator li a {
+  text-decoration: none;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.navigator li a:hover {
+  color: #4ecdc4;
+}
+
+
 .navigator li::before {
   content: "";
   position: absolute;
@@ -210,22 +221,23 @@
   position: absolute;
   top: 100%;
   left: 0;
-  width: 200px;
-  background: #2c3e50;
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  min-width: 200px; /* Use min-width for flexibility */
+  background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); /* Darker gradient */
+  border-radius: 10px; /* Slightly more rounded corners */
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
   opacity: 0;
   visibility: hidden;
-  transform: translateY(10px);
-  transition: all 0.3s ease;
+  transform: translateY(15px) scale(0.95); /* Initial transform for animation */
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* More dynamic transition */
   z-index: 1000;
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle border */
 }
 
 .dropdownOpen {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateY(0) scale(1); /* Final transform for animation */
 }
 
 .dropdownContent {
@@ -243,6 +255,21 @@
 .dropdownContent a:hover {
   background: rgba(255, 255, 255, 0.1);
   padding-left: 2rem;
+}
+
+.dropdownContent span {
+  display: block;
+  padding: 0.7rem 1.5rem;
+  color: #e0e0e0; /* Slightly lighter color for non-links */
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: default; /* Indicate non-clickable */
+}
+
+.dropdownContent span:hover {
+  background: rgba(255, 255, 255, 0.05); /* Subtle hover for non-links */
+  padding-left: 1.8rem; /* Slight indent on hover */
+  color: #fff; /* White on hover */
 }
 
 .iconsWrapper {

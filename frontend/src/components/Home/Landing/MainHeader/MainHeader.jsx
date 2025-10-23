@@ -18,6 +18,7 @@ function MainHeader() {
   const [isFeaturesHovered, setIsFeaturesHovered] = useState(false);
   const [categories, setCategories] = useState([]);
   const [isCategoriesHovered, setIsCategoriesHovered] = useState(false);
+  const [isPagesHovered, setIsPagesHovered] = useState(false);
   const headerRef = useRef(null);
   const loginIconRef = useRef(null);
 
@@ -114,13 +115,22 @@ function MainHeader() {
   const navItems = [
     { name: "Home", path: "/", hasDropdown: false },
     { name: "Features", path: "/features", hasDropdown: true, dropdown: [
-      { name: "Feature 1", path: "/features/1" },
-      { name: "Feature 2", path: "/features/2" },
-      { name: "Feature 3", path: "/features/3" },
+      { name: "Responsive Design" },
+      { name: "SEO Optimization" },
+      { name: "User Authentication" },
+      { name: "Admin Dashboard" },
+      { name: "Commenting System" },
     ] },
     { name: "Categories", path: "/categories", hasDropdown: true },
     { name: "Elements", path: "/elements", hasDropdown: false },
-    { name: "Pages", path: "/pages", hasDropdown: false },
+    { name: "Pages", path: "/pages", hasDropdown: true, dropdown: [
+      { name: "About Us", path: "/about" },
+      { name: "Services", path: "/services" },
+      { name: "Blog", path: "/blog" },
+      { name: "FAQ", path: "/faq" },
+      { name: "Terms of Service", path: "/terms" },
+      { name: "Privacy Policy", path: "/privacy" },
+    ] },
     { name: "Shop", path: "/shop", hasDropdown: false },
     { name: "Contact", path: "/contact", hasDropdown: false },
   ];
@@ -163,21 +173,23 @@ function MainHeader() {
               onMouseEnter={() => {
                 if (item.name === 'Features') setIsFeaturesHovered(true);
                 if (item.name === 'Categories') setIsCategoriesHovered(true);
+                if (item.name === 'Pages') setIsPagesHovered(true);
               }}
               onMouseLeave={() => {
                 if (item.name === 'Features') setIsFeaturesHovered(false);
                 if (item.name === 'Categories') setIsCategoriesHovered(false);
+                if (item.name === 'Pages') setIsPagesHovered(false);
               }}
               className={item.hasDropdown ? styles.hasDropdown : ""}
             >
               <Link to={item.path}>{item.name}</Link>
-              {(item.name === 'Features' || item.name === 'Categories') && <i className="fa-solid fa-chevron-down"></i>}
+              {(item.name === 'Features' || item.name === 'Categories' || item.name === 'Pages') && <i className="fa-solid fa-chevron-down"></i>}
               {item.name === 'Features' && isFeaturesHovered && (
                 <div
                   className={`${styles.dropdown} ${styles.dropdownOpen}`}>
                   <div className={styles.dropdownContent}>
                     {item.dropdown.map((dropdownItem, dropdownIndex) => (
-                      <Link key={dropdownIndex} to={dropdownItem.path}>{dropdownItem.name}</Link>
+                      <span key={dropdownIndex}>{dropdownItem.name}</span>
                     ))}
                   </div>
                 </div>
@@ -188,6 +200,16 @@ function MainHeader() {
                   <div className={styles.dropdownContent}>
                     {categories.map((category, categoryIndex) => (
                       <span key={categoryIndex}>{category.name}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {item.name === 'Pages' && isPagesHovered && (
+                <div
+                  className={`${styles.dropdown} ${styles.dropdownOpen}`}>
+                  <div className={styles.dropdownContent}>
+                    {item.dropdown.map((dropdownItem, dropdownIndex) => (
+                      <Link key={dropdownIndex} to={dropdownItem.path}>{dropdownItem.name}</Link>
                     ))}
                   </div>
                 </div>
