@@ -21,6 +21,12 @@ function App() {
       <Route path="/features" element={<FeaturesPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/categories" element={<CategoriesPage />} />
+      <Route path="/about" element={<div>About Us Page</div>} />
+      <Route path="/services" element={<div>Services Page</div>} />
+      <Route path="/blog" element={<div>Blog Page</div>} />
+      <Route path="/faq" element={<div>FAQ Page</div>} />
+      <Route path="/terms" element={<div>Terms of Service Page</div>} />
+      <Route path="/privacy" element={<div>Privacy Policy Page</div>} />
       <Route path="/comments/*" element={<CommentsPage />} />
       <Route
         path="/admin"
