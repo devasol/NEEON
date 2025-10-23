@@ -5,6 +5,8 @@ import styles from "./MainHeader.module.css";
 import Login from "../../Login/Login";
 import Signup from "../../Signup/Signup";
 import useAuth from "../../../../hooks/useAuth";
+import { Link } from "react-router-dom";
+import api from "../../../../utils/api";
 
 function MainHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,6 +15,9 @@ function MainHeader() {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [isFeaturesHovered, setIsFeaturesHovered] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [isCategoriesHovered, setIsCategoriesHovered] = useState(false);
   const headerRef = useRef(null);
   const loginIconRef = useRef(null);
 
@@ -79,6 +84,19 @@ function MainHeader() {
     };
   }, [showLogin, showSignup]);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await api.get("/api/categories");
+        setCategories(response.data.data.categories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -94,13 +112,17 @@ function MainHeader() {
   const { token, isAdmin, logout } = useAuth();
 
   const navItems = [
-    { name: "Home", hasDropdown: true },
-    { name: "Features", hasDropdown: true },
-    { name: "Categories", hasDropdown: true },
-    { name: "Elements", hasDropdown: true },
-    { name: "Pages", hasDropdown: true },
-    { name: "Shop", hasDropdown: true },
-    { name: "Contact", hasDropdown: false },
+    { name: "Home", path: "/", hasDropdown: false },
+    { name: "Features", path: "/features", hasDropdown: true, dropdown: [
+      { name: "Feature 1", path: "/features/1" },
+      { name: "Feature 2", path: "/features/2" },
+      { name: "Feature 3", path: "/features/3" },
+    ] },
+    { name: "Categories", path: "/categories", hasDropdown: true },
+    { name: "Elements", path: "/elements", hasDropdown: false },
+    { name: "Pages", path: "/pages", hasDropdown: false },
+    { name: "Shop", path: "/shop", hasDropdown: false },
+    { name: "Contact", path: "/contact", hasDropdown: false },
   ];
 
   return (
@@ -138,21 +160,35 @@ function MainHeader() {
           {navItems.map((item, index) => (
             <li
               key={index}
-              onClick={() => item.hasDropdown && toggleDropdown(index)}
+              onMouseEnter={() => {
+                if (item.name === 'Features') setIsFeaturesHovered(true);
+                if (item.name === 'Categories') setIsCategoriesHovered(true);
+              }}
+              onMouseLeave={() => {
+                if (item.name === 'Features') setIsFeaturesHovered(false);
+                if (item.name === 'Categories') setIsCategoriesHovered(false);
+              }}
               className={item.hasDropdown ? styles.hasDropdown : ""}
             >
-              {item.name}{" "}
-              {item.hasDropdown && <i className="fa-solid fa-chevron-down"></i>}
-              {item.hasDropdown && (
+              <Link to={item.path}>{item.name}</Link>
+              {(item.name === 'Features' || item.name === 'Categories') && <i className="fa-solid fa-chevron-down"></i>}
+              {item.name === 'Features' && isFeaturesHovered && (
                 <div
-                  className={`${styles.dropdown} ${
-                    activeDropdown === index ? styles.dropdownOpen : ""
-                  }`}
-                >
+                  className={`${styles.dropdown} ${styles.dropdownOpen}`}>
                   <div className={styles.dropdownContent}>
-                    <a href="#">Option 1</a>
-                    <a href="#">Option 2</a>
-                    <a href="#">Option 3</a>
+                    {item.dropdown.map((dropdownItem, dropdownIndex) => (
+                      <Link key={dropdownIndex} to={dropdownItem.path}>{dropdownItem.name}</Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {item.name === 'Categories' && isCategoriesHovered && (
+                <div
+                  className={`${styles.dropdown} ${styles.dropdownOpen}`}>
+                  <div className={styles.dropdownContent}>
+                    {categories.map((category, categoryIndex) => (
+                      <span key={categoryIndex}>{category.name}</span>
+                    ))}
                   </div>
                 </div>
               )}
