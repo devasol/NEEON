@@ -9,6 +9,7 @@ const signToken = (id) => {
   });
 };
 exports.signup = catchAsync(async (req, res, next) => {
+  console.log('Signup request body:', req.body);
   const newUser = await User.create({
     fullName: req.body.fullName,
     email: req.body.email,
@@ -24,37 +25,15 @@ exports.signup = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     token,
-    data: {
-      user: newUser,
-    },
   });
 });
 
 exports.login = catchAsync(async (req, res, next) => {
+  console.log('Login request body:', req.body);
   const { email, password } = req.body;
 
   if (!email || !password)
     return next(new AppError("Please provide email and password", 400));
-
-  // Demo admin override
-  const ADMIN_EMAIL = "dawitsolo8908@gmail.com";
-  const ADMIN_PASSWORD = "devasol@123";
-  if (email.toLowerCase() === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-    let adminUser = await User.findOne({ email: ADMIN_EMAIL });
-    if (!adminUser) {
-      adminUser = await User.create({
-        fullName: "Admin",
-        email: ADMIN_EMAIL,
-        username: "admin",
-        password: ADMIN_PASSWORD,
-        passwordConfirm: ADMIN_PASSWORD,
-        role: "admin",
-        status: "active",
-      });
-    }
-    const token = signToken(adminUser._id);
-    return res.status(201).json({ status: "success", token });
-  }
 
   const user = await User.findOne({ email }).select("+password");
 
@@ -62,7 +41,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError("Incorrect email or password", 401));
   }
   const token = signToken(user._id);
-  res.status(201).json({
+  res.status(200).json({
     status: "success",
     token,
   });

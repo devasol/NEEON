@@ -146,7 +146,7 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
 
     if (!validateForm()) return;
     setIsLoading(true);
-    setErrors((prev) => ({ ...prev, general: "" }));
+    setToast({ message: "", type: "success" }); // Clear previous messages
     try {
       const res = await api.post("/api/v1/users/login", {
         email: formData.email,
@@ -168,19 +168,19 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
           navigate("/");
         }
       } else {
-        setErrors((prev) => ({ ...prev, general: "Login failed" }));
+        setToast({ message: "Login failed. Please try again.", type: "error" });
       }
     } catch (err) {
       console.error(err);
       if (err.code === "ECONNABORTED" || err.message === "Network Error") {
-        setErrors((prev) => ({
-          ...prev,
-          general: `Network error: can't reach server at ${API_BASE}. Is backend running?`,
-        }));
+        setToast({
+          message: "Network error. Please check your connection.",
+          type: "error",
+        });
+      } else if (err.response?.data?.message === 'Incorrect email or password') {
+        setToast({ message: "Invalid credentials. Please check your email and password.", type: "error" });
       } else {
-        const msg =
-          err?.response?.data?.message || err.message || "Login failed";
-        setErrors((prev) => ({ ...prev, general: msg }));
+        setToast({ message: "An error occurred. Please try again.", type: "error" });
       }
     } finally {
       setIsLoading(false);
@@ -263,11 +263,7 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
         <span>or continue with email</span>
       </div>
 
-      {errors.general && (
-        <div className={styles.errorText} role="alert">
-          {errors.general}
-        </div>
-      )}
+
 
       {/* Login Form */}
       <form className={styles.loginForm} onSubmit={handleSubmit}>

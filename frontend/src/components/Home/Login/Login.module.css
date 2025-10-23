@@ -465,23 +465,20 @@
 .label {
   position: absolute;
   left: 3.25rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #b6c0d1; /* lighter label color for contrast */
+  top: 1.25rem;
+  color: white;
   font-size: 1rem;
   pointer-events: none;
   transition: all 0.3s ease;
   z-index: 2;
-  background: var(--bg-primary);
   padding: 0 0.25rem;
 }
 
 .input:focus + .label,
 .input:not(:placeholder-shown) + .label {
-  top: 0;
+  top: -0.75rem;
   font-size: 0.8rem;
   color: #667eea;
-  transform: translateY(-50%);
 }
 
 .input.error:focus + .label,

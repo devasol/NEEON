@@ -38,6 +38,8 @@ const Signup = ({ noContainer = false, onClose, onLoginClick }) => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const [animate, setAnimate] = useState(false);
+  const auth = useAuth();
+  const [toast, setToast] = useState({ message: "", type: "success" });
 
   useEffect(() => {
     setAnimate(true);
@@ -66,7 +68,7 @@ const Signup = ({ noContainer = false, onClose, onLoginClick }) => {
     e.preventDefault();
     if (!validate()) return;
     setIsLoading(true);
-    setErrors((prev) => ({ ...prev, general: "" }));
+    setToast({ message: "", type: "success" }); // Clear previous messages
     try {
       const res = await api.post("/api/v1/users/signup", {
         fullName: formData.name,
@@ -79,29 +81,46 @@ const Signup = ({ noContainer = false, onClose, onLoginClick }) => {
       if (res.data && res.data.token) {
         auth.login(res.data.token, { isAdmin: false });
         setToast({ message: "Signup successful!", type: "success" });
+        if (onClose) onClose();
         navigate("/");
       } else {
-        setErrors((prev) => ({ ...prev, general: "Signup failed" }));
+        setToast({
+          message: "Signup failed. Please try again.",
+          type: "error",
+        });
       }
     } catch (err) {
-      console.error(err);
+      console.error("Signup error:", err);
       if (err.code === "ECONNABORTED" || err.message === "Network Error") {
-        setErrors((prev) => ({
-          ...prev,
-          general: `Network error: can't reach server at ${API_BASE}. Is backend running?`,
-        }));
+        setToast({
+          message: "Network error. Please check your connection.",
+          type: "error",
+        });
+      } else if (
+        err.response?.data?.message?.includes("Duplicate field value")
+      ) {
+        setToast({
+          message: "An account with this email or username already exists.",
+          type: "error",
+        });
+      } else if (err.response?.data?.message?.includes("duplicate key error")) {
+        setToast({
+          message: "An account with this email already exists.",
+          type: "error",
+        });
+      } else if (err.response?.data?.message) {
+        setToast({ message: err.response.data.message, type: "error" });
       } else {
-        const msg =
-          err?.response?.data?.message || err.message || "Signup failed";
-        setErrors((prev) => ({ ...prev, general: msg }));
+        setToast({
+          message: "An error occurred during signup. Please try again.",
+          type: "error",
+        });
       }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const auth = useAuth();
-  const [toast, setToast] = useState({ message: "", type: "success" });
   const closeToast = () => setToast({ message: "", type: "success" });
 
   const handleGoogleSignup = () => {
@@ -148,12 +167,6 @@ const Signup = ({ noContainer = false, onClose, onLoginClick }) => {
       <div className={styles.divider}>
         <span>or continue with email</span>
       </div>
-
-      {errors.general && (
-        <div className={styles.errorText} role="alert">
-          {errors.general}
-        </div>
-      )}
 
       <form className={styles.loginForm} onSubmit={handleSubmit}>
         <div className={styles.inputGroup}>
