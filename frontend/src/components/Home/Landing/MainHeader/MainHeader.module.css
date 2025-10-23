@@ -186,6 +186,21 @@
   color: #4ecdc4;
 }
 
+.activeLink {
+  position: relative;
+  color: #4ecdc4 !important;
+}
+
+.activeLink::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+}
+
 
 .navigator li::before {
   content: "";

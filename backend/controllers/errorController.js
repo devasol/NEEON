@@ -6,10 +6,26 @@ const handleCastErrorDB = (err) => {
 };
 
 const handleDuplicateFieldsDB = (err) => {
-  const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
-  console.log(value);
+  // Support for modern Mongo/Mongoose duplicate key error shape
+  // Prefer the value from keyValue; fallback to parsing message
+  let value = "";
+  let field = "";
 
-  const message = `Duplicate field value: ${value}. Please use another value!`;
+  if (err.keyValue) {
+    const firstKey = Object.keys(err.keyValue)[0];
+    field = firstKey;
+    value = err.keyValue[firstKey];
+  } else if (typeof err.message === "string") {
+    const match = err.message.match(/(["'])(\\?.)*?\1/);
+    value = match ? match[0] : "";
+    // Try to extract field name from error message
+    const fieldMatch = err.message.match(/index: (\w+)_\d+/);
+    if (fieldMatch) field = fieldMatch[1];
+  }
+
+  const message = field
+    ? `An account with this ${field} already exists. Please use a different ${field}.`
+    : `Duplicate field value: ${value}. Please use another value!`;
   return new AppError(message, 400);
 };
 const handleValidationErrorDB = (err) => {
@@ -55,16 +71,22 @@ module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
 
-  if (process.env.NODE_ENV === "development") {
-    sendErrorDev(err, res);
-  } else if (process.env.NODE_ENV === "production") {
-    let error = { ...err };
+  const env = process.env.NODE_ENV || "development";
+  // Normalize common DB errors for all envs so clients get meaningful status codes
+  let normalizedError = err;
+  if (err.name === "CastError") normalizedError = handleCastErrorDB(err);
+  if (err.code === 11000) normalizedError = handleDuplicateFieldsDB(err);
+  if (err.name === "ValidationError")
+    normalizedError = handleValidationErrorDB(err);
 
-    if (error.name === "CastError") error = handleCastErrorDB(error);
-    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
-    if (error.name === "ValidationError")
-      error = handleValidationErrorDB(error);
-
-    sendErrorProd(error, res);
+  if (env === "development") {
+    sendErrorDev(normalizedError, res);
+  } else if (env === "production") {
+    // In production, hide details for unknown errors but keep operational ones
+    const safeError = { ...normalizedError };
+    sendErrorProd(safeError, res);
+  } else {
+    // Fallback to development-style errors for unknown envs
+    sendErrorDev(normalizedError, res);
   }
 };

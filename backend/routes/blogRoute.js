@@ -10,10 +10,14 @@ const authController = require("./../controllers/authController");
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+// Public route for limited posts (no auth required) - must be before all other routes
+router.get("/public", blogController.getPublicBlogs);
+
 router
   .route("/")
   .get(authController.protect, blogController.getAllBlogs)
   .post(upload.single("image"), blogController.createBlog);
+
 router.route("/:id/image").get(blogController.getImage);
 router
   .route("/:id")
@@ -23,19 +27,8 @@ router
   .delete(blogController.deleteBlog);
 
 // interactions
-router.post(
-  "/:id/like",
-  authController.protect,
-  blogController.likeBlog
-);
-router.post(
-  "/:id/comment",
-  authController.protect,
-  blogController.addComment
-);
-router.get(
-  "/:id/comments",
-  blogController.getComments
-);
+router.post("/:id/like", authController.protect, blogController.likeBlog);
+router.post("/:id/comment", authController.protect, blogController.addComment);
+router.get("/:id/comments", blogController.getComments);
 
 module.exports = router;

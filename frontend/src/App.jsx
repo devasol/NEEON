@@ -8,6 +8,7 @@ import Signup from "./components/Home/Signup/Signup";
 import FeaturesPage from "./pages/Features/FeaturesPage";
 import ContactPage from "./pages/Contact/ContactPage";
 import CategoriesPage from "./pages/Categories/CategoriesPage";
+import PostsPage from "./pages/Posts/PostsPage";
 
 // load admin lazily to avoid adding routing library
 const AdminDashboard = React.lazy(() => import("./pages/Admin/AdminDashboard"));
@@ -21,6 +22,7 @@ function App() {
       <Route path="/features" element={<FeaturesPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/categories" element={<CategoriesPage />} />
+      <Route path="/posts" element={<PostsPage />} />
       <Route path="/about" element={<div>About Us Page</div>} />
       <Route path="/services" element={<div>Services Page</div>} />
       <Route path="/blog" element={<div>Blog Page</div>} />
