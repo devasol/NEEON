@@ -7,6 +7,7 @@ import UsersTable from "../../components/Admin/UsersTable/UsersTable";
 import PostsView from "../../components/Admin/PostsView/PostsView";
 import CommentsView from "../../components/Admin/CommentsView/CommentsView";
 import SettingsView from "../../components/Admin/SettingsView/SettingsView";
+import CategoriesView from "../../components/Admin/CategoriesView/CategoriesView";
 import styles from "./AdminDashboard.module.css";
 
 const AdminDashboard = () => {
@@ -38,6 +39,7 @@ const AdminDashboard = () => {
         {selectedView === "comments" && <CommentsView />}
         {selectedView === "users" && <UsersTable />}
         {selectedView === "settings" && <SettingsView />}
+        {selectedView === "categories" && <CategoriesView />}
       </div>
     </div>
   );

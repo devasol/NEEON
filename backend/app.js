@@ -1,7 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const blogRoute = require("./routes/blogRoute");
+const blogRouter = require('./routes/blogRoute');
+const categoryRouter = require('./routes/categoryRoute');
 const userRoute = require("./routes/userRoute");
 
 const app = express();
@@ -31,7 +32,8 @@ app.use(
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 //Blogs Route
-app.use("/api/v1/blogs", blogRoute);
+app.use('/api/v1/blogs', blogRouter);
+app.use('/api/categories', categoryRouter);
 
 //users Route
 app.use("/api/v1/users", userRoute);

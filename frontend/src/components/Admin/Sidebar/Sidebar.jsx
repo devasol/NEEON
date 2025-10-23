@@ -7,6 +7,7 @@ const PostsIcon = () => <span>📝</span>;
 const CommentsIcon = () => <span>💬</span>;
 const UsersIcon = () => <span>👥</span>;
 const SettingsIcon = () => <span>⚙️</span>;
+const CategoriesIcon = () => <span>🏷️</span>;
 
 const Sidebar = ({ selectedView, setSelectedView }) => {
   const items = [
@@ -45,6 +46,15 @@ const Sidebar = ({ selectedView, setSelectedView }) => {
       details:
         "View and manage user accounts, assign roles and permissions, track user activity, and manage registration settings for your blog community.",
       stats: "2,345 registered users • 12 new today • 45 authors",
+    },
+    {
+      id: "categories",
+      label: "Categories",
+      icon: <CategoriesIcon />,
+      description: "Manage blog categories",
+      details:
+        "Create, edit, and delete categories for your blog posts. Organize your content and help readers find what they are looking for.",
+      stats: "25 total categories • 3 new this week",
     },
     {
       id: "settings",
