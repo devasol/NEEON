@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import api, { API_BASE } from "../../../utils/api";
 import styles from "./Login.module.css";
 import useAuth from "../../../hooks/useAuth";
@@ -154,12 +155,11 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
       });
 
       if (res.data && res.data.token) {
-        const email = formData.email?.trim().toLowerCase();
-        const pwd = formData.password;
-        const adminEmail = "dawitsolo8908@gmail.com";
-        const adminPwd = "devasol@123";
-        const isAdmin = email === adminEmail && pwd === adminPwd;
-        auth.login(res.data.token, { isAdmin });
+        const token = res.data.token;
+        const decodedToken = jwtDecode(token);
+        const isAdmin = decodedToken.role === 'admin';
+
+        auth.login(token, { isAdmin });
         setToast({ message: "Login successful!", type: "success" });
         if (onClose) onClose();
         if (isAdmin) {
