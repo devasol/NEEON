@@ -6,8 +6,8 @@
 
 .card {
   background: var(--card-bg);
-  padding: 1rem;
-  border-radius: 12px;
+  padding: 1.5rem;
+  border-radius: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,11 +23,11 @@
 .cardTitle {
   color: var(--muted);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .cardValue {
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   font-weight: 800;
   color: #111827;
 }
@@ -35,4 +35,23 @@
 .cardDelta {
   color: #10b981;
   font-weight: 700;
+  font-size: 1rem;
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 1rem;
+  }
+
+  .cardTitle {
+    font-size: 0.9rem;
+  }
+
+  .cardValue {
+    font-size: 1.5rem;
+  }
+
+  .cardDelta {
+    font-size: 0.9rem;
+  }
 }

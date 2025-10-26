@@ -30,3 +30,24 @@
   border-radius: 8px;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .postItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .postActions {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .postTitle {
+    font-size: 0.9rem;
+  }
+
+  .postMeta {
+    font-size: 0.8rem;
+  }
+}

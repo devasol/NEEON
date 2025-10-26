@@ -1,44 +1,10 @@
-@import "../../index.css";
-
-.page {
-  display: flex;
-  min-height: 100vh;
-  background: linear-gradient(180deg, #f7f9fc 0%, #ffffff 100%);
-}
-
-.main {
-  flex: 1;
+.content {
   padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
 }
 
-/* Reserve left space for the sticky sidebar on wider screens */
-@media (min-width: 901px) {
-  .main {
-    margin-left: 240px; /* account for fixed sidebar width */
-  }
-}
-
-.statsRow {
+.statsGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-}
-
-.gridRow {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 1rem;
-}
-
-@media (max-width: 900px) {
-  .statsRow {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .gridRow {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
 }

@@ -58,3 +58,31 @@
 .card li div button {
   margin-left: 10px;
 }
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card li div {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .card li div button {
+    flex: 1;
+  }
+}

@@ -276,7 +276,7 @@ const UsersTable = () => {
                     : ""
                 }`}
               >
-                <td>
+                <td data-label="Name">
                   <div className={styles.userInfo}>
                     <div
                       className={styles.avatar}
@@ -287,8 +287,8 @@ const UsersTable = () => {
                     {user.fullName}
                   </div>
                 </td>
-                <td>{user.email}</td>
-                <td>
+                <td data-label="Email">{user.email}</td>
+                <td data-label="Role">
                   <span
                     className={styles.roleBadge}
                     style={{
@@ -299,8 +299,8 @@ const UsersTable = () => {
                     {user.role}
                   </span>
                 </td>
-                <td>{getStatusBadge(user.status)}</td>
-                <td>
+                <td data-label="Status">{getStatusBadge(user.status)}</td>
+                <td data-label="Actions">
                   <div className={styles.actionButtons}>
                     <button
                       className={`${styles.smallBtn} ${styles.viewBtn}`}

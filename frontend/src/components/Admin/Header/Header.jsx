@@ -8,8 +8,9 @@ const BellIcon = () => <i className="fas fa-bell"></i>;
 const PlusIcon = () => <i className="fas fa-plus"></i>;
 const UserIcon = () => <i className="fas fa-user"></i>;
 const DownArrow = () => <i className="fas fa-chevron-down"></i>;
+const MenuIcon = () => <i className="fas fa-bars"></i>;
 
-const Header = () => {
+const Header = ({ toggleSidebar }) => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showNotifications, setShowNotifications] = useState(false);
@@ -93,6 +94,9 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.headerLeft}>
+        <button className={styles.menuButton} onClick={toggleSidebar}>
+          <MenuIcon />
+        </button>
         <h1 className={styles.title}>
           <span className={styles.titleMain}>Dashboard</span>
           <span className={styles.titleSub}>Welcome back, Admin! 👋</span>

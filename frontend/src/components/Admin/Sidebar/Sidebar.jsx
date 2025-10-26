@@ -9,7 +9,7 @@ const UsersIcon = () => <i className="fas fa-users"></i>;
 const SettingsIcon = () => <i className="fas fa-cog"></i>;
 const CategoriesIcon = () => <i className="fas fa-tag"></i>;
 
-const Sidebar = ({ selectedView, setSelectedView }) => {
+const Sidebar = ({ selectedView, setSelectedView, isSidebarOpen }) => {
   const items = [
     {
       id: "dashboard",
@@ -75,7 +75,7 @@ const Sidebar = ({ selectedView, setSelectedView }) => {
 
   return (
     <>
-      <aside className={styles.sidebar}>
+      <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ''}`}>
         <div className={styles.brand}>Blog Admin</div>
         <nav className={styles.nav} aria-label="Main">
           {items.map((item) => (

@@ -402,6 +402,42 @@
     margin: 1rem;
     width: calc(100% - 2rem);
   }
+
+  .usersTable table {
+    display: block;
+  }
+
+  .usersTable thead {
+    display: none;
+  }
+
+  .usersTable tbody {
+    display: block;
+  }
+
+  .usersTable tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1rem;
+  }
+
+  .usersTable td {
+    display: block;
+    text-align: right;
+    border-bottom: none;
+    padding: 0.5rem 0;
+  }
+
+  .usersTable td:before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: #6b7280;
+  }
 }
 
 @media (max-width: 480px) {

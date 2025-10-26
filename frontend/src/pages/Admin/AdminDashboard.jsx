@@ -1,47 +1,70 @@
-import React, { useState } from "react";
-import Sidebar from "../../components/Admin/Sidebar/Sidebar";
-import Header from "../../components/Admin/Header/Header";
-import StatsCard from "../../components/Admin/StatsCard/StatsCard";
-import RecentPosts from "../../components/Admin/RecentPosts/RecentPosts";
-import UsersTable from "../../components/Admin/UsersTable/UsersTable";
-import PostsView from "../../components/Admin/PostsView/PostsView";
-import CommentsView from "../../components/Admin/CommentsView/CommentsView";
-import SettingsView from "../../components/Admin/SettingsView/SettingsView";
-import CategoriesView from "../../components/Admin/CategoriesView/CategoriesView";
+import React from "react";
 import styles from "./AdminDashboard.module.css";
 
-const AdminDashboard = () => {
-  const [selectedView, setSelectedView] = useState("dashboard");
+// Import your admin components
+import CategoriesView from "../../components/Admin/CategoriesView/CategoriesView";
+import CommentsView from "../../components/Admin/CommentsView/CommentsView";
+import PostsView from "../../components/Admin/PostsView/PostsView";
+import SettingsView from "../../components/Admin/SettingsView/SettingsView";
+import StatsCard from "../../components/Admin/StatsCard/StatsCard";
+import UsersTable from "../../components/Admin/UsersTable/UsersTable";
+import RecentPosts from "../../components/Admin/RecentPosts/RecentPosts";
+
+const AdminDashboard = ({ selectedView, setSelectedView }) => {
+
+  const renderView = () => {
+    switch (selectedView) {
+      case "dashboard":
+        return (
+          <>
+            <div className={styles.statsGrid}>
+              <StatsCard
+                title="Total Posts"
+                value="1,234"
+                change="+5%"
+                icon="file-alt"
+              />
+              <StatsCard
+                title="Total Comments"
+                value="5,678"
+                change="+12%"
+                icon="comments"
+              />
+              <StatsCard
+                title="Total Users"
+                value="345"
+                change="+2%"
+                icon="users"
+              />
+              <StatsCard
+                title="Total Categories"
+                value="12"
+                change="+1"
+                icon="tag"
+              />
+            </div>
+            <RecentPosts />
+          </>
+        );
+      case "posts":
+        return <PostsView />;
+      case "comments":
+        return <CommentsView />;
+      case "users":
+        return <UsersTable />;
+      case "categories":
+        return <CategoriesView />;
+      case "settings":
+        return <SettingsView />;
+      default:
+        return <div>Select a view</div>;
+    }
+  };
 
   return (
-    <div className={styles.page}>
-      <Sidebar selectedView={selectedView} setSelectedView={setSelectedView} />
-      <div className={styles.main}>
-        <Header />
-
-        {selectedView === "dashboard" && (
-          <>
-            <div className={styles.statsRow}>
-              <StatsCard title="Total Posts" value="128" delta="+8%" />
-              <StatsCard title="Drafts" value="12" delta="-2%" />
-              <StatsCard title="Subscribers" value="9.3K" delta="+4.2%" />
-              <StatsCard title="Active Users" value="1.2K" delta="+6%" />
-            </div>
-
-            <div className={styles.gridRow}>
-              <RecentPosts />
-              <UsersTable />
-            </div>
-          </>
-        )}
-
-        {selectedView === "posts" && <PostsView />}
-        {selectedView === "comments" && <CommentsView />}
-        {selectedView === "users" && <UsersTable />}
-        {selectedView === "settings" && <SettingsView />}
-        {selectedView === "categories" && <CategoriesView />}
-      </div>
-    </div>
+    <>
+      {renderView()}
+    </>
   );
 };
 

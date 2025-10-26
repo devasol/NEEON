@@ -25,3 +25,22 @@
   cursor: pointer;
   font-weight: 600;
 }
+
+@media (max-width: 768px) {
+  .tableCard {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .input {
+    padding: 0.8rem;
+    font-size: 1rem;
+  }
+
+  .actionBtn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+  }
+}
