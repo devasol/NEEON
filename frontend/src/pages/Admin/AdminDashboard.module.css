@@ -12,13 +12,12 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  margin-left: 240px; /* account for fixed sidebar width */
 }
 
 /* Reserve left space for the sticky sidebar on wider screens */
 @media (min-width: 901px) {
   .main {
-    margin-left: 0; /* changed per request */
+    margin-left: 240px; /* account for fixed sidebar width */
   }
 }
 

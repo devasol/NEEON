@@ -3,11 +3,11 @@ import useAuth from "../../../hooks/useAuth";
 import styles from "./Header.module.css";
 
 // Icons (you can replace with actual icon components)
-const SearchIcon = () => <span>🔍</span>;
-const BellIcon = () => <span>🔔</span>;
-const PlusIcon = () => <span>+</span>;
-const UserIcon = () => <span>👤</span>;
-const DownArrow = () => <span>⌄</span>;
+const SearchIcon = () => <i className="fas fa-search"></i>;
+const BellIcon = () => <i className="fas fa-bell"></i>;
+const PlusIcon = () => <i className="fas fa-plus"></i>;
+const UserIcon = () => <i className="fas fa-user"></i>;
+const DownArrow = () => <i className="fas fa-chevron-down"></i>;
 
 const Header = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -242,17 +242,17 @@ const Header = () => {
 
               <div className={styles.userMenuItems}>
                 <button className={styles.menuItem}>
-                  <span>👤</span> Profile
+                  <i className="fas fa-user-circle"></i> Profile
                 </button>
                 <button className={styles.menuItem}>
-                  <span>⚙️</span> Settings
+                  <i className="fas fa-cog"></i> Settings
                 </button>
                 <button className={styles.menuItem}>
-                  <span>🔒</span> Privacy
+                  <i className="fas fa-shield-alt"></i> Privacy
                 </button>
                 <div className={styles.menuDivider}></div>
                 <button className={styles.menuItem} onClick={logout}>
-                  <span>🚪</span> Sign Out
+                  <i className="fas fa-sign-out-alt"></i> Sign Out
                 </button>
               </div>
             </div>

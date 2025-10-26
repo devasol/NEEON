@@ -2,12 +2,12 @@ import React from "react";
 import styles from "./Sidebar.module.css";
 
 // Icons for each section (you can replace with actual icon components)
-const DashboardIcon = () => <span>📊</span>;
-const PostsIcon = () => <span>📝</span>;
-const CommentsIcon = () => <span>💬</span>;
-const UsersIcon = () => <span>👥</span>;
-const SettingsIcon = () => <span>⚙️</span>;
-const CategoriesIcon = () => <span>🏷️</span>;
+const DashboardIcon = () => <i className="fas fa-chart-pie"></i>;
+const PostsIcon = () => <i className="fas fa-file-alt"></i>;
+const CommentsIcon = () => <i className="fas fa-comments"></i>;
+const UsersIcon = () => <i className="fas fa-users"></i>;
+const SettingsIcon = () => <i className="fas fa-cog"></i>;
+const CategoriesIcon = () => <i className="fas fa-tag"></i>;
 
 const Sidebar = ({ selectedView, setSelectedView }) => {
   const items = [
