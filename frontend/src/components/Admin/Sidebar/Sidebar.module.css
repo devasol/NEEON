@@ -22,9 +22,10 @@
   top: 0;
   left: 0;
   height: 100vh;
-  overflow: hidden;
-  z-index: 100;
+  overflow-y: auto; /* Allow scrolling for sidebar content */
+  z-index: 101; /* Higher than header */
   transition: transform 0.3s ease;
+  padding-top: 6rem; /* Increased padding to account for header height */
 }
 
 .sidebar.open {

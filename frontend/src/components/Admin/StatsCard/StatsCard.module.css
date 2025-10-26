@@ -21,7 +21,7 @@
 }
 
 .cardTitle {
-  color: var(--muted);
+  color: black;
   font-weight: 600;
   font-size: 1rem;
 }
@@ -29,7 +29,7 @@
 .cardValue {
   font-size: 1.8rem;
   font-weight: 800;
-  color: #111827;
+  color: #000000;
 }
 
 .cardDelta {

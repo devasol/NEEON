@@ -37,7 +37,7 @@ const AdminLayout = ({ children, selectedView, setSelectedView }) => {
 
   return (
     <div className={styles.adminLayout}>
-      {isMobile && isSidebarOpen && <div className={styles.sidebarOverlay} onClick={toggleSidebar}></div>}
+      {isMobile && isSidebarOpen && <div className={`${styles.sidebarOverlay} ${styles.visible}`} onClick={toggleSidebar}></div>}
       <Sidebar isSidebarOpen={isSidebarOpen} selectedView={selectedView} setSelectedView={handleSetSelectedView} />
       <div className={`${styles.mainContent} ${isSidebarOpen && !isMobile ? styles.shifted : ''}`}>
         <Header toggleSidebar={toggleSidebar} />
