@@ -76,10 +76,10 @@ const Signup = ({ noContainer = false, onClose, onLoginClick }) => {
         username: formData.email.split("@")[0],
         password: formData.password,
         passwordConfirm: formData.confirmPassword,
-      });
+      }, false); // Don't include auth for signup
 
-      if (res.data && res.data.token) {
-        auth.login(res.data.token, { isAdmin: false });
+      if (res && res.token) {
+        auth.login(res.token, { isAdmin: false });
         setToast({ message: "Signup successful!", type: "success" });
         if (onClose) onClose();
         navigate("/");
@@ -91,25 +91,23 @@ const Signup = ({ noContainer = false, onClose, onLoginClick }) => {
       }
     } catch (err) {
       console.error("Signup error:", err);
-      if (err.code === "ECONNABORTED" || err.message === "Network Error") {
+      if (err.name === "TypeError" && err.message.includes("NetworkError")) {
         setToast({
           message: "Network error. Please check your connection.",
           type: "error",
         });
-      } else if (
-        err.response?.data?.message?.includes("Duplicate field value")
-      ) {
+      } else if (err.message && err.message.includes("Duplicate field value")) {
         setToast({
           message: "An account with this email or username already exists.",
           type: "error",
         });
-      } else if (err.response?.data?.message?.includes("duplicate key error")) {
+      } else if (err.message && err.message.includes("duplicate key error")) {
         setToast({
           message: "An account with this email already exists.",
           type: "error",
         });
-      } else if (err.response?.data?.message) {
-        setToast({ message: err.response.data.message, type: "error" });
+      } else if (err.message) {
+        setToast({ message: err.message, type: "error" });
       } else {
         setToast({
           message: "An error occurred during signup. Please try again.",

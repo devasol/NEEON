@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import api from "../../../utils/api";
 import styles from "./PostsView.module.css";
 
 // Icons
@@ -47,56 +47,6 @@ const PostsView = () => {
   const categories = ["All", ...new Set(posts.map((post) => post.category))];
   const statuses = ["All", "Published", "Draft", "Scheduled"];
 
-  // fetch blogs from backend on mount
-  useEffect(() => {
-    let mounted = true;
-    axios
-      .get("http://localhost:9000/api/v1/blogs")
-      .then((res) => {
-        if (!mounted) return;
-        const blogs = res.data.blogs?.allBlogs || [];
-        // map backend blog shape to UI post shape
-        const mapped = blogs.map((b) => ({
-          id: b._id,
-          title: b.newsTitle,
-          excerpt: b.newsDescription ? b.newsDescription.slice(0, 140) : "",
-          content: b.newsDescription || "",
-          category: b.category || "Uncategorized",
-          status: b.status || "Draft",
-          author: b.postedBy || "Admin",
-          date: b.datePosted || b.createdAt || new Date().toISOString(),
-          views: b.views || 0,
-          comments: b.comments || 0,
-          image: b.imageUrl || null,
-        }));
-        setPosts(mapped);
-      })
-      .catch((err) => {
-        console.debug("Could not fetch blogs:", err.message || err);
-        // Fallback dummy data for demonstration
-        setPosts([
-          {
-            id: 1,
-            title: "Welcome to Your Blog",
-            excerpt:
-              "This is your first post. Start creating amazing content for your audience...",
-            content:
-              "This is your first post. Start creating amazing content for your audience...",
-            category: "Uncategorized",
-            status: "Published",
-            author: "Admin",
-            date: new Date().toISOString(),
-            views: 42,
-            comments: 3,
-            image: null,
-          },
-        ]);
-      });
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
   // listen for global 'open-new-post' events (dispatched from Header)
   // Store the full blog data to access when editing
   const [fullBlogData, setFullBlogData] = useState([]);
@@ -110,11 +60,10 @@ const PostsView = () => {
   // fetch blogs from backend on mount
   useEffect(() => {
     let mounted = true;
-    axios
-      .get("http://localhost:9000/api/v1/blogs")
+    api.get("/api/v1/blogs", true) // Include auth for admin endpoints
       .then((res) => {
         if (!mounted) return;
-        const blogs = res.data.blogs?.allBlogs || [];
+        const blogs = res.blogs?.allBlogs || [];
         setFullBlogData(blogs); // Store full blog data
         // map backend blog shape to UI post shape
         const mapped = blogs.map((b) => ({
@@ -133,7 +82,7 @@ const PostsView = () => {
         setPosts(mapped);
       })
       .catch((err) => {
-        console.debug("Could not fetch blogs:", err.message || err);
+        console.error("Could not fetch blogs:", err.message || err);
         // Fallback dummy data for demonstration
         setPosts([
           {
@@ -214,13 +163,24 @@ const PostsView = () => {
   const handleDeletePost = async (post) => {
     if (window.confirm(`Are you sure you want to delete "${post.title}"?`)) {
       try {
-        await axios.delete(`http://localhost:9000/api/v1/blogs/${post.id}`);
-        setPosts(posts.filter((p) => p.id !== post.id));
-        // Show success message with animation
-        const deleteEvent = new CustomEvent("showToast", {
-          detail: { message: "Post deleted successfully!", type: "success" },
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:9000'}/api/v1/blogs/${post.id}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: token ? `Bearer ${token}` : '',
+          },
         });
-        window.dispatchEvent(deleteEvent);
+        
+        if (response.ok) {
+          setPosts(posts.filter((p) => p.id !== post.id));
+          // Show success message with animation
+          const deleteEvent = new CustomEvent("showToast", {
+            detail: { message: "Post deleted successfully!", type: "success" },
+          });
+          window.dispatchEvent(deleteEvent);
+        } else {
+          throw new Error('Failed to delete post');
+        }
       } catch (err) {
         console.error("Error deleting post:", err);
         const errorEvent = new CustomEvent("showToast", {
@@ -318,20 +278,20 @@ const PostsView = () => {
       let res;
       if (isEditing && selectedPost && selectedPost.id) {
         // PATCH existing post
-        res = await axios.patch(
-          `http://localhost:9000/api/v1/blogs/${selectedPost.id}`,
-          form,
-          { headers: { "Content-Type": "multipart/form-data" } }
-        );
+        res = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:9000'}/api/v1/blogs/${selectedPost.id}`, {
+          method: 'PATCH',
+          body: form,
+        });
       } else {
-        res = await axios.post("http://localhost:9000/api/v1/blogs", form, {
-          headers: { "Content-Type": "multipart/form-data" },
+        res = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:9000'}/api/v1/blogs`, {
+          method: 'POST',
+          body: form,
         });
       }
 
       if (res.status >= 200 && res.status < 300) {
-        const b =
-          res.data.blog || res.data.blog?.updatedBlog || res.data.blog?.blog;
+        const data = await res.json();
+        const b = data.blog || data.blog?.updatedBlog || data.blog?.blog;
         // If editing, update the existing post in state
         if (isEditing && selectedPost && selectedPost.id) {
           const updated = {
@@ -385,14 +345,16 @@ const PostsView = () => {
           detail: { message: "Post created successfully! 🎉", type: "success" },
         });
         window.dispatchEvent(successEvent);
+      } else {
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Failed to submit post');
       }
     } catch (err) {
       console.error("Error creating post:", err);
       const errorEvent = new CustomEvent("showToast", {
         detail: {
           message:
-            "Error creating post: " +
-            (err.response?.data?.message || err.message),
+            "Error creating post: " + err.message,
           type: "error",
         },
       });

@@ -113,10 +113,15 @@ function MainHeader() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await api.get("/api/categories");
-        setCategories(response.data.data.categories);
+        const response = await api.get("/api/categories", false); // Categories don't need auth
+        if (response && response.data && response.data.data && response.data.data.categories) {
+          setCategories(response.data.data.categories || []);
+        } else {
+          setCategories([]);
+        }
       } catch (error) {
         console.error("Error fetching categories:", error);
+        setCategories([]);
       }
     };
 
@@ -152,7 +157,6 @@ function MainHeader() {
       ],
     },
     { name: "Categories", path: "#", hasDropdown: true },
-    { name: "Elements", path: "/elements", hasDropdown: false },
     { name: "Posts/Blogs", path: "/posts", hasDropdown: false },
     { name: "Shop", path: "/shop", hasDropdown: false },
     { name: "Contact", path: "/contact", hasDropdown: false },
@@ -203,7 +207,7 @@ function MainHeader() {
                 if (item.name === "Categories") setIsCategoriesHovered(false);
                 if (item.name === "Pages") setIsPagesHovered(false);
               }}
-              className={item.hasDropdown ? styles.hasDropdown : ""}
+              className={`${item.hasDropdown ? styles.hasDropdown : ""} ${item.name === "Categories" ? styles.categories : ""}`}
             >
               <NavLink
                 to={item.path}

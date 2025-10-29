@@ -217,6 +217,15 @@
   width: 100%;
 }
 
+/* Remove underline for Categories */
+.navigator li.categories::before {
+  content: none;
+}
+
+.navigator li.categories:hover::before {
+  width: 0;
+}
+
 .navigator li:hover {
   color: #4ecdc4;
   transform: translateY(-2px);
@@ -279,12 +288,14 @@
   text-decoration: none;
   transition: all 0.2s ease;
   cursor: default; /* Indicate non-clickable */
+  border-left: 3px solid transparent;
 }
 
 .dropdownContent span:hover {
   background: rgba(255, 255, 255, 0.05); /* Subtle hover for non-links */
   padding-left: 1.8rem; /* Slight indent on hover */
   color: #fff; /* White on hover */
+  border-left-color: #4ecdc4;
 }
 
 .iconsWrapper {

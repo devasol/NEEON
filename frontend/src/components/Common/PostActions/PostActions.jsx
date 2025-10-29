@@ -46,9 +46,7 @@ function PostActions({
     setLikeCount((c) => (nextLiked ? c + 1 : Math.max(0, c - 1)));
     try {
       const endpoint = `/api/v1/blogs/${postId}/like`;
-      const res = await api.post(endpoint, {}, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await api.post(endpoint, {}, token);
       if (typeof res?.data?.likes === "number") {
         setLikeCount(res.data.likes);
       }
@@ -118,9 +116,7 @@ function PostActions({
 			return;
 		}
 		try {
-			await api.post(`/api/v1/blogs/${postId}/comment`, { text }, {
-				headers: { Authorization: `Bearer ${token}` },
-			});
+			await api.post(`/api/v1/blogs/${postId}/comment`, { text }, token);
 			setCommentText("");
 			setCommentCount((c) => c + 1);
 			setToastMessage("Comment added");
@@ -145,9 +141,7 @@ function PostActions({
 					// Check if user has already liked this post
 					if (blog.likedBy && token) {
 						try {
-							const userRes = await api.get('/api/v1/users/me', {
-								headers: { Authorization: `Bearer ${token}` }
-							});
+							const userRes = await api.get('/api/v1/users/me', !!token);
 							const userId = userRes?.data?.data?.user?._id;
 							if (userId && blog.likedBy.includes(userId)) {
 								setLiked(true);

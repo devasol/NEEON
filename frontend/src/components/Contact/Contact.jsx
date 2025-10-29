@@ -162,11 +162,11 @@ const Contact = () => {
         <div className={styles.quickContact}>
           <div className={styles.contactItem}>
             <div className={styles.contactIcon}>📧</div>
-            <span>hello@example.com</span>
+            <span>dawit8908@gmail.com</span>
           </div>
           <div className={styles.contactItem}>
             <div className={styles.contactIcon}>📱</div>
-            <span>+1 (555) 123-4567</span>
+            <span>+251974079812</span>
           </div>
         </div>
       </div>

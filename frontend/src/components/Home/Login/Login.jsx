@@ -152,10 +152,10 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
       const res = await api.post("/api/v1/users/login", {
         email: formData.email,
         password: formData.password,
-      });
+      }, false); // Don't include auth for login
 
-      if (res.data && res.data.token) {
-        const token = res.data.token;
+      if (res && res.token) {
+        const token = res.token;
         const decodedToken = jwtDecode(token);
         const isAdmin = decodedToken.role === 'admin';
 
@@ -172,12 +172,12 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
       }
     } catch (err) {
       console.error(err);
-      if (err.code === "ECONNABORTED" || err.message === "Network Error") {
+      if (err.name === "TypeError" && err.message.includes("NetworkError")) {
         setToast({
           message: "Network error. Please check your connection.",
           type: "error",
         });
-      } else if (err.response?.data?.message === 'Incorrect email or password') {
+      } else if (err.message === 'Incorrect email or password') {
         setToast({ message: "Invalid credentials. Please check your email and password.", type: "error" });
       } else {
         setToast({ message: "An error occurred. Please try again.", type: "error" });

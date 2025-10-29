@@ -64,20 +64,18 @@ const Posts = () => {
         
         const url = params.toString() ? `${endpoint}?${params}` : endpoint;
         
-        const response = await api.get(url, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {}
-        });
+        const response = await api.get(url, !!token);
         
-        if (response.data && response.data.blogs && response.data.blogs.allBlogs) {
+        if (response && response.blogs && response.blogs.allBlogs) {
           if (!token) {
             // Non-logged-in user: just set the posts directly
-            setPosts(response.data.blogs.allBlogs);
+            setPosts(response.blogs.allBlogs);
             setShowingLimited(true);
           } else {
             // Logged-in user: store all posts and set the first page
-            setAllPosts(response.data.blogs.allBlogs);
-            setTotalPosts(response.data.blogs.allBlogs.length);
-            setPosts(response.data.blogs.allBlogs.slice(0, limit)); // Default first page
+            setAllPosts(response.blogs.allBlogs);
+            setTotalPosts(response.blogs.allBlogs.length);
+            setPosts(response.blogs.allBlogs.slice(0, limit)); // Default first page
             setShowingLimited(false); // Logged-in users see full content
           }
         } else {
@@ -201,7 +199,7 @@ const Posts = () => {
                       <div className={styles.skeletonLoader}></div>
                     </div>
                     <img 
-                      src={post.imageUrl || `${import.meta.env.VITE_API_BASE || "http://localhost:9000"}/api/v1/blogs/${post._id}/image`} 
+                      src={post.imageUrl || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:9000"}/api/v1/blogs/${post._id}/image`} 
                       alt={post.newsTitle} 
                       onError={(e) => {
                         // Hide skeleton and show fallback when image fails to load

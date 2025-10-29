@@ -48,9 +48,7 @@ function CommentsPage() {
 		if (!token) return setMessage("Please sign in first");
 		if (!blog) return;
 		try {
-			const res = await api.post(`/api/v1/blogs/${postId}/like`, {}, {
-				headers: { Authorization: `Bearer ${token}` },
-			});
+			const res = await api.post(`/api/v1/blogs/${postId}/like`, {}, token);
 			setBlog((b) => ({ ...b, likes: res?.data?.likes ?? (b?.likes || 0) }));
 		} catch {
 			setMessage("Couldn't like");
@@ -63,12 +61,10 @@ function CommentsPage() {
 		if (!text) return setMessage("Write something first");
 		setPosting(true);
 		try {
-			await api.post(`/api/v1/blogs/${postId}/comments`, { text }, {
-				headers: { Authorization: `Bearer ${token}` },
-			});
+			await api.post(`/api/v1/blogs/${postId}/comments`, { text }, token);
 			setCommentText("");
 			// reload minimal fields
-			const res = await api.get(`/api/v1/blogs/${postId}`);
+			const res = await api.get(`/api/v1/blogs/${postId}`, !!token);
 			setBlog(res?.data?.blog?.blog || null);
 			setMessage("Comment added");
 		} catch {
