@@ -14,10 +14,12 @@ import useAuth from "../../../hooks/useAuth";
 import { Link } from "react-router-dom";
 
 const NewsSection = () => {
-  const [activeTab, setActiveTab] = useState("Travel");
+  const [activeTab, setActiveTab] = useState("All");
   const [isVisible, setIsVisible] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [allArticles, setAllArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
   const containerRef = useRef(null);
   const { token } = useAuth();
 
@@ -25,121 +27,86 @@ const NewsSection = () => {
     // Animation on component mount
     setIsVisible(true);
 
+    // Fetch all blog posts from backend
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:9000/api/v1'}/blogs/public?limit=20`);
+        const data = await response.json();
+        if (data.status === 'success' && data.blogs) {
+          // Transform the blog data to match the expected structure for the component
+          const transformedArticles = data.blogs.allBlogs.map((blog, index) => ({
+            id: blog._id || index + 1,
+            category: blog.category || "Uncategorized",
+            title: blog.newsTitle || "Untitled",
+            date: blog.datePosted ? new Date(blog.datePosted).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : "Unknown Date",
+            image: blog.imageUrl || `https://picsum.photos/600/400?random=${index + 1}`,
+            excerpt: blog.newsDescription?.substring(0, 150) + (blog.newsDescription?.length > 150 ? "..." : "") || "No description available.",
+            content: blog.newsDescription || "",
+            postedBy: blog.postedBy || "Admin"
+          }));
+          
+          setAllArticles(transformedArticles);
+        }
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+        // Fallback to static data if API fails
+        const fallbackArticles = [
+          {
+            id: 1,
+            category: "Technology",
+            title: "Modern CSS Techniques You Should Know",
+            date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+            image: "https://images.unsplash.com/photo-1615962122169-6a27d96cc78d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            excerpt: "CSS has evolved significantly in recent years. Discover modern techniques like CSS Grid, Flexbox, custom properties, and container queries that will elevate your styling skills.",
+            content: `<p>CSS has evolved significantly in recent years. Discover modern techniques like CSS Grid, Flexbox, custom properties, and container queries that will elevate your styling skills.</p><p>Modern CSS provides powerful layout capabilities that were previously impossible or required complex workarounds. Understanding these techniques will make you a more efficient and effective developer.</p>`,
+            postedBy: "Admin"
+          },
+          {
+            id: 2,
+            category: "Technology",
+            title: "JavaScript ES2024 New Features",
+            date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+            image: "https://images.unsplash.com/photo-1550615539-911b09de9a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            excerpt: "The JavaScript language continues to evolve. Discover the latest features introduced in ES2024 and how they can improve your code's readability and functionality.",
+            content: `<p>The JavaScript language continues to evolve. Discover the latest features introduced in ES2024 and how they can improve your code's readability and functionality.</p><p>With each new version, JavaScript adds powerful features that make development more efficient and code more maintainable.</p>`,
+            postedBy: "Admin"
+          },
+          {
+            id: 3,
+            category: "Technology",
+            title: "API Security Best Practices",
+            date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+            image: "https://images.unsplash.com/photo-1550522970-2c3e14d2e8d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            excerpt: "Security should be a top priority when building APIs. Explore essential security measures including authentication, rate limiting, and input validation.",
+            content: `<p>Security should be a top priority when building APIs. Explore essential security measures including authentication, rate limiting, and input validation.</p><p>Modern applications require robust security measures to protect user data and maintain trust in your services.</p>`,
+            postedBy: "Admin"
+          },
+        ];
+        setAllArticles(fallbackArticles);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticles();
+
     return () => setIsVisible(false);
   }, []);
 
-  const tabs = ["Travel", "Food", "Health", "Politics"];
+  const tabs = ["All", "Technology", "Design", "Business", "Marketing"];
 
-  const articles = {
-    Travel: [
-      {
-        category: "Travel",
-        title: "African Nations Are Struggling to Save Their Wildlife",
-        date: "January 18, 2025",
-        image:
-          "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800",
-        excerpt:
-          "Conservation efforts face challenges as climate change impacts habitats.",
-        content: `
-          <p>African nations are facing unprecedented challenges in their efforts to protect wildlife as climate change continues to alter ecosystems and habitats. Conservationists report that many species are struggling to adapt to rapidly changing conditions.</p>
-          <p>In Kenya's Maasai Mara, elephant populations have declined by 30% over the past decade due to prolonged droughts and human-wildlife conflicts. Similar trends are being observed across the continent, with rhinos, lions, and other iconic species facing increasing threats.</p>
-          <p>Government agencies and non-profit organizations are working together to implement new conservation strategies, including wildlife corridors and community-based conservation programs. However, funding remains a significant challenge, with many projects operating on limited budgets.</p>
-          <p>Experts emphasize that international cooperation and increased funding are crucial to reversing these trends and preserving Africa's rich biodiversity for future generations.</p>
-        `,
-      },
-      {
-        category: "Travel",
-        title: "How to get the best deals on flights",
-        date: "January 18, 2025",
-        image:
-          "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
-        excerpt: "Expert tips for finding affordable travel options in 2025.",
-        content: `
-          <p>Finding the best flight deals requires strategy, timing, and knowing where to look. Industry experts share their top tips for securing affordable airfare in 2025.</p>
-          <p>First, be flexible with your travel dates. Flying on Tuesday, Wednesday, or Saturday typically offers the lowest fares. Consider using fare comparison tools that show prices across an entire month to identify the cheapest days to fly.</p>
-          <p>Second, set up price alerts for your desired routes. Numerous apps and websites will notify you when prices drop for specific destinations. Booking 6-8 weeks in advance for domestic flights and 3-4 months for international routes often yields the best prices.</p>
-          <p>Finally, consider alternative airports and be willing to take connecting flights. Sometimes flying into a nearby city and taking ground transportation can save hundreds of dollars.</p>
-        `,
-      },
-      {
-        category: "Travel",
-        title: "Top 10 Hidden Gems in Southeast Asia",
-        date: "January 19, 2025",
-        image:
-          "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800",
-        excerpt: "Undiscovered destinations that offer authentic experiences.",
-        content: `
-          <p>While destinations like Bali and Bangkok continue to draw crowds, Southeast Asia still harbors countless hidden gems waiting to be discovered by intrepid travelers.</p>
-          <p>In Vietnam, consider visiting the mountainous region of Ha Giang instead of the popular Halong Bay. The dramatic landscapes and authentic hill tribe communities offer a much more genuine experience of Vietnamese culture.</p>
-          <p>In Indonesia, skip crowded Bali and head to the untouched islands of the Maluku archipelago, where pristine beaches and vibrant coral reefs await without the tourist crowds.</p>
-          <p>Laos' 4,000 Islands region provides a tranquil alternative to the well-trodden tourist trail, with rustic bungalows, waterfalls, and the chance to spot rare Irrawaddy dolphins.</p>
-          <p>These destinations not only offer more authentic experiences but also help distribute tourism revenue to communities that benefit greatly from visitor spending.</p>
-        `,
-      },
-    ],
-    Food: [
-      {
-        category: "Food",
-        title: "The Rise of Plant-Based Cuisine in 2025",
-        date: "January 17, 2025",
-        image:
-          "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800",
-        excerpt: "How chefs are reinventing plant-based dining experiences.",
-        content: `
-          <p>Plant-based cuisine has evolved from simple meat alternatives to a sophisticated culinary movement celebrating vegetables, legumes, and grains in their own right.</p>
-          <p>Top chefs are now creating multi-course tasting menus that highlight the diversity and complexity of plant-based ingredients. Techniques like fermentation, smoking, and aging are being applied to vegetables to develop deep, umami-rich flavors.</p>
-          <p>Restaurants specializing in plant-based cuisine are seeing record reservations, with some requiring bookings months in advance. This trend reflects a growing consumer interest in sustainable, health-conscious dining options that don't compromise on flavor or experience.</p>
-        `,
-      },
-      {
-        category: "Food",
-        title: "Traditional Cooking Techniques Making a Comeback",
-        date: "January 16, 2025",
-        image:
-          "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800",
-        excerpt: "Ancient methods are finding new life in modern kitchens.",
-        content: `
-          <p>As the culinary world becomes increasingly focused on sustainability and flavor, chefs are rediscovering traditional cooking techniques that had nearly been forgotten.</p>
-          <p>Fermentation, once primarily used for preservation, is now being explored for the complex flavors it can develop. Chefs are creating their own misos, kimchis, and fermented sauces to add depth to their dishes.</p>
-          <p>Wood-fired cooking is also experiencing a renaissance, with restaurants installing custom-built hearths and ovens. The live fire imparts a unique smokiness that can't be replicated with modern equipment.</p>
-          <p>These time-honored techniques not only produce exceptional flavors but also connect us to culinary traditions that have sustained cultures for centuries.</p>
-        `,
-      },
-    ],
-    Health: [
-      {
-        category: "Health",
-        title: "New Study Reveals Benefits of Intermittent Fasting",
-        date: "January 18, 2025",
-        image:
-          "https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=800",
-        excerpt: "Research shows promising results for metabolic health.",
-        content: `
-          <p>A comprehensive new study published in the New England Journal of Medicine has provided compelling evidence for the benefits of intermittent fasting on metabolic health.</p>
-          <p>The year-long study followed 500 participants with prediabetes, comparing those who practiced a 16:8 intermittent fasting pattern (16 hours fasting, 8-hour eating window) with a control group that maintained their regular eating patterns.</p>
-          <p>The results showed significant improvements in insulin sensitivity, blood pressure, and cholesterol levels in the fasting group. Participants also reported increased energy levels and improved mental clarity.</p>
-          <p>Researchers caution that intermittent fasting isn't suitable for everyone, particularly those with certain medical conditions or a history of eating disorders. They recommend consulting with a healthcare provider before making significant changes to eating patterns.</p>
-        `,
-      },
-    ],
-    Politics: [
-      {
-        category: "Politics",
-        title: "Global Summit Addresses Climate Policy",
-        date: "January 17, 2025",
-        image:
-          "https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=800",
-        excerpt:
-          "World leaders gather to negotiate new environmental agreements.",
-        content: `
-          <p>World leaders convened in Geneva this week for the Global Climate Summit, aiming to negotiate more ambitious targets for reducing greenhouse gas emissions.</p>
-          <p>The summit comes amid growing concerns about the pace of climate change, with recent reports indicating that current commitments fall far short of what's needed to limit global warming to 1.5 degrees Celsius.</p>
-          <p>Key topics on the agenda include financing for climate adaptation in developing nations, mechanisms for carbon pricing and trading, and agreements on phasing out fossil fuel subsidies.</p>
-          <p>Environmental activists have organized parallel events to pressure negotiators, arguing that incremental changes are no longer sufficient to address the climate emergency. The outcomes of this summit will set the direction for global climate policy for the next decade.</p>
-        `,
-      },
-    ],
-  };
+  // Filter articles by active tab
+  const filteredArticles = activeTab === "All" 
+    ? allArticles 
+    : allArticles.filter(article => 
+        article.category.toLowerCase().includes(activeTab.toLowerCase())
+      );
+
+  // Get the featured article (first one)
+  const featuredArticle = filteredArticles.length > 0 ? filteredArticles[0] : null;
+  
+  // Get the next two articles
+  const secondaryArticles = filteredArticles.length > 1 ? filteredArticles.slice(1, 3) : [];
 
   const socialLinks = [
     {
@@ -188,17 +155,22 @@ const NewsSection = () => {
     document.body.style.overflow = "unset";
   };
 
-  const filteredArticles = articles[activeTab] || [];
-
-  const articlesToShow = token ? filteredArticles : filteredArticles.slice(0, 1);
-
   const LoginPrompt = () => (
     <div className={styles.loginPrompt}>
       <p>
-        <Link to="/login">Login</Link> to read all posts.
+        <Link to="/login">Login</Link> to get all posts
       </p>
     </div>
   );
+
+  if (loading && allArticles.length === 0) {
+    return (
+      <div className={styles.container}>
+        <h2 className={styles.title}>What's New</h2>
+        <div className={styles.loading}>Loading articles...</div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -224,40 +196,42 @@ const NewsSection = () => {
           ))}
         </div>
 
-        {articlesToShow.length > 0 ? (
+        {featuredArticle ? (
           <>
+            {/* Featured Article */}
             <div className={styles.mainArticle}>
               <div className={styles.imageContainer}>
-                <img src={articlesToShow[0].image} alt="main" />
+                <img src={featuredArticle.image} alt="main" />
                 <div className={styles.overlay}></div>
                 <div className={styles.categoryBadge}>
-                  {articlesToShow[0].category}
+                  {featuredArticle.category}
                 </div>
               </div>
               <div className={styles.articleContent}>
-                <h3>{articlesToShow[0].title}</h3>
-                <p className={styles.excerpt}>{articlesToShow[0].excerpt}</p>
+                <h3>{featuredArticle.title}</h3>
+                <p className={styles.excerpt}>{featuredArticle.excerpt}</p>
                 <div className={styles.articleMeta}>
                   <span className={styles.date}>
-                    {articlesToShow[0].date}
+                    {featuredArticle.date}
                   </span>
                   <button
                     className={styles.readMore}
-                    onClick={() => handleReadMore(articlesToShow[0])}
+                    onClick={() => handleReadMore(featuredArticle)}
                   >
                     Read More →
                   </button>
                 </div>
                 <PostActions
-                  postId={articlesToShow[0].id || 0}
-                  postTitle={articlesToShow[0].title}
+                  postId={featuredArticle.id || 0}
+                  postTitle={featuredArticle.title}
                 />
               </div>
             </div>
 
+            {/* Secondary Articles */}
             <div className={styles.articleList}>
-              {articlesToShow.slice(1).map((article, index) => (
-                <div key={index} className={styles.articleItem}>
+              {secondaryArticles.map((article, index) => (
+                <div key={article.id || index} className={styles.articleItem}>
                   <div className={styles.imageContainer}>
                     <img src={article.image} alt={article.title} />
                     <div className={styles.overlay}></div>
@@ -282,11 +256,23 @@ const NewsSection = () => {
                 </div>
               ))}
             </div>
-            {!token && <LoginPrompt />}
+
+            {/* Button to get all posts */}
+            <div className={styles.viewAllButtonContainer}>
+              {token ? (
+                <Link to="/posts" className={styles.viewAllButton}>
+                  Click here to get all the posts
+                </Link>
+              ) : (
+                <Link to="/login" className={styles.viewAllButton}>
+                  Login to get all posts
+                </Link>
+              )}
+            </div>
           </>
         ) : (
           <div className={styles.noArticles}>
-            <p>No articles found for {activeTab}.</p>
+            <p>No articles found.</p>
           </div>
         )}
       </div>
