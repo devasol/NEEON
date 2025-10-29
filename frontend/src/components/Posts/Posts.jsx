@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./Posts.module.css";
 import api from "../../utils/api";
 import useAuth from "../../hooks/useAuth";
@@ -13,6 +14,14 @@ const Posts = () => {
   const [totalPosts, setTotalPosts] = useState(0); // Total number of posts
   const sectionRef = useRef(null);
   const { token } = useAuth();
+  const navigate = useNavigate();
+  
+  // Function to trigger login modal
+  const triggerLogin = () => {
+    // Try to trigger the login modal by dispatching a custom event
+    const loginEvent = new CustomEvent('triggerLoginModal', { bubbles: true, cancelable: true });
+    document.dispatchEvent(loginEvent);
+  };
 
   // State to hold all posts for pagination
   const [allPosts, setAllPosts] = useState([]);
@@ -188,24 +197,53 @@ const Posts = () => {
                   )}
 
                   <div className={styles.postImage}>
-                    {post.image ? (
-                      <img 
-                        src={`${import.meta.env.VITE_API_BASE || "http://localhost:9000"}/api/v1/blogs/${post._id}/image`} 
-                        alt={post.newsTitle} 
-                        onError={(e) => {
-                          e.target.onerror = null; // Prevent infinite loop
-                          e.target.style.display = 'none'; // Hide if image fails to load
-                        }}
-                      />
-                    ) : (
-                      <span className={styles.emoji}>
-                        {post.category === "Technology"
-                          ? "💻"
-                          : post.category === "Design"
-                          ? "🎨"
-                          : "📝"}
-                      </span>
-                    )}
+                    <div className={styles.imageSkeleton}>
+                      <div className={styles.skeletonLoader}></div>
+                    </div>
+                    <img 
+                      src={post.imageUrl || `${import.meta.env.VITE_API_BASE || "http://localhost:9000"}/api/v1/blogs/${post._id}/image`} 
+                      alt={post.newsTitle} 
+                      onError={(e) => {
+                        // Hide skeleton and show fallback when image fails to load
+                        const skeleton = e.target.previousElementSibling;
+                        if (skeleton) skeleton.style.display = 'none';
+                        
+                        // If it's the API endpoint that failed (not an imageUrl), try to load a placeholder
+                        if (!post.imageUrl) {
+                          // Try to load a placeholder image based on category
+                          const category = post.category?.toLowerCase() || 'general';
+                          let placeholderUrl = '';
+                          
+                          if (category.includes('technology')) {
+                            placeholderUrl = 'https://via.placeholder.com/400x200/4a90e2/ffffff?text=Technology';
+                          } else if (category.includes('design')) {
+                            placeholderUrl = 'https://via.placeholder.com/400x200/e74c3c/ffffff?text=Design';
+                          } else {
+                            placeholderUrl = 'https://via.placeholder.com/400x200/2ecc71/ffffff?text=Blog+Post';
+                          }
+                          
+                          e.target.src = placeholderUrl;
+                          e.target.onerror = null; // Prevent infinite loop if placeholder also fails
+                        }
+                      }}
+                      onLoad={(e) => {
+                        // Hide skeleton when image loads successfully
+                        const skeleton = e.target.previousElementSibling;
+                        if (skeleton) skeleton.style.opacity = '0';
+                        
+                        e.target.style.objectFit = 'cover';
+                        e.target.style.opacity = '1';
+                      }}
+                      style={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        display: 'block',
+                        opacity: '0',
+                        transition: 'opacity 0.3s ease-in-out',
+                        position: 'relative',
+                        zIndex: 2
+                      }}
+                    />
                   </div>
 
                   <div className={styles.postContent}>
@@ -254,16 +292,13 @@ const Posts = () => {
                   <button
                     className={styles.loginButton}
                     onClick={() => {
-                      // Trigger login modal
-                      const loginButton = document.querySelector(
-                        "[data-login-trigger]"
-                      );
-                      if (loginButton) {
-                        loginButton.click();
-                      } else {
-                        // Fallback: redirect to login page or show alert
-                        alert("Please navigate to the login page");
-                      }
+                      // Navigate to homepage and trigger login modal
+                      navigate('/');
+                      // Use a timeout to ensure the page has loaded before triggering the event
+                      setTimeout(() => {
+                        const loginEvent = new CustomEvent('openLoginModal');
+                        document.dispatchEvent(loginEvent);
+                      }, 100);
                     }}
                   >
                     Login to Continue

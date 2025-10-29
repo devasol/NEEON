@@ -63,6 +63,18 @@ const blogNewsSchema = new mongoose.Schema({
     },
     select: false,
   },
+  imageUrl: {
+    type: String,
+    validate: {
+      validator: function(v) {
+        if (v) {
+          return /^https?:\/\/.+\..+/.test(v);
+        }
+        return true; // Allow null/undefined
+      },
+      message: 'Please provide a valid URL for the image'
+    }
+  },
 });
 // enable timestamps so createdAt is available
 blogNewsSchema.set("timestamps", true);

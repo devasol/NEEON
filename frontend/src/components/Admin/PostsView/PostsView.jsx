@@ -31,6 +31,7 @@ const PostsView = () => {
   const [newStatus, setNewStatus] = useState("Draft");
   const [newImageFile, setNewImageFile] = useState(null);
   const [newImagePreview, setNewImagePreview] = useState(null);
+  const [newImageUrl, setNewImageUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [isDragging, setIsDragging] = useState(false);
@@ -97,10 +98,64 @@ const PostsView = () => {
   }, []);
 
   // listen for global 'open-new-post' events (dispatched from Header)
+  // Store the full blog data to access when editing
+  const [fullBlogData, setFullBlogData] = useState([]);
+
   useEffect(() => {
     const handleOpen = () => setNewOpen(true);
     window.addEventListener("open-new-post", handleOpen);
     return () => window.removeEventListener("open-new-post", handleOpen);
+  }, []);
+
+  // fetch blogs from backend on mount
+  useEffect(() => {
+    let mounted = true;
+    axios
+      .get("http://localhost:9000/api/v1/blogs")
+      .then((res) => {
+        if (!mounted) return;
+        const blogs = res.data.blogs?.allBlogs || [];
+        setFullBlogData(blogs); // Store full blog data
+        // map backend blog shape to UI post shape
+        const mapped = blogs.map((b) => ({
+          id: b._id,
+          title: b.newsTitle,
+          excerpt: b.newsDescription ? b.newsDescription.slice(0, 140) : "",
+          content: b.newsDescription || "",
+          category: b.category || "Uncategorized",
+          status: b.status || "Draft",
+          author: b.postedBy || "Admin",
+          date: b.datePosted || b.createdAt || new Date().toISOString(),
+          views: b.views || 0,
+          comments: b.comments || 0,
+          image: b.imageUrl || null,
+        }));
+        setPosts(mapped);
+      })
+      .catch((err) => {
+        console.debug("Could not fetch blogs:", err.message || err);
+        // Fallback dummy data for demonstration
+        setPosts([
+          {
+            id: 1,
+            title: "Welcome to Your Blog",
+            excerpt:
+              "This is your first post. Start creating amazing content for your audience...",
+            content:
+              "This is your first post. Start creating amazing content for your audience...",
+            category: "Uncategorized",
+            status: "Published",
+            author: "Admin",
+            date: new Date().toISOString(),
+            views: 42,
+            comments: 3,
+            image: null,
+          },
+        ]);
+      });
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   // Filter and sort posts
@@ -136,6 +191,9 @@ const PostsView = () => {
   };
 
   const handleEditPost = (post) => {
+    // Find the original blog data to populate imageUrl
+    const originalBlog = fullBlogData.find(b => b._id === post.id);
+    
     // open the create/edit modal in edit mode and populate fields
     setIsEditing(true);
     setNewTitle(post.title || "");
@@ -144,6 +202,7 @@ const PostsView = () => {
     setNewStatus(post.status || "Draft");
     // image handling: we keep preview if available
     setNewImagePreview(post.image || null);
+    setNewImageUrl(originalBlog?.imageUrl || ""); // Set imageUrl field if it exists in the original blog data
     setNewImageFile(null); // clear file input until user selects new file
     setFormErrors({});
     setActiveTab("content");
@@ -254,6 +313,7 @@ const PostsView = () => {
       form.append("status", newStatus);
       form.append("postedBy", "Admin");
       if (newImageFile) form.append("image", newImageFile);
+      if (newImageUrl) form.append("imageUrl", newImageUrl);
 
       let res;
       if (isEditing && selectedPost && selectedPost.id) {
@@ -290,6 +350,7 @@ const PostsView = () => {
             comments: selectedPost.comments || 0,
             image:
               newImagePreview ||
+              newImageUrl ||
               (b && (b.imageUrl || b.image)) ||
               selectedPost.image,
           };
@@ -312,7 +373,7 @@ const PostsView = () => {
             date: b.datePosted || new Date().toISOString(),
             views: 0,
             comments: 0,
-            image: newImagePreview || b.imageUrl || null,
+            image: newImagePreview || newImageUrl || b.imageUrl || null,
           };
           setPosts((prev) => [newPost, ...prev]);
           resetForm();
@@ -348,6 +409,7 @@ const PostsView = () => {
     setNewStatus("Draft");
     setNewImageFile(null);
     setNewImagePreview(null);
+    setNewImageUrl("");
     setFormErrors({});
     setActiveTab("content");
     setIsEditing(false);
@@ -809,41 +871,58 @@ const PostsView = () => {
 
                     <div className={styles.formGroup}>
                       <label className={styles.formLabel}>Featured Image</label>
-                      <div
-                        className={`${styles.imageUpload} ${
-                          isDragging ? styles.dragging : ""
-                        } ${newImagePreview ? styles.hasImage : ""}`}
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
-                        onDrop={handleDrop}
-                        onClick={triggerFileInput}
-                      >
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          accept="image/*"
-                          onChange={onImageChange}
-                          className={styles.fileInput}
-                        />
+                      <div className={styles.imageOptions}>
+                        <div className={styles.imageUpload} 
+                          onDragOver={handleDragOver}
+                          onDragLeave={handleDragLeave}
+                          onDrop={handleDrop}
+                          onClick={triggerFileInput}
+                        >
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={onImageChange}
+                            className={styles.fileInput}
+                          />
 
-                        {newImagePreview ? (
-                          <div className={styles.imagePreview}>
-                            <img src={newImagePreview} alt="Preview" />
-                            <button
-                              type="button"
-                              className={styles.removeImage}
-                              onClick={removeImage}
-                            >
-                              ×
-                            </button>
-                          </div>
-                        ) : (
-                          <div className={styles.uploadPlaceholder}>
-                            <UploadIcon />
-                            <p>Drag & drop an image or click to browse</p>
-                            <small>Supports JPG, PNG, WEBP - Max 5MB</small>
-                          </div>
-                        )}
+                          {newImagePreview ? (
+                            <div className={styles.imagePreview}>
+                              <img src={newImagePreview} alt="Preview" />
+                              <button
+                                type="button"
+                                className={styles.removeImage}
+                                onClick={removeImage}
+                              >
+                                ×
+                              </button>
+                            </div>
+                          ) : (
+                            <div className={styles.uploadPlaceholder}>
+                              <UploadIcon />
+                              <p>Drag & drop an image or click to browse</p>
+                              <small>Supports JPG, PNG, WEBP - Max 5MB</small>
+                            </div>
+                          )}
+                        </div>
+                        
+                        <div className={styles.orSeparator}>
+                          <div className={styles.line}></div>
+                          <span>OR</span>
+                          <div className={styles.line}></div>
+                        </div>
+                        
+                        <div className={styles.urlInputContainer}>
+                          <label className={styles.formLabel}>Or enter image URL</label>
+                          <input
+                            type="url"
+                            value={newImageUrl}
+                            onChange={(e) => setNewImageUrl(e.target.value)}
+                            className={styles.formInput}
+                            placeholder="https://example.com/image.jpg"
+                          />
+                          <p className={styles.urlHelper}>Enter a direct link to an image (URL)</p>
+                        </div>
                       </div>
                       {formErrors.image && (
                         <span className={styles.errorText}>

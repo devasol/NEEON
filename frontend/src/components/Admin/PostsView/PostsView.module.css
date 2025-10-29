@@ -873,6 +873,67 @@
   transition: all 0.3s ease;
 }
 
+/* Image options layout */
+.imageOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.orSeparator {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  position: relative;
+}
+
+.orSeparator .line {
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+.orSeparator span {
+  padding: 0 15px;
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: white; /* So text overlays the line */
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.75rem;
+}
+
+.urlInputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.urlInputContainer .formInput {
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.urlInputContainer .formInput:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  transform: translateY(-1px);
+}
+
+.urlHelper {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+  font-style: italic;
+}
+
 .imageUpload:hover .uploadPlaceholder {
   color: #334155;
   transform: translateY(-2px);

@@ -6,7 +6,7 @@ const fs = require("fs");
 exports.getPublicBlogs = async (req, res) => {
   try {
     const limit = req.query.limit ? parseInt(req.query.limit) : 3; // Default to 3 posts
-    const allBlogs = await BlogNewsModel.find().select("-image").limit(limit);
+    const allBlogs = await BlogNewsModel.find({ status: "Published" }).select("-image").limit(limit);
     res.status(200).json({
       status: "success",
       message: `Successfully got ${allBlogs.length} public Blogs.`,

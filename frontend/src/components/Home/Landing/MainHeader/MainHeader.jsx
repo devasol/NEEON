@@ -62,6 +62,19 @@ function MainHeader() {
     return () => window.removeEventListener("keydown", onKey);
   }, [showLogin]);
 
+  // Listen for the custom event to open login modal
+  useEffect(() => {
+    const handleOpenLoginModal = () => {
+      setShowLogin(true);
+    };
+
+    document.addEventListener('openLoginModal', handleOpenLoginModal);
+    
+    return () => {
+      document.removeEventListener('openLoginModal', handleOpenLoginModal);
+    };
+  }, []);
+
   useEffect(() => {
     if (!showLogin && loginIconRef.current) {
       try {
