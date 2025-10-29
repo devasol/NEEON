@@ -20,6 +20,17 @@
   box-shadow: 0 18px 30px rgba(17, 23, 34, 0.08);
 }
 
+.cardLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cardIcon {
+  font-size: 1.8rem;
+  margin-bottom: -0.5rem;
+}
+
 .cardTitle {
   color: black;
   font-weight: 600;

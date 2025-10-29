@@ -341,8 +341,9 @@ const PostsView = () => {
         }
 
         // Success message
+        const successMessage = isEditing ? "Post updated successfully! 🎉" : "Post created successfully! 🎉";
         const successEvent = new CustomEvent("showToast", {
-          detail: { message: "Post created successfully! 🎉", type: "success" },
+          detail: { message: successMessage, type: "success" },
         });
         window.dispatchEvent(successEvent);
       } else {
@@ -354,7 +355,7 @@ const PostsView = () => {
       const errorEvent = new CustomEvent("showToast", {
         detail: {
           message:
-            "Error creating post: " + err.message,
+            "Error " + (isEditing ? "updating" : "creating") + " post: " + err.message,
           type: "error",
         },
       });

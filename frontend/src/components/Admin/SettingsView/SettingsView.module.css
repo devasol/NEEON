@@ -1,21 +1,102 @@
 /* SettingsView.module.css */
+.settingsView {
+  padding: 1.5rem;
+}
+
 .settingsView h2 {
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  color: #333;
 }
-.tableCard {
-  background: #fff;
-  border-radius: 12px;
-  padding: 1rem;
-  overflow: auto;
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
 }
-.input {
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #666;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  background-color: #f5f5f5;
+}
+
+.tab.activeTab {
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+}
+
+.settingsForm {
+  max-width: 800px;
+}
+
+.tabContent {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.formGroup .checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.formGroup .checkboxLabel input[type="checkbox"] {
+  margin: 0;
+}
+
+.input,
+.textarea {
   display: block;
   padding: 0.6rem 0.8rem;
   width: 100%;
   border-radius: 8px;
   border: 1px solid #e6eef7;
   margin-bottom: 0.75rem;
+  font-size: 1rem;
+  transition: border-color 0.2s;
 }
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.formActions {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .actionBtn {
   background: linear-gradient(135deg, #4ecdc4, #ff6b6b);
   color: white;
@@ -24,9 +105,52 @@
   border: none;
   cursor: pointer;
   font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.actionBtn:hover {
+  opacity: 0.9;
+}
+
+.actionBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.saveStatus {
+  margin-top: 0.75rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.saveStatus.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.saveStatus.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
 }
 
 @media (max-width: 768px) {
+  .settingsView {
+    padding: 1rem;
+  }
+  
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  
+  .tab {
+    white-space: nowrap;
+  }
+  
   .tableCard {
     padding: 0.5rem;
   }

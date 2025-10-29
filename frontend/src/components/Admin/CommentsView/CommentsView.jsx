@@ -68,7 +68,7 @@ const CommentsView = () => {
     e.stopPropagation();
     // Get the actual comment object by its id
     const comment = comments.find(c => c.id === commentId);
-    if (!comment || !comment.postId) return;
+    if (!comment || !comment.postId || !comment._id) return;
 
     try {
       // In a real implementation, you might have a separate approval system
@@ -76,10 +76,19 @@ const CommentsView = () => {
       setComments(prevComments => prevComments.map(c => 
         c.id === commentId ? { ...c, status: "Approved" } : c
       ));
-      alert(`Comment on "${comment.post}" approved!`);
+      
+      // Show success toast
+      const successEvent = new CustomEvent("showToast", {
+        detail: { message: `Comment on "${comment.post}" approved!`, type: "success" },
+      });
+      window.dispatchEvent(successEvent);
     } catch (error) {
       console.error("Error approving comment:", error);
-      alert("Failed to approve comment");
+      // Show error toast
+      const errorEvent = new CustomEvent("showToast", {
+        detail: { message: "Failed to approve comment", type: "error" },
+      });
+      window.dispatchEvent(errorEvent);
     }
   };
 
@@ -99,10 +108,19 @@ const CommentsView = () => {
       
       // Update local state to remove the comment
       setComments(prevComments => prevComments.filter(c => c.id !== commentId));
-      alert(`Comment on "${comment.post}" deleted!`);
+      
+      // Show success toast
+      const successEvent = new CustomEvent("showToast", {
+        detail: { message: `Comment on "${comment.post}" deleted!`, type: "success" },
+      });
+      window.dispatchEvent(successEvent);
     } catch (error) {
       console.error("Error deleting comment:", error);
-      alert("Failed to delete comment");
+      // Show error toast
+      const errorEvent = new CustomEvent("showToast", {
+        detail: { message: "Failed to delete comment", type: "error" },
+      });
+      window.dispatchEvent(errorEvent);
     }
   };
 
@@ -111,7 +129,12 @@ const CommentsView = () => {
     setComments(prevComments => prevComments.map(c => 
       c.id === commentId ? { ...c, status: newStatus } : c
     ));
-    alert(`Comment status changed to ${newStatus}`);
+    
+    // Show status change toast
+    const statusChangeEvent = new CustomEvent("showToast", {
+      detail: { message: `Comment status changed to ${newStatus}`, type: "info" },
+    });
+    window.dispatchEvent(statusChangeEvent);
   };
 
   if (loading) {

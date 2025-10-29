@@ -4,77 +4,34 @@ import styles from "./UsersTable.module.css";
 
 const UsersTable = () => {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    axios
-      .get("http://localhost:9000/api/v1/users")
-      .then((res) => {
-        setUsers(res.data.users.allUsers);
-        // console.log(res.data.users.allUsers);
-      })
-      .catch((err) => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:9000'}/api/v1/users`);
+        setUsers(response.data.users.allUsers);
+      } catch (err) {
         console.log("Error fetching users:", err);
-      });
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsers();
   }, []);
-
-  useEffect(() => {
-    // removed stray patch effect
-  });
-
-  //   const [users, setUsers] = useState([
-  //     {
-  //       id: 1,
-  //       name: "Alice",
-  //       email: "alice@example.com",
-  //       role: "Editor",
-  //       status: "active",
-  //     },
-  //     {
-  //       id: 2,
-  //       name: "Bob",
-  //       email: "bob@example.com",
-  //       role: "Author",
-  //       status: "active",
-  //     },
-  //     {
-  //       id: 3,
-  //       name: "Charlie",
-  //       email: "charlie@example.com",
-  //       role: "Subscriber",
-  //       status: "inactive",
-  //     },
-  //     {
-  //       id: 4,
-  //       name: "Diana",
-  //       email: "diana@example.com",
-  //       role: "Admin",
-  //       status: "active",
-  //     },
-  //     {
-  //       id: 5,
-  //       name: "Ethan",
-  //       email: "ethan@example.com",
-  //       role: "Subscriber",
-  //       status: "pending",
-  //     },
-  //   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filterRole, setFilterRole] = useState("all");
   const [sortConfig, setSortConfig] = useState({
-    key: "name",
+    key: "fullName",
     direction: "asc",
   });
   const [selectedUser, setSelectedUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(null);
-
-  // Simulate loading
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Filter and sort users
   const filteredUsers = users
@@ -106,14 +63,14 @@ const UsersTable = () => {
     const previous = users;
     setDeletingId(userId);
     try {
-      // remove optimistically (match either _id or id)
+      // remove optimistically (match either _id or user.id)
       console.debug("Attempting to delete userId:", userId);
       setUsers((prev) =>
         prev.filter((user) => (user._id || user.id) !== userId)
       );
 
       const res = await axios.delete(
-        `http://localhost:9000/api/v1/users/${userId}`
+        `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:9000'}/api/v1/users/${userId}`
       );
       console.debug("Delete response:", res.status, res.data);
 
@@ -122,7 +79,17 @@ const UsersTable = () => {
         // rollback on non-OK
         setUsers(previous);
         console.error("Failed to delete user", res.data);
-        alert("Failed to delete user");
+        // Show error toast
+        const errorEvent = new CustomEvent("showToast", {
+          detail: { message: "Failed to delete user", type: "error" },
+        });
+        window.dispatchEvent(errorEvent);
+      } else {
+        // Show success toast
+        const successEvent = new CustomEvent("showToast", {
+          detail: { message: "User deleted successfully", type: "success" },
+        });
+        window.dispatchEvent(successEvent);
       }
       setDeletingId(null);
     } catch (err) {
@@ -132,7 +99,11 @@ const UsersTable = () => {
       // give clearer message when CORS or network error occurs
       const msg =
         err.response?.data?.message || err.message || "Network or CORS error";
-      alert("Error deleting user: " + msg);
+      // Show error toast
+      const errorEvent = new CustomEvent("showToast", {
+        detail: { message: "Error deleting user: " + msg, type: "error" },
+      });
+      window.dispatchEvent(errorEvent);
       setDeletingId(null);
     }
   };
@@ -149,9 +120,11 @@ const UsersTable = () => {
         "Enter role (Admin, Editor, Author, Subscriber):",
         current
       );
-      if (!next || next === current) return;
+      if (!next) return;
+      if (next === current) return;
+      
       await axios.patch(
-        `http://localhost:9000/api/v1/users/${user._id || user.id}`,
+        `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:9000'}/api/v1/users/${user._id || user.id}`,
         { role: next }
       );
       setUsers((prev) =>
@@ -159,9 +132,18 @@ const UsersTable = () => {
           (u._id || u.id) === (user._id || user.id) ? { ...u, role: next } : u
         )
       );
+      // Show success toast
+      const successEvent = new CustomEvent("showToast", {
+        detail: { message: "Role updated successfully", type: "success" },
+      });
+      window.dispatchEvent(successEvent);
     } catch (err) {
       console.error("Error updating role:", err);
-      alert("Failed to update role");
+      // Show error toast
+      const errorEvent = new CustomEvent("showToast", {
+        detail: { message: "Failed to update role", type: "error" },
+      });
+      window.dispatchEvent(errorEvent);
     }
   };
 
@@ -192,14 +174,20 @@ const UsersTable = () => {
     );
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
       <section className={styles.usersTable}>
-        <div className={styles.skeletonLoader}>
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className={styles.skeletonRow}></div>
-          ))}
-        </div>
+        <h2>User Management</h2>
+        <div className={styles.loading}>Loading users...</div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className={styles.usersTable}>
+        <h2>User Management</h2>
+        <div className={styles.error}>Error: {error}</div>
       </section>
     );
   }
@@ -238,11 +226,11 @@ const UsersTable = () => {
           <thead>
             <tr>
               <th
-                onClick={() => handleSort("name")}
+                onClick={() => handleSort("fullName")}
                 className={styles.sortable}
               >
                 Name{" "}
-                {sortConfig.key === "name" &&
+                {sortConfig.key === "fullName" &&
                   (sortConfig.direction === "asc" ? "↑" : "↓")}
               </th>
               <th
@@ -282,9 +270,9 @@ const UsersTable = () => {
                       className={styles.avatar}
                       style={{ backgroundColor: getRoleColor(user.role) }}
                     >
-                      {user.fullName.charAt(0)}
+                      {user.fullName?.charAt(0) || user.name?.charAt(0) || '?'}
                     </div>
-                    {user.fullName}
+                    {user.fullName || user.name || 'Unknown User'}
                   </div>
                 </td>
                 <td data-label="Email">{user.email}</td>
@@ -296,7 +284,7 @@ const UsersTable = () => {
                       color: getRoleColor(user.role),
                     }}
                   >
-                    {user.role}
+                    {user.role || 'Subscriber'}
                   </span>
                 </td>
                 <td data-label="Status">{getStatusBadge(user.status)}</td>
@@ -364,19 +352,19 @@ const UsersTable = () => {
                   className={styles.largeAvatar}
                   style={{ backgroundColor: getRoleColor(selectedUser.role) }}
                 >
-                  {(selectedUser.fullName || selectedUser.name || "").charAt(0)}
+                  {(selectedUser.fullName || selectedUser.name || "").charAt(0) || '?'}
                 </div>
               </div>
               <div className={styles.userDetails}>
                 <p>
                   <strong>Name:</strong>{" "}
-                  {selectedUser.fullName || selectedUser.name}
+                  {selectedUser.fullName || selectedUser.name || 'Unknown User'}
                 </p>
                 <p>
                   <strong>Email:</strong> {selectedUser.email}
                 </p>
                 <p>
-                  <strong>Role:</strong> {selectedUser.role}
+                  <strong>Role:</strong> {selectedUser.role || 'Subscriber'}
                 </p>
                 <p>
                   <strong>Status:</strong> {getStatusBadge(selectedUser.status)}

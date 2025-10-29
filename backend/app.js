@@ -6,6 +6,7 @@ const passport = require("passport");
 const blogRouter = require("./routes/blogRoute");
 const categoryRouter = require("./routes/categoryRoute");
 const userRoute = require("./routes/userRoute");
+const analyticsRouter = require("./routes/analyticsRoute");
 const googleAuthRoute = require("./routes/googleAuthRoute");
 const contactRoute = require("./routes/contactRoute");
 const globalErrorHandler = require("./controllers/errorController");
@@ -65,6 +66,9 @@ app.use("/api/categories", categoryRouter);
 
 //users Route
 app.use("/api/v1/users", userRoute);
+
+//analytics Route
+app.use("/api/v1/analytics", analyticsRouter);
 
 // Google auth routes
 app.use("/auth", googleAuthRoute);
