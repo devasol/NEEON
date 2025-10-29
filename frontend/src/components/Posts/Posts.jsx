@@ -8,61 +8,84 @@ const Posts = () => {
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const [showingLimited, setShowingLimited] = useState(false);
+  const [limit, setLimit] = useState(12); // Default limit
+  const [currentPage, setCurrentPage] = useState(1); // For pagination
+  const [totalPosts, setTotalPosts] = useState(0); // Total number of posts
   const sectionRef = useRef(null);
   const { token } = useAuth();
 
-  // Test data with proper structure
-  const testPosts = [
-    {
-      _id: "1",
-      newsTitle: "Test Post 1",
-      newsDescription:
-        "This is a test post description with more content to make it look realistic and engaging for users.",
-      category: "Technology",
-      postedBy: "Admin",
-      datePosted: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      featured: true,
-      readTime: "3 min read",
-    },
-    {
-      _id: "2",
-      newsTitle: "Test Post 2",
-      newsDescription:
-        "Another test post description with interesting content about web development and modern technologies.",
-      category: "General",
-      postedBy: "Admin",
-      datePosted: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      featured: false,
-      readTime: "5 min read",
-    },
-    {
-      _id: "3",
-      newsTitle: "Test Post 3",
-      newsDescription:
-        "This is the third test post showing how the grid layout works with multiple cards in a beautiful arrangement.",
-      category: "Design",
-      postedBy: "Admin",
-      datePosted: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      featured: true,
-      readTime: "4 min read",
-    },
-  ];
+  // State to hold all posts for pagination
+  const [allPosts, setAllPosts] = useState([]);
+  
+  // Update posts when pagination changes for logged-in users
+  useEffect(() => {
+    if (token && allPosts.length > 0) {
+      const startIndex = (currentPage - 1) * limit;
+      const endIndex = startIndex + limit;
+      setPosts(allPosts.slice(startIndex, endIndex));
+    }
+  }, [currentPage, token, allPosts, limit]);
+
+  // Reset current page when authentication status changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [token]);
 
   useEffect(() => {
-    console.log("Posts component mounted");
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+        
+        let endpoint = `/api/v1/blogs/public`;
+        if (token) {
+          endpoint = `/api/v1/blogs`;
+        }
+        
+        // For non-logged-in users, fetch only 3 posts
+        // For logged-in users, fetch all posts for pagination
+        const params = new URLSearchParams();
+        if (!token) {
+          params.append('limit', '3');
+        } else {
+          // For logged-in users, don't specify a limit to get all posts
+          // Note: This might need a backend update for actual pagination
+          // For now, we'll fetch with a high limit and handle pagination in frontend
+          params.append('limit', '100'); // Fetch more than we'll likely have
+        }
+        
+        const url = params.toString() ? `${endpoint}?${params}` : endpoint;
+        
+        const response = await api.get(url, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {}
+        });
+        
+        if (response.data && response.data.blogs && response.data.blogs.allBlogs) {
+          if (!token) {
+            // Non-logged-in user: just set the posts directly
+            setPosts(response.data.blogs.allBlogs);
+            setShowingLimited(true);
+          } else {
+            // Logged-in user: store all posts and set the first page
+            setAllPosts(response.data.blogs.allBlogs);
+            setTotalPosts(response.data.blogs.allBlogs.length);
+            setPosts(response.data.blogs.allBlogs.slice(0, limit)); // Default first page
+            setShowingLimited(false); // Logged-in users see full content
+          }
+        } else {
+          setPosts([]);
+          setAllPosts([]);
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        // Fallback to empty array
+        setPosts([]);
+        setAllPosts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // Simulate API call with timeout to show loading state
-    const timer = setTimeout(() => {
-      console.log("Setting test posts");
-      setPosts(testPosts);
-      setLoading(false);
-      setShowingLimited(!token);
-    }, 1000);
-
-    return () => clearTimeout(timer);
+    fetchPosts();
   }, [token]);
 
   useEffect(() => {
@@ -97,6 +120,15 @@ const Posts = () => {
         day: "numeric",
       });
     }
+  };
+
+  const calculateReadTime = (description) => {
+    if (!description) return "5 min read";
+    // Average reading speed is about 200 words per minute
+    const wordsPerMinute = 200;
+    const wordCount = description.split(/\s+/).length;
+    const readTime = Math.ceil(wordCount / wordsPerMinute);
+    return `${readTime} min read`;
   };
 
   console.log("Rendering - loading:", loading, "posts count:", posts.length);
@@ -147,22 +179,33 @@ const Posts = () => {
                 <article
                   key={post._id}
                   className={`${styles.postCard} ${
-                    post.featured ? styles.featured : ""
+                    post.views > 150 ? styles.featured : ""
                   }`}
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  {post.featured && (
-                    <div className={styles.featuredBadge}>Featured</div>
+                  {post.views > 150 && (
+                    <div className={styles.featuredBadge}>Popular</div>
                   )}
 
                   <div className={styles.postImage}>
-                    <span className={styles.emoji}>
-                      {post.category === "Technology"
-                        ? "💻"
-                        : post.category === "Design"
-                        ? "🎨"
-                        : "📝"}
-                    </span>
+                    {post.image ? (
+                      <img 
+                        src={`${import.meta.env.VITE_API_BASE || "http://localhost:9000"}/api/v1/blogs/${post._id}/image`} 
+                        alt={post.newsTitle} 
+                        onError={(e) => {
+                          e.target.onerror = null; // Prevent infinite loop
+                          e.target.style.display = 'none'; // Hide if image fails to load
+                        }}
+                      />
+                    ) : (
+                      <span className={styles.emoji}>
+                        {post.category === "Technology"
+                          ? "💻"
+                          : post.category === "Design"
+                          ? "🎨"
+                          : "📝"}
+                      </span>
+                    )}
                   </div>
 
                   <div className={styles.postContent}>
@@ -190,7 +233,7 @@ const Posts = () => {
                         </span>
                       </div>
                       <div className={styles.readTime}>
-                        {post.readTime || "5 min read"}
+                        {calculateReadTime(post.newsDescription) || "5 min read"}
                       </div>
                     </div>
                   </div>
@@ -200,7 +243,7 @@ const Posts = () => {
               ))}
             </div>
 
-            {showingLimited && (
+            {!token && posts.length > 0 && (
               <div className={styles.loginPrompt}>
                 <div className={styles.loginPromptContent}>
                   <h3>🔒 Limited Preview</h3>
@@ -229,12 +272,30 @@ const Posts = () => {
               </div>
             )}
 
-            {token && posts.length > 0 && (
-              <div className={styles.loadMore}>
-                <button className={styles.loadMoreButton}>
-                  Load More Posts
-                  <span className={styles.loadMoreArrow}>↓</span>
-                </button>
+            {/* Pagination controls for logged-in users */}
+            {token && totalPosts > 0 && (
+              <div className={styles.pagination}>
+                <div className={styles.paginationControls}>
+                  <button 
+                    className={`${styles.pageButton} ${currentPage === 1 ? styles.disabled : ''}`}
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                  >
+                    ← Prev
+                  </button>
+                  
+                  <div className={styles.pageInfo}>
+                    Page {currentPage} of {Math.ceil(totalPosts / limit)}
+                  </div>
+                  
+                  <button 
+                    className={`${styles.pageButton} ${currentPage === Math.ceil(totalPosts / limit) ? styles.disabled : ''}`}
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(totalPosts / limit)))}
+                    disabled={currentPage === Math.ceil(totalPosts / limit)}
+                  >
+                    Next →
+                  </button>
+                </div>
               </div>
             )}
           </>
