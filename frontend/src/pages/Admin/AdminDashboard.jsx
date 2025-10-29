@@ -2,13 +2,13 @@ import React from "react";
 import styles from "./AdminDashboard.module.css";
 
 // Import your admin components
-import CategoriesView from "../../components/Admin/CategoriesView/CategoriesView";
-import CommentsView from "../../components/Admin/CommentsView/CommentsView";
-import PostsView from "../../components/Admin/PostsView/PostsView";
-import SettingsView from "../../components/Admin/SettingsView/SettingsView";
-import StatsCard from "../../components/Admin/StatsCard/StatsCard";
-import UsersTable from "../../components/Admin/UsersTable/UsersTable";
-import RecentPosts from "../../components/Admin/RecentPosts/RecentPosts";
+import CategoriesView from "../../components/Admin/CategoriesView/CategoriesView.jsx";
+import CommentsView from "../../components/Admin/CommentsView/CommentsView.jsx";
+import PostsView from "../../components/Admin/PostsView/PostsView.jsx";
+import SettingsView from "../../components/Admin/SettingsView/SettingsView.jsx";
+import StatsCard from "../../components/Admin/StatsCard/StatsCard.jsx";
+import UsersTable from "../../components/Admin/UsersTable/UsersTable.jsx";
+import RecentPosts from "../../components/Admin/RecentPosts/RecentPosts.jsx";
 
 const AdminDashboard = ({ selectedView, setSelectedView }) => {
 

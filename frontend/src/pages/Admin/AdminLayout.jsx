@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../../components/Admin/Header/Header';
-import Sidebar from '../../components/Admin/Sidebar/Sidebar';
+import Header from '../../components/Admin/Header/Header.jsx';
+import Sidebar from '../../components/Admin/Sidebar/Sidebar.jsx';
 import styles from './AdminLayout.module.css';
 
 const AdminLayout = ({ children, selectedView, setSelectedView }) => {

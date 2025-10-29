@@ -7,6 +7,7 @@ const blogRouter = require("./routes/blogRoute");
 const categoryRouter = require("./routes/categoryRoute");
 const userRoute = require("./routes/userRoute");
 const googleAuthRoute = require("./routes/googleAuthRoute");
+const contactRoute = require("./routes/contactRoute");
 const globalErrorHandler = require("./controllers/errorController");
 
 const app = express();
@@ -67,6 +68,9 @@ app.use("/api/v1/users", userRoute);
 
 // Google auth routes
 app.use("/auth", googleAuthRoute);
+
+// Contact route
+app.use("/api", contactRoute);
 
 // health endpoint for readiness checks
 app.get("/health", (req, res) => {

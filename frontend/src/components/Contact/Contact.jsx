@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./Contact.module.css";
+import api from '../../utils/api';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -9,229 +10,167 @@ const Contact = () => {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef(null);
-
-  const contactMethods = [
-    {
-      icon: "📧",
-      title: "Email Us",
-      detail: "hello@blog.com",
-      action: "mailto:hello@blog.com",
-      color: "#6366f1",
-    },
-    {
-      icon: "📞",
-      title: "Call Us",
-      detail: "+1 (555) 123-4567",
-      action: "tel:+15551234567",
-      color: "#10b981",
-    },
-    {
-      icon: "💬",
-      title: "Live Chat",
-      detail: "Start conversation",
-      action: "#chat",
-      color: "#ec4899",
-    },
-    {
-      icon: "📍",
-      title: "Visit Us",
-      detail: "123 Blog Street, City",
-      action: "#map",
-      color: "#f59e0b",
-    },
-  ];
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const [submitStatus, setSubmitStatus] = useState(null);
+  const [focused, setFocused] = useState("");
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
+    }));
+  };
+
+  const handleFocus = (field) => {
+    setFocused(field);
+  };
+
+  const handleBlur = () => {
+    setFocused("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus(null);
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      const data = await api.post('/api/contact', formData);
 
-    setIsSubmitting(false);
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
-
-    alert("Message sent successfully!");
+      if (data.status === 'success') {
+        setSubmitStatus({ type: 'success', message: data.message });
+        // Reset form after successful submission
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setSubmitStatus({ type: 'error', message: data.message || 'Failed to send message' });
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus({ type: 'error', message: 'Network error. Please try again.' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section ref={sectionRef} className={styles.contact}>
-      <div className={`${styles.container} ${isVisible ? styles.visible : ""}`}>
+    <div className={styles.container}>
+      <div className={styles.card}>
+        {/* Animated Background Elements */}
+        <div className={styles.background}>
+          <div className={styles.circle}></div>
+          <div className={styles.circle}></div>
+          <div className={styles.circle}></div>
+        </div>
+
+        {/* Header */}
         <div className={styles.header}>
-          <h2 className={styles.title}>Get In Touch</h2>
+          <div className={styles.logo}>
+            <div className={styles.logoIcon}>👋</div>
+          </div>
+          <h1 className={styles.title}>Let's Talk</h1>
           <p className={styles.subtitle}>
-            We'd love to hear from you. Send us a message and we'll respond as
-            soon as possible.
+            Ready to create something amazing? Get in touch.
           </p>
         </div>
 
-        <div className={styles.content}>
-          <div className={styles.contactInfo}>
-            <div className={styles.infoCard}>
-              <h3 className={styles.infoTitle}>Let's Start a Conversation</h3>
-              <p className={styles.infoDescription}>
-                Whether you have a question about features, trials, pricing, or
-                anything else, our team is ready to answer all your questions.
-              </p>
-
-              <div className={styles.contactMethods}>
-                {contactMethods.map((method, index) => (
-                  <a
-                    key={index}
-                    href={method.action}
-                    className={styles.contactMethod}
-                    style={{ "--method-color": method.color }}
-                  >
-                    <div className={styles.methodIcon}>
-                      <span>{method.icon}</span>
-                    </div>
-                    <div className={styles.methodContent}>
-                      <h4>{method.title}</h4>
-                      <p>{method.detail}</p>
-                    </div>
-                    <div className={styles.methodArrow}>→</div>
-                  </a>
-                ))}
-              </div>
-
-              <div className={styles.socialLinks}>
-                <h4>Follow Us</h4>
-                <div className={styles.socialIcons}>
-                  {["📘", "🐦", "📷", "💼"].map((icon, index) => (
-                    <button key={index} className={styles.socialIcon}>
-                      <span>{icon}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+        {/* Contact Form */}
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.inputGroup}>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              onFocus={() => handleFocus("name")}
+              onBlur={handleBlur}
+              className={`${styles.input} ${
+                focused === "name" ? styles.focused : ""
+              }`}
+              placeholder=" "
+              required
+            />
+            <label className={styles.label}>Your Name</label>
+            <div className={styles.inputLine}></div>
           </div>
 
-          <div className={styles.contactForm}>
-            <form onSubmit={handleSubmit} className={styles.form}>
-              <div className={styles.formGroup}>
-                <div className={styles.inputWrapper}>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className={styles.formInput}
-                  />
-                  <label className={styles.formLabel}>Your Name</label>
-                  <div className={styles.inputHighlight}></div>
-                </div>
-              </div>
-
-              <div className={styles.formGroup}>
-                <div className={styles.inputWrapper}>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className={styles.formInput}
-                  />
-                  <label className={styles.formLabel}>Email Address</label>
-                  <div className={styles.inputHighlight}></div>
-                </div>
-              </div>
-
-              <div className={styles.formGroup}>
-                <div className={styles.inputWrapper}>
-                  <input
-                    type="text"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    className={styles.formInput}
-                  />
-                  <label className={styles.formLabel}>Subject</label>
-                  <div className={styles.inputHighlight}></div>
-                </div>
-              </div>
-
-              <div className={styles.formGroup}>
-                <div className={styles.inputWrapper}>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows="5"
-                    className={`${styles.formInput} ${styles.textarea}`}
-                  ></textarea>
-                  <label className={styles.formLabel}>Your Message</label>
-                  <div className={styles.inputHighlight}></div>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className={`${styles.submitButton} ${
-                  isSubmitting ? styles.submitting : ""
-                }`}
-                disabled={isSubmitting}
-              >
-                <span className={styles.buttonText}>
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                </span>
-                <div className={styles.buttonLoader}></div>
-                <div className={styles.buttonSuccess}>✓</div>
-              </button>
-            </form>
+          <div className={styles.inputGroup}>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              onFocus={() => handleFocus("email")}
+              onBlur={handleBlur}
+              className={`${styles.input} ${
+                focused === "email" ? styles.focused : ""
+              }`}
+              placeholder=" "
+              required
+            />
+            <label className={styles.label}>Email Address</label>
+            <div className={styles.inputLine}></div>
           </div>
-        </div>
 
-        <div className={styles.mapSection}>
-          <div className={styles.mapPlaceholder}>
-            <div className={styles.mapOverlay}>
-              <h3>Visit Our Office</h3>
-              <p>
-                123 Blog Street, Creative District
-                <br />
-                City, State 12345
-              </p>
-              <button className={styles.mapButton}>View Larger Map</button>
+          <div className={styles.inputGroup}>
+            <input
+              type="text"
+              name="subject"
+              value={formData.subject}
+              onChange={handleChange}
+              onFocus={() => handleFocus("subject")}
+              onBlur={handleBlur}
+              className={`${styles.input} ${
+                focused === "subject" ? styles.focused : ""
+              }`}
+              placeholder=" "
+              required
+            />
+            <label className={styles.label}>Subject</label>
+            <div className={styles.inputLine}></div>
+          </div>
+
+          <div className={styles.inputGroup}>
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              onFocus={() => handleFocus("message")}
+              onBlur={handleBlur}
+              rows="4"
+              className={`${styles.input} ${styles.textarea} ${
+                focused === "message" ? styles.focused : ""
+              }`}
+              placeholder=" "
+              required
+            />
+            <label className={styles.label}>Your Message</label>
+            <div className={styles.inputLine}></div>
+          </div>
+
+          <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
+            <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
+            <div className={styles.arrow}>→</div>
+          </button>
+
+          {submitStatus && (
+            <div className={`${styles.statusMessage} ${styles[submitStatus.type]}`}>
+              {submitStatus.message}
             </div>
-            <div className={styles.mapAnimation}></div>
+          )}
+        </form>
+
+        {/* Quick Contact Info */}
+        <div className={styles.quickContact}>
+          <div className={styles.contactItem}>
+            <div className={styles.contactIcon}>📧</div>
+            <span>hello@example.com</span>
+          </div>
+          <div className={styles.contactItem}>
+            <div className={styles.contactIcon}>📱</div>
+            <span>+1 (555) 123-4567</span>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

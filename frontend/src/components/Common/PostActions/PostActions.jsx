@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import styles from "./PostActions.module.css";
 import useAuth from "../../../hooks/useAuth";
 import api from "../../../utils/api";
-import FloatingToast from "../../Ui/FloatingToast";
+import FloatingToast from "../../Ui/FloatingToast.jsx";
 
 function PostActions({
 	postId,

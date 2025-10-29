@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Routes, Route } from 'react-router-dom';
-import HomePage from "./pages/HomePage/HomePage";
-import AdminDashboard from "./pages/Admin/AdminDashboard";
-import AdminLayout from "./pages/Admin/AdminLayout";
-import PostsPage from "./pages/Posts/PostsPage";
+import HomePage from "./pages/HomePage/HomePage.jsx";
+import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
+import AdminLayout from "./pages/Admin/AdminLayout.jsx";
+import PostsPage from "./pages/Posts/PostsPage.jsx";
+import Contact from "./pages/Contact/ContactPage.jsx";
 
 function App() {
   const [selectedView, setSelectedView] = useState("dashboard");
@@ -12,6 +13,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/posts" element={<PostsPage />} />
+      <Route path="/contact" element={<Contact />} />
       <Route
         path="/admin"
         element={

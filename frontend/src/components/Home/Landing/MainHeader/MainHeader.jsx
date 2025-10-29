@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 import logo from "./../../../../assets/Images/LogoImages/logo.png";
 import styles from "./MainHeader.module.css";
 import Login from "../../Login/Login";
 import Signup from "../../Signup/Signup";
 import useAuth from "../../../../hooks/useAuth";
-import { NavLink, Link } from "react-router-dom";
 import api from "../../../../utils/api";
 
 function MainHeader() {
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isSticky, setIsSticky] = useState(false);
@@ -26,19 +27,30 @@ function MainHeader() {
     const handleScroll = () => {
       if (!headerRef.current) return;
 
-      // Get the height of the landing page (first section)
-      const landingPage =
-        document.querySelector("section:first-of-type") ||
-        document.querySelector(".landing-page") ||
-        document.querySelector("#landing");
+      // Check if we're on the home page (has landing section) or other pages
+      const isHomePage = location.pathname === '/' || 
+        location.pathname === '/home';
+      const isPostsPage = location.pathname === '/posts';
+      
+      if (isHomePage) {
+        // For home page, use the original logic with landing page detection
+        const landingPage =
+          document.querySelector("section:first-of-type") ||
+          document.querySelector(".landing-page") ||
+          document.querySelector("#landing");
 
-      // Default to viewport height if no specific landing page element is found
-      const landingHeight = landingPage
-        ? landingPage.offsetHeight
-        : window.innerHeight;
-
-      // Check if we've scrolled past the landing page
-      setIsSticky(window.scrollY > landingHeight - 100);
+        if (landingPage) {
+          const landingHeight = landingPage.offsetHeight;
+          // Check if we've scrolled past the landing page
+          setIsSticky(window.scrollY > landingHeight - 100);
+        }
+      } else if (isPostsPage) {
+        // For the posts page, make header sticky after minimal scroll to match home page behavior
+        setIsSticky(window.scrollY > 50);
+      } else {
+        // For other pages, make header sticky after minimal scroll
+        setIsSticky(window.scrollY > 100);
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -48,7 +60,7 @@ function MainHeader() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [location.pathname]);
 
   // Close modal on Escape and return focus to the login icon
   useEffect(() => {
@@ -139,21 +151,8 @@ function MainHeader() {
         { name: "Commenting System" },
       ],
     },
-    { name: "Categories", path: "/categories", hasDropdown: true },
+    { name: "Categories", path: "#", hasDropdown: true },
     { name: "Elements", path: "/elements", hasDropdown: false },
-    {
-      name: "Pages",
-      path: "/pages",
-      hasDropdown: true,
-      dropdown: [
-        { name: "About Us", path: "/about" },
-        { name: "Services", path: "/services" },
-        { name: "Blog", path: "/blog" },
-        { name: "FAQ", path: "/faq" },
-        { name: "Terms of Service", path: "/terms" },
-        { name: "Privacy Policy", path: "/privacy" },
-      ],
-    },
     { name: "Posts/Blogs", path: "/posts", hasDropdown: false },
     { name: "Shop", path: "/shop", hasDropdown: false },
     { name: "Contact", path: "/contact", hasDropdown: false },

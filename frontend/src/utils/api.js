@@ -1,14 +1,23 @@
-import axios from "axios";
+// frontend/src/utils/api.js
+const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:9000';
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:9000";
+const api = {
+  post: async (endpoint, data) => {
+    try {
+      const response = await fetch(`${API_BASE}${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
+  }
+};
 
-const api = axios.create({
-  baseURL: API_BASE,
-  timeout: 10000,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-export { API_BASE };
 export default api;
+export { API_BASE };
