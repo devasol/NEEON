@@ -1,64 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./CommentsView.module.css";
+import api from "../../../utils/api";
 
 const CommentsView = () => {
   const [selectedComment, setSelectedComment] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const comments = [
-    {
-      id: 1,
-      author: "Alice Johnson",
-      excerpt: "Great post!",
-      post: "How to get the best deals on flights",
-      fullComment:
-        "Great post! I've been using these tips for years and they've saved me hundreds of dollars on flights. The section about flexible dates is especially helpful. I'd also recommend checking airline websites directly for flash sales.",
-      email: "alice.johnson@email.com",
-      date: "March 15, 2025",
-      status: "Pending",
-      avatar:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
-    },
-    {
-      id: 2,
-      author: "Bob Smith",
-      excerpt: "Nice tips",
-      post: "Top 10 Hidden Gems in Southeast Asia",
-      fullComment:
-        "Nice tips! I've visited 3 of these places and they were absolutely incredible. The local culture and food were amazing. I would add that learning a few basic phrases in the local language goes a long way in these less touristy areas.",
-      email: "bob.smith@email.com",
-      date: "March 14, 2025",
-      status: "Approved",
-      avatar:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-    },
-    {
-      id: 3,
-      author: "Carol Davis",
-      excerpt: "Very informative",
-      post: "The Rise of Plant-Based Cuisine in 2025",
-      fullComment:
-        "Very informative article! As a chef, I can confirm that plant-based cuisine is indeed evolving rapidly. We're seeing more creativity with ingredients like jackfruit, mushrooms, and legumes. The fermentation techniques mentioned are particularly interesting.",
-      email: "carol.davis@email.com",
-      date: "March 13, 2025",
-      status: "Pending",
-      avatar:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-    },
-    {
-      id: 4,
-      author: "David Wilson",
-      excerpt: "Could use more examples",
-      post: "Traditional Cooking Techniques Making a Comeback",
-      fullComment:
-        "The article was good but could use more specific examples of traditional techniques. I've been practicing fermentation at home and would love to see step-by-step guides for some of these methods. Overall, great content though!",
-      email: "david.wilson@email.com",
-      date: "March 12, 2025",
-      status: "Approved",
-      avatar:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-    },
-  ];
+  // Fetch comments from the backend
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        setLoading(true);
+        console.log("Fetching comments from API...");
+        const response = await api.get("/api/v1/blogs/all-comments", true); // true to include auth token
+        console.log("API response:", response);
+        if (response && response.status === "success" && response.comments !== undefined) {
+          // Transform the data to match the format expected by the component
+          const transformedComments = Array.isArray(response.comments) ? response.comments.map((comment, index) => ({
+            id: index + 1, // Use index as ID for frontend purposes
+            _id: comment._id, // Keep the original MongoDB _id for API operations
+            text: comment.text || "No comment text",
+            excerpt: comment.text?.substring(0, 30) + (comment.text?.length > 30 ? "..." : "") || "No comment text",
+            post: comment.post || "Unknown Post",
+            fullComment: comment.text || "No comment text",
+            username: comment.username || "Anonymous User",
+            author: comment.username || "Anonymous User",
+            email: "", // Backend doesn't provide email in this response
+            date: new Date(comment.createdAt).toLocaleString() || "Unknown Date",
+            status: "Pending", // Backend doesn't provide status, defaulting to Pending
+            avatar: "https://via.placeholder.com/50", // Default avatar since we don't have user avatars in the backend response
+            postId: comment.postId || null
+          })) : [];
+          setComments(transformedComments);
+          console.log("Transformed comments:", transformedComments);
+        } else {
+          setError(response?.message || "Failed to load comments - invalid response format");
+        }
+      } catch (err) {
+        console.error("Error fetching comments:", err);
+        console.error("Error details:", err.message, err.stack);
+        setError(`Failed to load comments: ${err.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchComments();
+  }, []);
 
   const handleCommentClick = (comment) => {
     setSelectedComment(comment);
@@ -72,25 +63,74 @@ const CommentsView = () => {
     document.body.style.overflow = "unset";
   };
 
-  const handleApprove = (commentId, e) => {
+  // Update handleApprove to work with backend
+  const handleApprove = async (commentId, e) => {
     e.stopPropagation();
-    alert(`Comment ${commentId} approved!`);
-    // Add your approval logic here
+    // Get the actual comment object by its id
+    const comment = comments.find(c => c.id === commentId);
+    if (!comment || !comment.postId) return;
+
+    try {
+      // In a real implementation, you might have a separate approval system
+      // For now, just update the status locally and show confirmation
+      setComments(prevComments => prevComments.map(c => 
+        c.id === commentId ? { ...c, status: "Approved" } : c
+      ));
+      alert(`Comment on "${comment.post}" approved!`);
+    } catch (error) {
+      console.error("Error approving comment:", error);
+      alert("Failed to approve comment");
+    }
   };
 
-  const handleDelete = (commentId, e) => {
+  // Update handleDelete to work with backend
+  const handleDelete = async (commentId, e) => {
     e.stopPropagation();
-    if (window.confirm("Are you sure you want to delete this comment?")) {
-      alert(`Comment ${commentId} deleted!`);
-      // Add your deletion logic here
+    const comment = comments.find(c => c.id === commentId);
+    if (!comment || !comment.postId || !comment._id) return;
+    
+    if (!window.confirm("Are you sure you want to delete this comment?")) {
+      return;
+    }
+
+    try {
+      // Delete the comment using the stored MongoDB _id
+      await api.delete(`/api/v1/blogs/${comment.postId}/comments/${comment._id}`, true);
+      
+      // Update local state to remove the comment
+      setComments(prevComments => prevComments.filter(c => c.id !== commentId));
+      alert(`Comment on "${comment.post}" deleted!`);
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+      alert("Failed to delete comment");
     }
   };
 
   const handleStatusChange = (commentId, newStatus, e) => {
     e.stopPropagation();
-    alert(`Comment ${commentId} status changed to ${newStatus}`);
-    // Add your status change logic here
+    setComments(prevComments => prevComments.map(c => 
+      c.id === commentId ? { ...c, status: newStatus } : c
+    ));
+    alert(`Comment status changed to ${newStatus}`);
   };
+
+  if (loading) {
+    return (
+      <section className={styles.commentsView}>
+        <h2>Comments Management</h2>
+        <div className={styles.loading}>Loading comments...</div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className={styles.commentsView}>
+        <h2>Comments Management</h2>
+        <div className={styles.error}>Error: {error}</div>
+      </section>
+    );
+  }
 
   return (
     <section className={styles.commentsView}>
@@ -101,61 +141,67 @@ const CommentsView = () => {
           <span>Actions</span>
         </div>
         <ul className={styles.commentsList}>
-          {comments.map((comment) => (
-            <li
-              key={comment.id}
-              className={styles.commentItem}
-              onClick={() => handleCommentClick(comment)}
-            >
-              <div className={styles.commentContent}>
-                <div className={styles.commentAuthor}>
-                  <img
-                    src={comment.avatar}
-                    alt={comment.author}
-                    className={styles.avatar}
-                  />
-                  <div>
-                    <strong>{comment.author}</strong>
-                    <span className={styles.commentEmail}>{comment.email}</span>
+          {comments.length > 0 ? (
+            comments.map((comment) => (
+              <li
+                key={comment.id}
+                className={styles.commentItem}
+                onClick={() => handleCommentClick(comment)}
+              >
+                <div className={styles.commentContent}>
+                  <div className={styles.commentAuthor}>
+                    <img
+                      src={comment.avatar}
+                      alt={comment.author}
+                      className={styles.avatar}
+                    />
+                    <div>
+                      <strong>{comment.author}</strong>
+                      <span className={styles.commentEmail}>{comment.email}</span>
+                    </div>
+                  </div>
+                  <div className={styles.commentPost}>
+                    on <em>"{comment.post}"</em>
+                  </div>
+                  <div className={styles.commentText}>{comment.excerpt}</div>
+                  <div className={styles.commentMeta}>
+                    <span className={styles.commentDate}>{comment.date}</span>
+                    <span
+                      className={`${styles.status} ${
+                        styles[comment.status.toLowerCase()]
+                      }`}
+                    >
+                      {comment.status}
+                    </span>
                   </div>
                 </div>
-                <div className={styles.commentPost}>
-                  on <em>"{comment.post}"</em>
-                </div>
-                <div className={styles.commentText}>{comment.excerpt}</div>
-                <div className={styles.commentMeta}>
-                  <span className={styles.commentDate}>{comment.date}</span>
-                  <span
-                    className={`${styles.status} ${
-                      styles[comment.status.toLowerCase()]
-                    }`}
+                <div className={styles.commentActions}>
+                  <button
+                    className={`${styles.smallBtn} ${styles.approveBtn}`}
+                    onClick={(e) => handleApprove(comment.id, e)}
                   >
-                    {comment.status}
-                  </span>
+                    Approve
+                  </button>
+                  <button
+                    className={`${styles.smallBtn} ${styles.deleteBtn}`}
+                    onClick={(e) => handleDelete(comment.id, e)}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className={styles.viewMoreBtn}
+                    onClick={() => handleCommentClick(comment)}
+                  >
+                    View More
+                  </button>
                 </div>
-              </div>
-              <div className={styles.commentActions}>
-                <button
-                  className={`${styles.smallBtn} ${styles.approveBtn}`}
-                  onClick={(e) => handleApprove(comment.id, e)}
-                >
-                  Approve
-                </button>
-                <button
-                  className={`${styles.smallBtn} ${styles.deleteBtn}`}
-                  onClick={(e) => handleDelete(comment.id, e)}
-                >
-                  Delete
-                </button>
-                <button
-                  className={styles.viewMoreBtn}
-                  onClick={() => handleCommentClick(comment)}
-                >
-                  View More
-                </button>
-              </div>
+              </li>
+            ))
+          ) : (
+            <li className={styles.noComments}>
+              <p>No comments found. Comments will appear here once users start commenting on blog posts.</p>
             </li>
-          ))}
+          )}
         </ul>
       </div>
 

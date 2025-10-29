@@ -25,7 +25,12 @@ const Posts = () => {
 
   // State to hold all posts for pagination
   const [allPosts, setAllPosts] = useState([]);
-  
+  const [postInteractions, setPostInteractions] = useState({}); // Store likes, comments, etc. for each post
+  const [commentInputs, setCommentInputs] = useState({}); // Store comment input values for each post
+  const [showComments, setShowComments] = useState({}); // Track which post's comments are visible
+  const [postComments, setPostComments] = useState({}); // Store comments for each post
+  const [showLoginModal, setShowLoginModal] = useState(false); // For login modal when non-logged in users try to interact
+
   // Update posts when pagination changes for logged-in users
   useEffect(() => {
     if (token && allPosts.length > 0) {
@@ -35,10 +40,165 @@ const Posts = () => {
     }
   }, [currentPage, token, allPosts, limit]);
 
+  // Initialize post interactions when posts change
+  useEffect(() => {
+    const initialInteractions = {};
+    const initialCommentInputs = {};
+    const initialShowComments = {};
+    const initialPostComments = {};
+
+    posts.forEach(post => {
+      initialInteractions[post._id] = {
+        liked: post.likedBy?.includes(token) || false, // Assuming token is user ID
+        likes: post.likes || 0,
+        comments: post.comments || 0,
+      };
+      initialCommentInputs[post._id] = '';
+      initialShowComments[post._id] = false;
+      initialPostComments[post._id] = [];
+    });
+
+    setPostInteractions(initialInteractions);
+    setCommentInputs(initialCommentInputs);
+    setShowComments(initialShowComments);
+    setPostComments(initialPostComments);
+  }, [posts]);
+
   // Reset current page when authentication status changes
   useEffect(() => {
     setCurrentPage(1);
   }, [token]);
+
+  // Show login modal when non-logged in users try to interact
+  const showLoginPrompt = () => {
+    setShowLoginModal(true);
+  };
+
+  // Close login modal
+  const closeLoginModal = () => {
+    setShowLoginModal(false);
+  };
+
+  // Like a post
+  const handleLike = async (postId) => {
+    if (!token) {
+      showLoginPrompt();
+      return;
+    }
+
+    try {
+      const response = await api.post(`/api/v1/blogs/${postId}/like`, {}, true);
+      if (response && response.liked !== undefined) {
+        setPostInteractions(prev => ({
+          ...prev,
+          [postId]: {
+            ...prev[postId],
+            liked: response.liked,
+            likes: response.liked ? prev[postId].likes + 1 : prev[postId].likes - 1
+          }
+        }));
+      }
+    } catch (error) {
+      console.error('Error liking post:', error);
+    }
+  };
+
+  // Handle comment input change
+  const handleCommentChange = (postId, value) => {
+    setCommentInputs(prev => ({
+      ...prev,
+      [postId]: value
+    }));
+  };
+
+  // Submit a comment
+  const submitComment = async (postId) => {
+    if (!token) {
+      showLoginPrompt();
+      return;
+    }
+
+    const commentText = commentInputs[postId];
+    if (!commentText.trim()) return;
+
+    try {
+      const response = await api.post(`/api/v1/blogs/${postId}/comment`, {
+        text: commentText
+      }, true);
+
+      if (response && response.blog) {
+        // Update comment count in interactions
+        setPostInteractions(prev => ({
+          ...prev,
+          [postId]: {
+            ...prev[postId],
+            comments: prev[postId].comments + 1
+          }
+        }));
+
+        // Update the comment input
+        setCommentInputs(prev => ({
+          ...prev,
+          [postId]: ''
+        }));
+
+        // Refresh comments for this post
+        fetchPostComments(postId);
+      }
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    }
+  };
+
+  // Fetch comments for a post
+  const fetchPostComments = async (postId) => {
+    try {
+      const response = await api.get(`/api/v1/blogs/${postId}/comments`, false);
+      if (response && response.comments) {
+        setPostComments(prev => ({
+          ...prev,
+          [postId]: response.comments
+        }));
+      }
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+    }
+  };
+
+  // Toggle comments visibility
+  const toggleComments = (postId) => {
+    setShowComments(prev => ({
+      ...prev,
+      [postId]: !prev[postId]
+    }));
+
+    // Fetch comments if not already fetched and comments area is being shown
+    if (!showComments[postId]) {
+      fetchPostComments(postId);
+    }
+  };
+
+  // Share functionality
+  const handleShare = (postId, postTitle) => {
+    if (navigator.share) {
+      // Web Share API is supported
+      navigator.share({
+        title: postTitle,
+        text: `Check out this post: ${postTitle}`,
+        url: window.location.origin + `/posts#${postId}`
+      }).catch(console.error);
+    } else {
+      // Fallback: copy link to clipboard
+      const postUrl = `${window.location.origin}/posts#${postId}`;
+      navigator.clipboard.writeText(postUrl)
+        .then(() => {
+          alert('Post link copied to clipboard!');
+        })
+        .catch(err => {
+          console.error('Could not copy text: ', err);
+        });
+    }
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -167,6 +327,39 @@ const Posts = () => {
   return (
     <section ref={sectionRef} className={styles.posts}>
       <div className={`${styles.container} ${isVisible ? styles.visible : ""}`}>
+        {/* Login Modal for non-logged in users */}
+        {showLoginModal && (
+          <div className={styles.loginModalOverlay}>
+            <div className={styles.loginModal}>
+              <div className={styles.loginModalHeader}>
+                <h3>Login Required</h3>
+                <button className={styles.closeButton} onClick={closeLoginModal}>×</button>
+              </div>
+              <div className={styles.loginModalBody}>
+                <p>You need to be logged in to like or comment on posts.</p>
+              </div>
+              <div className={styles.loginModalFooter}>
+                <button 
+                  className={styles.loginModalBtn}
+                  onClick={() => {
+                    // Trigger the login modal using the custom event system
+                    const loginEvent = new CustomEvent('openLoginModal');
+                    document.dispatchEvent(loginEvent);
+                    closeLoginModal(); // Close this modal after opening the login modal
+                  }}
+                >
+                  Login
+                </button>
+                <button 
+                  className={styles.cancelModalBtn}
+                  onClick={closeLoginModal}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         <div className={styles.header}>
           <h1 className={styles.title}>Latest Posts</h1>
           <p className={styles.subtitle}>
@@ -182,7 +375,17 @@ const Posts = () => {
         ) : (
           <>
             <div className={styles.postsGrid}>
-              {posts.map((post, index) => (
+              {posts.map((post, index) => {
+                const interactions = postInteractions[post._id] || { 
+                  liked: false, 
+                  likes: post.likes || 0, 
+                  comments: post.comments || 0 
+                };
+                const commentsVisible = showComments[post._id] || false;
+                const comments = postComments[post._id] || [];
+                const commentText = commentInputs[post._id] || '';
+
+                return (
                 <article
                   key={post._id}
                   className={`${styles.postCard} ${
@@ -272,11 +475,77 @@ const Posts = () => {
                         {calculateReadTime(post.newsDescription) || "5 min read"}
                       </div>
                     </div>
+
+                    {/* Post Interaction Buttons - Likes, Comments, Shares */}
+                    <div className={styles.postInteractions}>
+                      <button 
+                        className={`${styles.interactionButton} ${interactions.liked ? styles.liked : ''}`}
+                        onClick={() => handleLike(post._id)}
+                        title={interactions.liked ? "Unlike" : "Like"}
+                      >
+                        {interactions.liked ? '❤️' : '🤍'} 
+                        <span>{interactions.likes}</span>
+                      </button>
+                      <button 
+                        className={styles.interactionButton}
+                        onClick={() => toggleComments(post._id)}
+                        title="Comment"
+                      >
+                        💬 <span>{interactions.comments}</span>
+                      </button>
+                      <button 
+                        className={styles.interactionButton}
+                        onClick={() => handleShare(post._id, post.newsTitle)}
+                        title="Share"
+                      >
+                        📤
+                      </button>
+                    </div>
+
+                    {/* Comment Input and Display */}
+                    {commentsVisible && (
+                      <div className={styles.commentsSection}>
+                        <div className={styles.commentInputArea}>
+                          <input
+                            type="text"
+                            value={commentText}
+                            onChange={(e) => handleCommentChange(post._id, e.target.value)}
+                            placeholder="Add a comment..."
+                            className={styles.commentInput}
+                          />
+                          <button 
+                            onClick={() => submitComment(post._id)}
+                            className={styles.commentSubmitBtn}
+                            disabled={!commentText.trim()}
+                          >
+                            Post
+                          </button>
+                        </div>
+
+                        {/* Display comments */}
+                        {comments.length > 0 && (
+                          <div className={styles.commentsList}>
+                            {comments.map((comment, commentIndex) => (
+                              <div key={commentIndex} className={styles.commentItem}>
+                                <div className={styles.commentAuthor}>
+                                  {comment.username || comment.user?.username || 'Anonymous'}
+                                </div>
+                                <div className={styles.commentText}>{comment.text}</div>
+                                <div className={styles.commentDate}>
+                                  {formatDate(comment.createdAt || comment.date)}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   <div className={styles.postHover}></div>
                 </article>
-              ))}
+                )
+              })}
             </div>
 
             {!token && posts.length > 0 && (

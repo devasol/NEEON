@@ -191,6 +191,100 @@ exports.getComments = async (req, res) => {
   }
 };
 
+// Get all comments across all blog posts
+exports.getAllComments = async (req, res) => {
+  try {
+    console.log("getAllComments endpoint called by user:", req.user ? req.user.id : "unauthenticated");
+    console.log("Fetching all comments...");
+    const blogs = await BlogNewsModel.find({ commentsList: { $exists: true, $ne: [] } })
+      .select("commentsList newsTitle _id")
+      .populate({
+        path: "commentsList.user",
+        select: "username",
+      });
+
+    console.log("Found blogs with comments:", blogs.length);
+
+    // Flatten all comments from all blogs into a single array
+    let allComments = [];
+    if (blogs && blogs.length > 0) {
+      blogs.forEach(blog => {
+        console.log(`Blog ${blog._id} has ${blog.commentsList.length} comments`);
+        if (Array.isArray(blog.commentsList)) {
+          blog.commentsList.forEach(comment => {
+            allComments.push({
+              ...comment._doc,
+              post: blog.newsTitle,
+              postId: blog._id
+            });
+          });
+        }
+      });
+    }
+
+    console.log("Total comments found:", allComments.length);
+
+    // Sort by creation date (newest first)
+    if (allComments.length > 0) {
+      allComments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+
+    res.status(200).json({
+      status: "success",
+      comments: allComments,
+    });
+  } catch (err) {
+    console.error("Error in getAllComments:", err);
+    console.error("Error stack:", err.stack);
+    res.status(500).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
+
+// Delete a specific comment from a blog post
+exports.deleteComment = async (req, res) => {
+  try {
+    const { blogId, commentId } = req.params;
+
+    const blog = await BlogNewsModel.findOne({ _id: blogId });
+    if (!blog) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Blog not found",
+      });
+    }
+
+    // Find the index of the comment to delete
+    const commentIndex = blog.commentsList.findIndex(comment => 
+      comment._id.toString() === commentId
+    );
+
+    if (commentIndex === -1) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Comment not found",
+      });
+    }
+
+    // Remove the comment from the commentsList
+    blog.commentsList.splice(commentIndex, 1);
+    blog.comments = Math.max(0, blog.comments - 1); // Decrement total comment count
+    await blog.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "Comment deleted successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
+
 exports.createBlog = async (req, res) => {
   try {
     let imageValue = null;

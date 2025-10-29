@@ -19,6 +19,9 @@ router
   .post(upload.single("image"), blogController.createBlog);
 
 router.route("/:id/image").get(blogController.getImage);
+// Define specific routes before the generic :id route to avoid conflicts
+router.get("/all-comments", authController.protect, blogController.getAllComments);
+
 router
   .route("/:id")
   .get(blogController.getBlog)
@@ -30,5 +33,6 @@ router
 router.post("/:id/like", authController.protect, blogController.likeBlog);
 router.post("/:id/comment", authController.protect, blogController.addComment);
 router.get("/:id/comments", blogController.getComments);
+router.delete("/:blogId/comments/:commentId", authController.protect, blogController.deleteComment);
 
 module.exports = router;
