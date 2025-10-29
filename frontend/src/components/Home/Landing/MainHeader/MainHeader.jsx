@@ -195,8 +195,9 @@ function MainHeader() {
             >
               <NavLink
                 to={item.path}
-                exact={item.name === "Home"}
-                activeClassName={styles.activeLink}
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : undefined
+                }
               >
                 {item.name}
               </NavLink>

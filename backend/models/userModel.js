@@ -50,6 +50,11 @@ const userSchema = new mongoose.Schema({
     },
     select: false,
   },
+  googleId: {
+    type: String,
+    unique: true, // Each Google account should map to one user
+    sparse: true, // Allow null values for non-Google users
+  },
 });
 
 userSchema.pre("save", async function (next) {

@@ -192,10 +192,8 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
   const handleGoogleLogin = () => {
     setIsLoading(true);
 
-    // Simulate Google OAuth process
-    setTimeout(() => {
-      window.location.href = "/auth/google"; // Replace with your OAuth endpoint
-    }, 1000);
+    // Redirect to backend Google OAuth endpoint
+    window.location.href = `${API_BASE}/auth/google`;
   };
 
   const handleForgotPassword = () => {

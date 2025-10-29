@@ -125,10 +125,8 @@ const Signup = ({ noContainer = false, onClose, onLoginClick }) => {
 
   const handleGoogleSignup = () => {
     setIsLoading(true);
-    // Simulate quick redirect to OAuth endpoint
-    setTimeout(() => {
-      window.location.href = "/auth/google"; // replace with real signup/oauth endpoint
-    }, 800);
+    // Redirect to backend Google OAuth endpoint
+    window.location.href = `${API_BASE}/auth/google`;
   };
 
   const card = (
