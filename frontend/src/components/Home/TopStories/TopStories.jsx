@@ -18,6 +18,24 @@ const TopStories = () => {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:9000/api/v1'}/blogs/public?limit=6`);
         const data = await response.json();
         if (data.status === 'success' && data.blogs) {
+          // Define static images from the public postsImg folder
+          const staticImages = [
+            "/postsImg/photo-1421789665209-c9b2a435e3dc.avif",
+            "/postsImg/photo-1445307806294-bff7f67ff225.avif",
+            "/postsImg/photo-1445633743309-b60418bedbf2.avif",
+            "/postsImg/photo-1470071459604-3b5ec3a7fe05.avif",
+            "/postsImg/photo-1474511320723-9a56873867b5.avif",
+            "/postsImg/photo-1486312338219-ce68d2c6f44d.avif",
+            "/postsImg/photo-1497206365907-f5e630693df0.avif",
+            "/postsImg/photo-1500622944204-b135684e99fd.avif",
+            "/postsImg/photo-1506744038136-46273834b3fb.avif",
+            "/postsImg/photo-1518770660439-4636190af475.avif",
+            "/postsImg/photo-1528154291023-a6525fabe5b4.avif",
+            "/postsImg/photo-1529333166437-7750a6dd5a70.avif",
+            "/postsImg/photo-1572705824045-3dd0c9a47945.avif",
+            "/postsImg/photo-1649972904349-6e44c42644a7.avif"
+          ];
+          
           // Transform the blog data to match the expected structure for the component
           const transformedStories = data.blogs.allBlogs.map((blog, index) => ({
             id: blog._id || index + 1,
@@ -25,7 +43,7 @@ const TopStories = () => {
             title: blog.newsTitle || "Untitled",
             author: blog.postedBy || "ADMIN",
             date: blog.datePosted ? new Date(blog.datePosted).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : "Unknown Date",
-            image: blog.imageUrl || `https://picsum.photos/400/250?random=${index + 1}`,
+            image: staticImages[index % staticImages.length], // Use static images from postsImg
             excerpt: blog.newsDescription?.substring(0, 100) + (blog.newsDescription?.length > 100 ? "..." : "") || "No description available.",
             likes: blog.likes || 0,
             comments: blog.comments || 0
@@ -34,7 +52,16 @@ const TopStories = () => {
         }
       } catch (error) {
         console.error("Error fetching stories:", error);
-        // Fallback to static data if API fails
+        // Fallback to static data with images from postsImg if API fails
+        const staticImages = [
+          "/postsImg/photo-1421789665209-c9b2a435e3dc.avif",
+          "/postsImg/photo-1445307806294-bff7f67ff225.avif",
+          "/postsImg/photo-1445633743309-b60418bedbf2.avif",
+          "/postsImg/photo-1470071459604-3b5ec3a7fe05.avif",
+          "/postsImg/photo-1474511320723-9a56873867b5.avif",
+          "/postsImg/photo-1486312338219-ce68d2c6f44d.avif"
+        ];
+        
         const fallbackStories = [
           {
             id: 1,
@@ -42,7 +69,7 @@ const TopStories = () => {
             title: "Modern CSS Techniques You Should Know",
             author: "ADMIN",
             date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-            image: "https://images.unsplash.com/photo-1615962122169-6a27d96cc78d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            image: staticImages[0],
             excerpt: "CSS has evolved significantly in recent years. Discover modern techniques like CSS Grid, Flexbox, custom properties, and container queries that will elevate your styling skills.",
           },
           {
@@ -51,7 +78,7 @@ const TopStories = () => {
             title: "JavaScript ES2024 New Features",
             author: "ADMIN",
             date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-            image: "https://images.unsplash.com/photo-1550615539-911b09de9a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            image: staticImages[1],
             excerpt: "The JavaScript language continues to evolve. Discover the latest features introduced in ES2024 and how they can improve your code's readability and functionality.",
           },
           {
@@ -60,7 +87,7 @@ const TopStories = () => {
             title: "API Security Best Practices",
             author: "ADMIN",
             date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-            image: "https://images.unsplash.com/photo-1550522970-2c3e14d2e8d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            image: staticImages[2],
             excerpt: "Security should be a top priority when building APIs. Explore essential security measures including authentication, rate limiting, and input validation.",
           },
           {
@@ -69,7 +96,7 @@ const TopStories = () => {
             title: "UI Design Principles for Better User Engagement",
             author: "ADMIN",
             date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-            image: "https://picsum.photos/400/250?random=4",
+            image: staticImages[3],
             excerpt: "Learn essential UI design principles that can significantly improve user engagement and satisfaction with your digital products.",
           },
           {
@@ -78,7 +105,7 @@ const TopStories = () => {
             title: "Remote Work Trends in the Tech Industry",
             author: "ADMIN",
             date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-            image: "https://picsum.photos/400/250?random=5",
+            image: staticImages[4],
             excerpt: "Exploring how the shift to remote work has impacted productivity, collaboration, and company culture in the technology sector.",
           },
           {
@@ -87,7 +114,7 @@ const TopStories = () => {
             title: "Content Marketing Strategies for Startups",
             author: "ADMIN",
             date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-            image: "https://picsum.photos/400/250?random=6",
+            image: staticImages[5],
             excerpt: "Discover effective content marketing tactics that can help startups build brand awareness and attract customers on a limited budget.",
           },
         ];
@@ -118,9 +145,35 @@ const TopStories = () => {
     return (
       <section className={styles.container}>
         <div className={styles.header}>
-          <h2 className={styles.heading}>Top Stories</h2>
+          <h2 className={`${styles.heading} ${styles.loadingSkeleton}`} style={{width: '180px', height: '2.2rem'}}></h2>
+          <div className={styles.navigation}>
+            <div className={`${styles.navButton} ${styles.loadingSkeleton}`} style={{width: '40px', height: '40px', borderRadius: '50%'}}></div>
+            <div className={`${styles.navButton} ${styles.loadingSkeleton}`} style={{width: '40px', height: '40px', borderRadius: '50%'}}></div>
+          </div>
         </div>
-        <div className={styles.loading}>Loading stories...</div>
+        
+        <div className={styles.scrollContainer}>
+          <div className={styles.horizontalGrid}>
+            {[...Array(6)].map((_, index) => (
+              <div key={index} className={`${styles.loadingCard} ${styles.loadingSkeleton}`}>
+                <div className={`${styles.imageContainer} ${styles.loadingImageContainer}`}>
+                  <div className={`${styles.loadingSkeleton}`} style={{width: '100%', height: '100%'}}></div>
+                </div>
+                <div className={styles.loadingCardContent}>
+                  <div className={`${styles.category} ${styles.loadingSkeleton}`} style={{width: '60px', height: '20px', marginBottom: '0.8rem'}}></div>
+                  <div className={`${styles.loadingSkeleton} ${styles.loadingCardTitle}`}></div>
+                  <p className={`${styles.loadingSkeleton} ${styles.loadingCardExcerpt}`}></p>
+                  <p className={`${styles.loadingSkeleton} ${styles.loadingCardExcerpt}`}></p>
+                  <div className={`${styles.loadingSkeleton} ${styles.loadingCardMeta}`}></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className={styles.scrollIndicator}>
+          <div className={styles.indicatorBar}></div>
+        </div>
       </section>
     );
   }

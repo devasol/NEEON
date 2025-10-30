@@ -560,3 +560,74 @@
   background-color: #c62828;
   transform: translateY(-2px);
 }
+
+/* Loading styles */
+.loading {
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.loadingSkeleton {
+  background: linear-gradient(90deg, #f0f0f0 8%, #e0e0e0 18%, #f0f0f0 33%);
+  background-size: 2000px 104px;
+  position: relative;
+  animation: shimmer 2s infinite linear;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.loadingMainArticle {
+  height: 300px;
+  margin-bottom: 1.5rem;
+}
+
+.loadingArticleItem {
+  height: 200px;
+  margin-bottom: 1.5rem;
+}
+
+.loadingGrid {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.loadingArticleContent {
+  padding: 1.5rem;
+}
+
+.loadingTitle {
+  height: 1.5rem;
+  width: 60%;
+  margin-bottom: 0.8rem;
+  border-radius: 4px;
+}
+
+.loadingExcerpt {
+  height: 1rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+}
+
+.loadingExcerpt:last-child {
+  width: 70%;
+}
+
+.loadingDate {
+  height: 0.9rem;
+  width: 40%;
+  margin-top: 1rem;
+  border-radius: 4px;
+}

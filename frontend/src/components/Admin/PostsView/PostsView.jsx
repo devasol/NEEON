@@ -65,8 +65,26 @@ const PostsView = () => {
         if (!mounted) return;
         const blogs = res.blogs?.allBlogs || [];
         setFullBlogData(blogs); // Store full blog data
-        // map backend blog shape to UI post shape
-        const mapped = blogs.map((b) => ({
+        // Define static images from the public postsImg folder
+        const staticImages = [
+          "/postsImg/photo-1421789665209-c9b2a435e3dc.avif",
+          "/postsImg/photo-1445307806294-bff7f67ff225.avif",
+          "/postsImg/photo-1445633743309-b60418bedbf2.avif",
+          "/postsImg/photo-1470071459604-3b5ec3a7fe05.avif",
+          "/postsImg/photo-1474511320723-9a56873867b5.avif",
+          "/postsImg/photo-1486312338219-ce68d2c6f44d.avif",
+          "/postsImg/photo-1497206365907-f5e630693df0.avif",
+          "/postsImg/photo-1500622944204-b135684e99fd.avif",
+          "/postsImg/photo-1506744038136-46273834b3fb.avif",
+          "/postsImg/photo-1518770660439-4636190af475.avif",
+          "/postsImg/photo-1528154291023-a6525fabe5b4.avif",
+          "/postsImg/photo-1529333166437-7750a6dd5a70.avif",
+          "/postsImg/photo-1572705824045-3dd0c9a47945.avif",
+          "/postsImg/photo-1649972904349-6e44c42644a7.avif"
+        ];
+        
+        // map backend blog shape to UI post shape with static images
+        const mapped = blogs.map((b, index) => ({
           id: b._id,
           title: b.newsTitle,
           excerpt: b.newsDescription ? b.newsDescription.slice(0, 140) : "",
@@ -77,13 +95,14 @@ const PostsView = () => {
           date: b.datePosted || b.createdAt || new Date().toISOString(),
           views: b.views || 0,
           comments: b.comments || 0,
-          image: b.imageUrl || null,
+          image: b.imageUrl || staticImages[index % staticImages.length], // Use static image if no imageUrl
+          staticImage: staticImages[index % staticImages.length]
         }));
         setPosts(mapped);
       })
       .catch((err) => {
         console.error("Could not fetch blogs:", err.message || err);
-        // Fallback dummy data for demonstration
+        // Fallback dummy data for demonstration with static image
         setPosts([
           {
             id: 1,
@@ -99,6 +118,7 @@ const PostsView = () => {
             views: 42,
             comments: 3,
             image: null,
+            staticImage: "/postsImg/photo-1421789665209-c9b2a435e3dc.avif",
           },
         ]);
       });
@@ -313,6 +333,7 @@ const PostsView = () => {
               newImageUrl ||
               (b && (b.imageUrl || b.image)) ||
               selectedPost.image,
+            staticImage: selectedPost.staticImage, // Preserve the static image
           };
           setPosts((prev) =>
             prev.map((p) => (p.id === selectedPost.id ? updated : p))
@@ -334,6 +355,7 @@ const PostsView = () => {
             views: 0,
             comments: 0,
             image: newImagePreview || newImageUrl || b.imageUrl || null,
+            staticImage: "/postsImg/photo-1421789665209-c9b2a435e3dc.avif", // Add static image to new post
           };
           setPosts((prev) => [newPost, ...prev]);
           resetForm();
@@ -421,9 +443,9 @@ const PostsView = () => {
     ? newDescription.trim().split(/\s+/).length
     : 0;
 
-  // Fallback image for posts without images
+  // Use static image from postsImg folder
   const getPostImage = (post) => {
-    return post.image || `https://picsum.photos/100/60?random=${post.id}`;
+    return post.staticImage || post.image || "/postsImg/photo-1421789665209-c9b2a435e3dc.avif";
   };
 
   return (
@@ -539,9 +561,6 @@ const PostsView = () => {
                         src={getPostImage(post)}
                         alt={post.title}
                         className={styles.postImage}
-                        onError={(e) => {
-                          e.target.src = `https://picsum.photos/100/60?random=${post.id}`;
-                        }}
                       />
                       <div className={styles.postDetails}>
                         <div className={styles.postTitle}>{post.title}</div>
@@ -642,9 +661,6 @@ const PostsView = () => {
                 src={getPostImage(selectedPost)}
                 alt={selectedPost.title}
                 className={styles.modalImage}
-                onError={(e) => {
-                  e.target.src = `https://picsum.photos/400/200?random=${selectedPost.id}`;
-                }}
               />
               <div className={styles.modalTitleSection}>
                 <h2>{selectedPost.title}</h2>

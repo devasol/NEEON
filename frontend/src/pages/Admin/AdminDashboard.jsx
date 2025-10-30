@@ -59,7 +59,35 @@ const AdminDashboard = ({ selectedView, setSelectedView }) => {
 
   const renderView = () => {
     if (selectedView === 'dashboard' && loading) {
-      return <div className={styles.loading}>Loading dashboard...</div>;
+      return (
+        <div className={styles.content}>
+          <div className={styles.statsGrid}>
+            {[...Array(4)].map((_, index) => (
+              <div key={index} className={`${styles.loadingCard} ${styles.loadingSkeleton}`}>
+                <div style={{height: '1.2rem', width: '80px', marginBottom: '0.8rem', borderRadius: '4px'}}></div>
+                <div style={{height: '2rem', width: '120px', marginBottom: '0.5rem', borderRadius: '4px'}}></div>
+                <div style={{height: '1rem', width: '100px', borderRadius: '4px'}}></div>
+              </div>
+            ))}
+          </div>
+          
+          <div style={{margin: '2rem 0', padding: '2rem', borderRadius: '16px', background: 'white', height: '400px'}} className={styles.loadingSkeleton}>
+            <div style={{height: '1.5rem', width: '200px', marginBottom: '1.5rem', borderRadius: '4px'}} className={styles.loadingSkeleton}></div>
+            <div style={{height: '300px'}} className={styles.loadingSkeleton}></div>
+          </div>
+          
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginTop: '2rem'}}>
+            <div style={{padding: '1.5rem', borderRadius: '16px', background: 'white', height: '200px'}} className={styles.loadingSkeleton}>
+              <div style={{height: '1.5rem', width: '150px', marginBottom: '1rem', borderRadius: '4px'}} className={styles.loadingSkeleton}></div>
+              <div style={{height: '120px'}} className={styles.loadingSkeleton}></div>
+            </div>
+            <div style={{padding: '1.5rem', borderRadius: '16px', background: 'white', height: '200px'}} className={styles.loadingSkeleton}>
+              <div style={{height: '1.5rem', width: '150px', marginBottom: '1rem', borderRadius: '4px'}} className={styles.loadingSkeleton}></div>
+              <div style={{height: '120px'}} className={styles.loadingSkeleton}></div>
+            </div>
+          </div>
+        </div>
+      );
     }
 
     if (selectedView === 'dashboard' && error) {

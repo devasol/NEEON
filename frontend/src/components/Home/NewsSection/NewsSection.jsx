@@ -33,13 +33,31 @@ const NewsSection = () => {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:9000/api/v1'}/blogs/public?limit=20`);
         const data = await response.json();
         if (data.status === 'success' && data.blogs) {
+          // Define static images from the public postsImg folder
+          const staticImages = [
+            "/postsImg/photo-1421789665209-c9b2a435e3dc.avif",
+            "/postsImg/photo-1445307806294-bff7f67ff225.avif",
+            "/postsImg/photo-1445633743309-b60418bedbf2.avif",
+            "/postsImg/photo-1470071459604-3b5ec3a7fe05.avif",
+            "/postsImg/photo-1474511320723-9a56873867b5.avif",
+            "/postsImg/photo-1486312338219-ce68d2c6f44d.avif",
+            "/postsImg/photo-1497206365907-f5e630693df0.avif",
+            "/postsImg/photo-1500622944204-b135684e99fd.avif",
+            "/postsImg/photo-1506744038136-46273834b3fb.avif",
+            "/postsImg/photo-1518770660439-4636190af475.avif",
+            "/postsImg/photo-1528154291023-a6525fabe5b4.avif",
+            "/postsImg/photo-1529333166437-7750a6dd5a70.avif",
+            "/postsImg/photo-1572705824045-3dd0c9a47945.avif",
+            "/postsImg/photo-1649972904349-6e44c42644a7.avif"
+          ];
+          
           // Transform the blog data to match the expected structure for the component
           const transformedArticles = data.blogs.allBlogs.map((blog, index) => ({
             id: blog._id || index + 1,
             category: blog.category || "Uncategorized",
             title: blog.newsTitle || "Untitled",
             date: blog.datePosted ? new Date(blog.datePosted).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : "Unknown Date",
-            image: blog.imageUrl || `https://picsum.photos/600/400?random=${index + 1}`,
+            image: staticImages[index % staticImages.length], // Use static images from postsImg
             excerpt: blog.newsDescription?.substring(0, 150) + (blog.newsDescription?.length > 150 ? "..." : "") || "No description available.",
             content: blog.newsDescription || "",
             postedBy: blog.postedBy || "Admin"
@@ -49,14 +67,20 @@ const NewsSection = () => {
         }
       } catch (error) {
         console.error("Error fetching articles:", error);
-        // Fallback to static data if API fails
+        // Fallback to static data with images from postsImg if API fails
+        const staticImages = [
+          "/postsImg/photo-1421789665209-c9b2a435e3dc.avif",
+          "/postsImg/photo-1445307806294-bff7f67ff225.avif",
+          "/postsImg/photo-1445633743309-b60418bedbf2.avif"
+        ];
+        
         const fallbackArticles = [
           {
             id: 1,
             category: "Technology",
             title: "Modern CSS Techniques You Should Know",
             date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-            image: "https://images.unsplash.com/photo-1615962122169-6a27d96cc78d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            image: staticImages[0],
             excerpt: "CSS has evolved significantly in recent years. Discover modern techniques like CSS Grid, Flexbox, custom properties, and container queries that will elevate your styling skills.",
             content: `<p>CSS has evolved significantly in recent years. Discover modern techniques like CSS Grid, Flexbox, custom properties, and container queries that will elevate your styling skills.</p><p>Modern CSS provides powerful layout capabilities that were previously impossible or required complex workarounds. Understanding these techniques will make you a more efficient and effective developer.</p>`,
             postedBy: "Admin"
@@ -66,7 +90,7 @@ const NewsSection = () => {
             category: "Technology",
             title: "JavaScript ES2024 New Features",
             date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-            image: "https://images.unsplash.com/photo-1550615539-911b09de9a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            image: staticImages[1],
             excerpt: "The JavaScript language continues to evolve. Discover the latest features introduced in ES2024 and how they can improve your code's readability and functionality.",
             content: `<p>The JavaScript language continues to evolve. Discover the latest features introduced in ES2024 and how they can improve your code's readability and functionality.</p><p>With each new version, JavaScript adds powerful features that make development more efficient and code more maintainable.</p>`,
             postedBy: "Admin"
@@ -76,7 +100,7 @@ const NewsSection = () => {
             category: "Technology",
             title: "API Security Best Practices",
             date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-            image: "https://images.unsplash.com/photo-1550522970-2c3e14d2e8d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            image: staticImages[2],
             excerpt: "Security should be a top priority when building APIs. Explore essential security measures including authentication, rate limiting, and input validation.",
             content: `<p>Security should be a top priority when building APIs. Explore essential security measures including authentication, rate limiting, and input validation.</p><p>Modern applications require robust security measures to protect user data and maintain trust in your services.</p>`,
             postedBy: "Admin"
@@ -166,8 +190,77 @@ const NewsSection = () => {
   if (loading && allArticles.length === 0) {
     return (
       <div className={styles.container}>
-        <h2 className={styles.title}>What's New</h2>
-        <div className={styles.loading}>Loading articles...</div>
+        <div className={styles.left}>
+          <h2 className={styles.title}>What's New</h2>
+          <div className={styles.tabs}>
+            {tabs.map((tab, index) => (
+              <button
+                key={tab}
+                className={`${styles.tab} ${index === 0 ? styles.activeTab : ""}`}
+              >
+                {tab}
+                <span className={styles.tabIndicator}></span>
+              </button>
+            ))}
+          </div>
+          
+          {/* Featured Article Skeleton */}
+          <div className={`${styles.mainArticle} ${styles.loadingSkeleton} ${styles.loadingMainArticle}`}>
+            <div className={styles.imageContainer}>
+              <div className={`${styles.loadingSkeleton}`} style={{width: '100%', height: '100%'}}></div>
+              <div className={styles.overlay}></div>
+              <div className={`${styles.categoryBadge} ${styles.loadingSkeleton}`} style={{width: '80px', height: '20px'}}></div>
+            </div>
+            <div className={styles.articleContent}>
+              <h3 className={`${styles.loadingSkeleton} ${styles.loadingTitle}`}></h3>
+              <p className={`${styles.loadingSkeleton} ${styles.loadingExcerpt}`}></p>
+              <p className={`${styles.loadingSkeleton} ${styles.loadingExcerpt}`}></p>
+              <div className={`${styles.loadingSkeleton} ${styles.loadingDate}`}></div>
+            </div>
+          </div>
+
+          {/* Secondary Articles Skeleton */}
+          <div className={styles.articleList}>
+            {[...Array(2)].map((_, index) => (
+              <div key={index} className={`${styles.articleItem} ${styles.loadingSkeleton} ${styles.loadingArticleItem}`}>
+                <div className={styles.imageContainer}>
+                  <div className={`${styles.loadingSkeleton}`} style={{width: '100%', height: '100%'}}></div>
+                  <div className={styles.overlay}></div>
+                </div>
+                <div className={styles.articleContent}>
+                  <h4 className={`${styles.loadingSkeleton} ${styles.loadingTitle}`}></h4>
+                  <p className={`${styles.loadingSkeleton} ${styles.loadingExcerpt}`}></p>
+                  <p className={`${styles.loadingSkeleton} ${styles.loadingExcerpt}`}></p>
+                  <div className={`${styles.loadingSkeleton} ${styles.loadingDate}`}></div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* View all button skeleton */}
+          <div className={styles.viewAllButtonContainer}>
+            <div className={`${styles.viewAllButton} ${styles.loadingSkeleton}`} style={{width: '200px', height: '40px', margin: '0 auto'}}></div>
+          </div>
+        </div>
+        
+        {/* Right section skeleton */}
+        <div className={styles.right}>
+          <h2 className={styles.title}>Stay Connected</h2>
+          <div className={styles.socialList}>
+            {[...Array(5)].map((_, index) => (
+              <div key={index} className={`${styles.socialBox} ${styles.loadingSkeleton}`} style={{height: '60px'}}></div>
+            ))}
+          </div>
+          
+          <div className={styles.newsletter}>
+            <h3 className={`${styles.loadingSkeleton}`} style={{width: '120px', height: '1.5rem', marginBottom: '0.5rem'}}></h3>
+            <p className={`${styles.loadingSkeleton}`} style={{width: '180px', height: '1rem', marginBottom: '1rem'}}></p>
+            <div className={styles.newsletterForm}>
+              <div className={`${styles.loadingSkeleton}`} style={{flexGrow: 1, height: '40px', borderRadius: '4px 0 0 4px'}}></div>
+              <div className={`${styles.loadingSkeleton}`} style={{width: '80px', height: '40px', borderRadius: '0 4px 4px 0'}}></div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

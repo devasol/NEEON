@@ -74,7 +74,41 @@ function CommentsPage() {
 		}
 	};
 
-	if (loading) return <div className={styles.page}>Loading…</div>;
+	if (loading) {
+    return (
+      <>
+        <FirstHeader />
+        <MainHeader />
+        <div className={styles.loadingPage}>
+          <div className={`${styles.loadingCard} ${styles.loadingSkeleton}`}>
+            <div className={styles.loadingCardHeader}>
+              <div className={`${styles.loadingCardTitle} ${styles.loadingSkeleton}`}></div>
+              <div className={`${styles.loadingCardAuthBtn} ${styles.loadingSkeleton}`}></div>
+            </div>
+            <div className={styles.loadingMetaRow}>
+              <div className={`${styles.loadingStat} ${styles.loadingSkeleton}`}></div>
+              <div className={`${styles.loadingStat} ${styles.loadingSkeleton}`}></div>
+              <div className={`${styles.loadingStat} ${styles.loadingSkeleton}`}></div>
+            </div>
+            <div className={`${styles.loadingSeparator} ${styles.loadingSkeleton}`}></div>
+            <div className={styles.commentEditor}>
+              <div className={`${styles.loadingTextarea} ${styles.loadingSkeleton}`}></div>
+              <div className={styles.actionRow}>
+                <div className={`${styles.loadingActionRow} ${styles.loadingSkeleton}`}></div>
+              </div>
+            </div>
+            <div className={styles.loadingCommentsList}>
+              {[...Array(3)].map((_, index) => (
+                <div key={index} className={`${styles.loadingCommentItem} ${styles.loadingSkeleton}`}></div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+  
 	if (error) return <div className={styles.page}>{error}</div>;
 	if (!blog) return <div className={styles.page}>Post not found</div>;
 

@@ -227,15 +227,44 @@ const Posts = () => {
         const response = await api.get(url, !!token);
         
         if (response && response.blogs && response.blogs.allBlogs) {
+          // Define static images from the public postsImg folder
+          const staticImages = [
+            "/postsImg/photo-1421789665209-c9b2a435e3dc.avif",
+            "/postsImg/photo-1445307806294-bff7f67ff225.avif",
+            "/postsImg/photo-1445633743309-b60418bedbf2.avif",
+            "/postsImg/photo-1470071459604-3b5ec3a7fe05.avif",
+            "/postsImg/photo-1474511320723-9a56873867b5.avif",
+            "/postsImg/photo-1486312338219-ce68d2c6f44d.avif",
+            "/postsImg/photo-1497206365907-f5e630693df0.avif",
+            "/postsImg/photo-1500622944204-b135684e99fd.avif",
+            "/postsImg/photo-1506744038136-46273834b3fb.avif",
+            "/postsImg/photo-1518770660439-4636190af475.avif",
+            "/postsImg/photo-1528154291023-a6525fabe5b4.avif",
+            "/postsImg/photo-1529333166437-7750a6dd5a70.avif",
+            "/postsImg/photo-1572705824045-3dd0c9a47945.avif",
+            "/postsImg/photo-1649972904349-6e44c42644a7.avif"
+          ];
+          
           if (!token) {
             // Non-logged-in user: just set the posts directly
-            setPosts(response.blogs.allBlogs);
+            // Add imageIndex to each post for static image selection
+            const postsWithImages = response.blogs.allBlogs.map((post, index) => ({
+              ...post,
+              staticImage: staticImages[index % staticImages.length]
+            }));
+            setPosts(postsWithImages);
             setShowingLimited(true);
           } else {
             // Logged-in user: store all posts and set the first page
-            setAllPosts(response.blogs.allBlogs);
-            setTotalPosts(response.blogs.allBlogs.length);
-            setPosts(response.blogs.allBlogs.slice(0, limit)); // Default first page
+            // Add imageIndex to each post for static image selection
+            const allPostsWithImages = response.blogs.allBlogs.map((post, index) => ({
+              ...post,
+              staticImage: staticImages[index % staticImages.length]
+            }));
+            setAllPosts(allPostsWithImages);
+            setTotalPosts(allPostsWithImages.length);
+            const postsWithImages = allPostsWithImages.slice(0, limit); // Default first page
+            setPosts(postsWithImages);
             setShowingLimited(false); // Logged-in users see full content
           }
         } else {
@@ -307,14 +336,20 @@ const Posts = () => {
     return (
       <section className={styles.posts} ref={sectionRef}>
         <div className={styles.container}>
+          <div className={styles.header}>
+            <h1 className={styles.title}>Latest Posts</h1>
+            <p className={styles.subtitle}>
+              Discover amazing content curated just for you
+            </p>
+          </div>
           <div className={styles.loadingGrid}>
-            {[...Array(3)].map((_, index) => (
-              <div key={index} className={styles.loadingCard}>
-                <div className={styles.loadingImage}></div>
+            {[...Array(6)].map((_, index) => (
+              <div key={index} className={`${styles.loadingCard} ${styles.shimmer}`}>
+                <div className={`${styles.loadingImage} ${styles.shimmer}`}></div>
                 <div className={styles.loadingContent}>
-                  <div className={styles.loadingTitle}></div>
-                  <div className={styles.loadingExcerpt}></div>
-                  <div className={styles.loadingMeta}></div>
+                  <div className={`${styles.loadingTitle} ${styles.shimmer}`}></div>
+                  <div className={`${styles.loadingExcerpt} ${styles.shimmer}`}></div>
+                  <div className={`${styles.loadingMeta} ${styles.shimmer}`}></div>
                 </div>
               </div>
             ))}
@@ -402,31 +437,8 @@ const Posts = () => {
                       <div className={styles.skeletonLoader}></div>
                     </div>
                     <img 
-                      src={post.imageUrl || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:9000"}/api/v1/blogs/${post._id}/image`} 
+                      src={post.staticImage} // Use static image from postsImg folder
                       alt={post.newsTitle} 
-                      onError={(e) => {
-                        // Hide skeleton and show fallback when image fails to load
-                        const skeleton = e.target.previousElementSibling;
-                        if (skeleton) skeleton.style.display = 'none';
-                        
-                        // If it's the API endpoint that failed (not an imageUrl), try to load a placeholder
-                        if (!post.imageUrl) {
-                          // Try to load a placeholder image based on category
-                          const category = post.category?.toLowerCase() || 'general';
-                          let placeholderUrl = '';
-                          
-                          if (category.includes('technology')) {
-                            placeholderUrl = 'https://via.placeholder.com/400x200/4a90e2/ffffff?text=Technology';
-                          } else if (category.includes('design')) {
-                            placeholderUrl = 'https://via.placeholder.com/400x200/e74c3c/ffffff?text=Design';
-                          } else {
-                            placeholderUrl = 'https://via.placeholder.com/400x200/2ecc71/ffffff?text=Blog+Post';
-                          }
-                          
-                          e.target.src = placeholderUrl;
-                          e.target.onerror = null; // Prevent infinite loop if placeholder also fails
-                        }
-                      }}
                       onLoad={(e) => {
                         // Hide skeleton when image loads successfully
                         const skeleton = e.target.previousElementSibling;

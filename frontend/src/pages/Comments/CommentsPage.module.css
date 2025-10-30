@@ -107,4 +107,109 @@
 
 .empty { opacity: 0.85; }
 
+/* Loading styles */
+.loadingPage {
+  min-height: 100vh;
+  padding: 24px;
+  background: linear-gradient(180deg, #111827, #0b1220);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loadingSkeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.06) 8%, rgba(255,255,255,0.1) 18%, rgba(255,255,255,0.06) 33%);
+  background-size: 2000px 104px;
+  position: relative;
+  animation: shimmer 2s infinite linear;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.loadingCard {
+  max-width: 760px;
+  margin: 0 auto;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  width: 100%;
+}
+
+.loadingCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.loadingCardTitle {
+  height: 1.5rem;
+  width: 60%;
+  border-radius: 4px;
+}
+
+.loadingCardAuthBtn {
+  height: 38px;
+  width: 100px;
+  border-radius: 10px;
+}
+
+.loadingMetaRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.loadingStat {
+  height: 1.2rem;
+  width: 60px;
+  border-radius: 4px;
+}
+
+.loadingSeparator {
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  margin: 12px 0;
+  width: 100%;
+}
+
+.loadingTextarea {
+  height: 100px;
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.loadingActionRow {
+  height: 38px;
+  width: 100px;
+  border-radius: 10px;
+  margin-left: auto;
+}
+
+.loadingCommentsList {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.loadingCommentItem {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 10px;
+  height: 60px;
+}
+
 

@@ -177,8 +177,42 @@ const UsersTable = () => {
   if (loading) {
     return (
       <section className={styles.usersTable}>
-        <h2>User Management</h2>
-        <div className={styles.loading}>Loading users...</div>
+        <div className={styles.tableHeader}>
+          <h3 className={`${styles.loadingSkeleton} ${styles.loading}`} style={{width: '200px', height: '1.8rem'}}></h3>
+          <div className={styles.controls}>
+            <div className={`${styles.searchBox} ${styles.loadingSkeleton}`} style={{width: '250px', height: '42px'}}></div>
+            <div className={`${styles.button} ${styles.loadingSkeleton}`} style={{width: '100px', height: '42px'}}></div>
+          </div>
+        </div>
+        
+        <div className={styles.tableContainer}>
+          <table className={styles.usersTable}>
+            <thead>
+              <tr>
+                {[...Array(6)].map((_, index) => (
+                  <th key={index} className={`${styles.loadingSkeleton} ${styles.loading}`} style={{height: '2rem', width: '100px'}}></th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[...Array(5)].map((_, rowIndex) => (
+                <tr key={rowIndex} className={styles.skeletonRow}>
+                  <td className={`${styles.loadingSkeleton} ${styles.loading}`} style={{height: '1.5rem', width: '100px'}}></td>
+                  <td className={`${styles.loadingSkeleton} ${styles.loading}`} style={{height: '1.5rem', width: '100px'}}></td>
+                  <td className={`${styles.loadingSkeleton} ${styles.loading}`} style={{height: '1.5rem', width: '100px'}}></td>
+                  <td className={`${styles.loadingSkeleton} ${styles.loading}`} style={{height: '1.5rem', width: '100px'}}></td>
+                  <td className={`${styles.loadingSkeleton} ${styles.loading}`} style={{height: '1.5rem', width: '100px'}}></td>
+                  <td className={`${styles.loadingSkeleton} ${styles.loading}`} style={{height: '1.5rem', width: '100px'}}></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        
+        <div className={styles.pagination}>
+          <div className={`${styles.button} ${styles.loadingSkeleton}`} style={{width: '80px', height: '42px', margin: '0 5px'}}></div>
+          <div className={`${styles.button} ${styles.loadingSkeleton}`} style={{width: '80px', height: '42px', margin: '0 5px'}}></div>
+        </div>
       </section>
     );
   }
