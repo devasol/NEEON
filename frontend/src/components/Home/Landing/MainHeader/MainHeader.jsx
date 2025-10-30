@@ -6,7 +6,7 @@ import styles from "./MainHeader.module.css";
 import Login from "../../Login/Login";
 import Signup from "../../Signup/Signup";
 import useAuth from "../../../../hooks/useAuth";
-import api from "../../../../utils/api";
+import api, { API_BASE } from "../../../../utils/api";
 
 function MainHeader() {
   const location = useLocation();
@@ -113,15 +113,92 @@ function MainHeader() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await api.get("/api/categories", false); // Categories don't need auth
-        if (response && response.data && response.data.data && response.data.data.categories) {
-          setCategories(response.data.data.categories || []);
+        // Try the most common endpoint format used in the app
+        const response = await api.get("/api/v1/categories", false);
+        if (response) {
+          // Check different possible response structures
+          if (response.categories) {
+            setCategories(response.categories);
+          } else if (response.data && response.data.categories) {
+            setCategories(response.data.categories);
+          } else if (Array.isArray(response)) {
+            // If response is directly an array of categories
+            setCategories(response);
+          } else {
+            setCategories([]);
+          }
         } else {
           setCategories([]);
         }
       } catch (error) {
-        console.error("Error fetching categories:", error);
-        setCategories([]);
+        console.error("Error fetching categories from /api/v1/categories:", error);
+        // Try alternative endpoints
+        try {
+          // Try the original endpoint again
+          const response = await api.get("/api/categories", false);
+          if (response) {
+            if (response.categories) {
+              setCategories(response.categories);
+            } else if (response.data && response.data.categories) {
+              setCategories(response.data.categories);
+            } else if (Array.isArray(response)) {
+              setCategories(response);
+            } else {
+              // Try to get categories from blogs endpoint since that might include categories
+              const blogResponse = await api.get("/api/v1/blogs/public?limit=100", false);
+              if (blogResponse && blogResponse.blogs && blogResponse.blogs.allBlogs) {
+                // Extract unique categories from blogs
+                const uniqueCategories = [...new Set(blogResponse.blogs.allBlogs.map(blog => blog.category))];
+                const categoryObjects = uniqueCategories
+                  .filter(cat => cat) // Remove null/undefined categories
+                  .map((cat, index) => ({ name: cat, _id: `cat-${index}` }));
+                setCategories(categoryObjects);
+              } else {
+                setCategories([]);
+              }
+            }
+          }
+        } catch (secondError) {
+          console.error("Error fetching categories from /api/categories:", secondError);
+          // Try with the API_BASE constant
+          try {
+            const response = await fetch(`${API_BASE}/api/v1/categories`);
+            if (response.ok) {
+              const data = await response.json();
+              if (data.categories) {
+                setCategories(data.categories);
+              } else if (Array.isArray(data)) {
+                setCategories(data);
+              } else {
+                setCategories([]);
+              }
+            }
+          } catch (thirdError) {
+            console.error("All attempts to fetch categories failed:", thirdError);
+            // As a last resort, try to get categories from the blog posts
+            try {
+              const blogResponse = await fetch(`${API_BASE}/api/v1/blogs/public?limit=100`);
+              if (blogResponse.ok) {
+                const blogData = await blogResponse.json();
+                if (blogData.blogs && blogData.blogs.allBlogs) {
+                  // Extract unique categories from blogs
+                  const uniqueCategories = [...new Set(blogData.blogs.allBlogs.map(blog => blog.category))];
+                  const categoryObjects = uniqueCategories
+                    .filter(cat => cat) // Remove null/undefined categories
+                    .map((cat, index) => ({ name: cat, _id: `cat-${index}` }));
+                  setCategories(categoryObjects);
+                } else {
+                  setCategories([]);
+                }
+              } else {
+                setCategories([]);
+              }
+            } catch (fourthError) {
+              console.error("Could not fetch categories from blogs either:", fourthError);
+              setCategories([]); // Final fallback
+            }
+          }
+        }
       }
     };
 
@@ -233,9 +310,13 @@ function MainHeader() {
               {item.name === "Categories" && isCategoriesHovered && (
                 <div className={`${styles.dropdown} ${styles.dropdownOpen}`}>
                   <div className={styles.dropdownContent}>
-                    {categories.map((category, categoryIndex) => (
-                      <span key={categoryIndex}>{category.name}</span>
-                    ))}
+                    {categories.length > 0 ? (
+                      categories.map((category, categoryIndex) => (
+                        <span key={category._id || categoryIndex}>{category.name}</span>
+                      ))
+                    ) : (
+                      <span>No categories available</span>
+                    )}
                   </div>
                 </div>
               )}

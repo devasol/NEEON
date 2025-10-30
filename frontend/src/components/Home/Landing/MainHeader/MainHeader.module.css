@@ -174,6 +174,7 @@
   display: flex;
   align-items: center;
   gap: 0.3rem;
+  z-index: 1001; /* Ensure dropdowns appear above other elements */
 }
 
 .navigator li a {
@@ -253,7 +254,7 @@
   visibility: hidden;
   transform: translateY(15px) scale(0.95); /* Initial transform for animation */
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* More dynamic transition */
-  z-index: 1000;
+  z-index: 2000; /* Increased z-index to ensure it appears above other elements */
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle border */
 }
