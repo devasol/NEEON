@@ -146,7 +146,7 @@ function MainHeader() {
     { name: "Home", path: "/", hasDropdown: false },
     {
       name: "Features",
-      path: "/features",
+      path: "#", // Changed to "#" to make it non-clickable 
       hasDropdown: true,
       dropdown: [
         { name: "Responsive Design" },
@@ -158,7 +158,6 @@ function MainHeader() {
     },
     { name: "Categories", path: "#", hasDropdown: true },
     { name: "Posts/Blogs", path: "/posts", hasDropdown: false },
-    { name: "Shop", path: "/shop", hasDropdown: false },
     { name: "Contact", path: "/contact", hasDropdown: false },
   ];
 
@@ -207,12 +206,12 @@ function MainHeader() {
                 if (item.name === "Categories") setIsCategoriesHovered(false);
                 if (item.name === "Pages") setIsPagesHovered(false);
               }}
-              className={`${item.hasDropdown ? styles.hasDropdown : ""} ${item.name === "Categories" ? styles.categories : ""}`}
+              className={`${item.hasDropdown ? styles.hasDropdown : ""} ${item.name === "Categories" || item.name === "Features" ? styles.noUnderline : ""}`}
             >
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
-                  isActive ? styles.activeLink : undefined
+                  isActive && item.path !== "#" ? styles.activeLink : undefined
                 }
               >
                 {item.name}

@@ -217,12 +217,12 @@
   width: 100%;
 }
 
-/* Remove underline for Categories */
-.navigator li.categories::before {
+/* Remove underline for Categories and Features */
+.navigator li.noUnderline::before {
   content: none;
 }
 
-.navigator li.categories:hover::before {
+.navigator li.noUnderline:hover::before {
   width: 0;
 }
 
