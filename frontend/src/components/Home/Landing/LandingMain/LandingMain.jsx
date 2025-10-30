@@ -3,14 +3,11 @@ import { createPortal } from "react-dom";
 import { API_BASE } from "../../../../utils/api";
 import styles from "./LandingMain.module.css";
 import PostActions from "../../../../components/Common/PostActions/PostActions";
-import CommentModal from "../../../../components/Comments/ModernCommentModal";
 
 function LandingMain() {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCommentsModalOpen, setIsCommentsModalOpen] = useState(false);
-  const [selectedPostForComments, setSelectedPostForComments] = useState(null);
   const [items, setItems] = useState([]);
   const [mainPost, setMainPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -112,66 +109,9 @@ function LandingMain() {
     document.body.style.overflow = "hidden";
   };
 
-  const handleCommentsClick = (post) => {
-    setSelectedPostForComments(post);
-    setIsCommentsModalOpen(true);
-    document.body.style.overflow = "hidden";
-  };
-
-  const handleAddComment = async () => {
-    if (!newComment.trim()) return;
-
-    try {
-      const response = await fetch(
-        `${API_BASE}/api/v1/blogs/${selectedPostForComments.id}/comments`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            content: newComment,
-            author: "User", // You can replace this with actual user data
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (data.status === "success") {
-        setComments((prev) => [...prev, data.comment]);
-        setNewComment("");
-
-        // Update the comments count in the post
-        setItems((prev) =>
-          prev.map((item) =>
-            item.id === selectedPostForComments.id
-              ? { ...item, comments: (item.comments || 0) + 1 }
-              : item
-          )
-        );
-
-        if (mainPost && mainPost.id === selectedPostForComments.id) {
-          setMainPost((prev) => ({
-            ...prev,
-            comments: (prev.comments || 0) + 1,
-          }));
-        }
-      }
-    } catch (error) {
-      console.error("Error adding comment:", error);
-    }
-  };
-
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedItem(null);
-    document.body.style.overflow = "unset";
-  };
-
-  const closeCommentsModal = () => {
-    setIsCommentsModalOpen(false);
-    setSelectedPostForComments(null);
     document.body.style.overflow = "unset";
   };
 

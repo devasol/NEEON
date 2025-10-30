@@ -6,12 +6,14 @@ import AdminLayout from "./pages/Admin/AdminLayout.jsx";
 import PostsPage from "./pages/Posts/PostsPage.jsx";
 import Contact from "./pages/Contact/ContactPage.jsx";
 import { ToastProvider } from "./context/ToastContext.jsx";
+import ScrollToTop from "./components/Common/ScrollToTop/ScrollToTop.jsx";
 
 function App() {
   const [selectedView, setSelectedView] = useState("dashboard");
 
   return (
     <ToastProvider>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/posts" element={<PostsPage />} />

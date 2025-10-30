@@ -97,7 +97,7 @@ const Posts = () => {
           [postId]: {
             ...prev[postId],
             liked: response.liked,
-            likes: response.liked ? prev[postId].likes + 1 : prev[postId].likes - 1
+            likes: response.likes !== undefined ? response.likes : (response.liked ? prev[postId].likes + 1 : prev[postId].likes - 1)
           }
         }));
       }
@@ -519,6 +519,26 @@ const Posts = () => {
           </>
         )}
       </div>
+      
+      {/* Comment Modal */}
+      <CommentModal 
+        postId={commentModal.postId} 
+        postTitle={commentModal.postTitle} 
+        isOpen={commentModal.isOpen} 
+        onClose={closeCommentModal}
+        onCommentAdded={() => {
+          // Update the comment count in the interactions state
+          if (commentModal.postId) {
+            setPostInteractions(prev => ({
+              ...prev,
+              [commentModal.postId]: {
+                ...prev[commentModal.postId],
+                comments: (prev[commentModal.postId].comments || 0) + 1
+              }
+            }));
+          }
+        }}
+      />
     </section>
   );
 };

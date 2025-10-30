@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./TopStories.module.css";
+import CommentModal from "../../Comments/ModernCommentModal";
 
 const TopStories = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -7,6 +8,8 @@ const TopStories = () => {
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
   const scrollContainer = useRef(null);
+  const [commentModalOpen, setCommentModalOpen] = useState(false);
+  const [selectedStory, setSelectedStory] = useState(null);
 
   useEffect(() => {
     // Trigger entrance animation
@@ -139,6 +142,16 @@ const TopStories = () => {
     if (scrollContainer.current) {
       scrollContainer.current.scrollBy({ left: 350, behavior: "smooth" });
     }
+  };
+
+  const handleOpenCommentModal = (story) => {
+    setSelectedStory(story);
+    setCommentModalOpen(true);
+  };
+
+  const handleCloseCommentModal = () => {
+    setCommentModalOpen(false);
+    setSelectedStory(null);
   };
 
   if (loading && stories.length === 0) {
@@ -288,7 +301,15 @@ const TopStories = () => {
                 >
                   <div className={styles.reactions}>
                     <button className={styles.reactionBtn}>👍 {story.likes || 24}</button>
-                    <button className={styles.reactionBtn}>💬 {story.comments || 8}</button>
+                    <button 
+                      className={styles.reactionBtn} 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenCommentModal(story);
+                      }}
+                    >
+                      💬 {story.comments || 8}
+                    </button>
                     <button className={styles.reactionBtn}>🔗 Share</button>
                   </div>
                 </div>
@@ -301,6 +322,14 @@ const TopStories = () => {
       <div className={styles.scrollIndicator}>
         <div className={styles.indicatorBar}></div>
       </div>
+
+      {/* Comment Modal */}
+      <CommentModal 
+        postId={selectedStory?.id} 
+        postTitle={selectedStory?.title} 
+        isOpen={commentModalOpen} 
+        onClose={handleCloseCommentModal} 
+      />
     </section>
   );
 };

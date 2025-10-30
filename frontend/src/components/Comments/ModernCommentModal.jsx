@@ -11,7 +11,7 @@ const CommentIcon = () => (
   </svg>
 );
 
-const ModernCommentModal = ({ postId, postTitle, isOpen, onClose }) => {
+const ModernCommentModal = ({ postId, postTitle, isOpen, onClose, onCommentAdded = null }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
@@ -86,6 +86,11 @@ const ModernCommentModal = ({ postId, postTitle, isOpen, onClose }) => {
         
         // Optionally refresh the comments from the server
         await fetchComments();
+        
+        // Notify parent component that a comment was added
+        if (onCommentAdded) {
+          onCommentAdded();
+        }
       }
     } catch (error) {
       console.error("Error adding comment:", error);
