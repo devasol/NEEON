@@ -3,6 +3,7 @@ import styles from "./PostActions.module.css";
 import useAuth from "../../../hooks/useAuth";
 import api from "../../../utils/api";
 import FloatingToast from "../../Ui/FloatingToast.jsx";
+import CommentModal from "../../Comments/ModernCommentModal";
 
 function PostActions({
 	postId,
@@ -21,6 +22,7 @@ function PostActions({
 	const [commentText, setCommentText] = useState("");
 	const [comments, setComments] = useState([]);
 	const [showComments, setShowComments] = useState(false);
+	const [commentModalOpen, setCommentModalOpen] = useState(false);
 
 	const shareData = useMemo(() => {
 		return {
@@ -89,11 +91,10 @@ function PostActions({
 			setToastType("error");
 			return;
 		}
-		setShowCommentBox(!showCommentBox);
-		if (!showCommentBox) {
-			setShowComments(true);
-			fetchComments();
-		}
+		
+		// Open the modern comment modal
+		setCommentModalOpen(true);
+		setShowCommentBox(false);
 	};
 
 	const fetchComments = async () => {
@@ -187,41 +188,13 @@ function PostActions({
 				<FloatingToast message={toastMessage} type={toastType} onClose={() => setToastMessage("")} />
 			</div>
 			
-			{showCommentBox && (
-				<div className={styles.commentBox}>
-					<textarea
-						value={commentText}
-						onChange={(e) => setCommentText(e.target.value)}
-						className={styles.commentInput}
-						placeholder="Write your comment..."
-						rows={3}
-					></textarea>
-					<div className={styles.commentActions}>
-						<button className={styles.cancelComment} onClick={() => setShowCommentBox(false)}>Cancel</button>
-						<button className={styles.submitComment} onClick={submitComment}>Post Comment</button>
-					</div>
-				</div>
-			)}
-
-			{showComments && (
-				<div className={styles.commentsSection}>
-					{comments.length > 0 ? (
-						<div className={styles.commentsList}>
-							{comments.slice().reverse().map((comment, idx) => (
-								<div key={idx} className={styles.commentItem}>
-									<div className={styles.commentUser}>{comment.username || "User"}</div>
-									<div className={styles.commentText}>{comment.text}</div>
-									<div className={styles.commentTime}>
-										{new Date(comment.createdAt).toLocaleString()}
-									</div>
-								</div>
-							))}
-						</div>
-					) : (
-						<div className={styles.emptyComments}>No comments yet. Be the first!</div>
-					)}
-				</div>
-			)}
+			{/* Modern Comment Modal */}
+			<CommentModal 
+				postId={postId} 
+				postTitle={postTitle} 
+				isOpen={commentModalOpen} 
+				onClose={() => setCommentModalOpen(false)} 
+			/>
 		</div>
 	);
 }

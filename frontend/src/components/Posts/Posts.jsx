@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./Posts.module.css";
 import api from "../../utils/api";
 import useAuth from "../../hooks/useAuth";
+import CommentModal from "../Comments/ModernCommentModal";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -30,6 +31,8 @@ const Posts = () => {
   const [showComments, setShowComments] = useState({}); // Track which post's comments are visible
   const [postComments, setPostComments] = useState({}); // Store comments for each post
   const [showLoginModal, setShowLoginModal] = useState(false); // For login modal when non-logged in users try to interact
+  // State for the comment modal
+  const [commentModal, setCommentModal] = useState({ isOpen: false, postId: null, postTitle: null });
 
   // Update posts when pagination changes for logged-in users
   useEffect(() => {
@@ -103,79 +106,20 @@ const Posts = () => {
     }
   };
 
-  // Handle comment input change
-  const handleCommentChange = (postId, value) => {
-    setCommentInputs(prev => ({
-      ...prev,
-      [postId]: value
-    }));
+
+
+  // Open comment modal
+  const openCommentModal = (postId, postTitle) => {
+    setCommentModal({ 
+      isOpen: true, 
+      postId: postId, 
+      postTitle: postTitle || "Post"
+    });
   };
-
-  // Submit a comment
-  const submitComment = async (postId) => {
-    if (!token) {
-      showLoginPrompt();
-      return;
-    }
-
-    const commentText = commentInputs[postId];
-    if (!commentText.trim()) return;
-
-    try {
-      const response = await api.post(`/api/v1/blogs/${postId}/comment`, {
-        text: commentText
-      }, true);
-
-      if (response && response.blog) {
-        // Update comment count in interactions
-        setPostInteractions(prev => ({
-          ...prev,
-          [postId]: {
-            ...prev[postId],
-            comments: prev[postId].comments + 1
-          }
-        }));
-
-        // Update the comment input
-        setCommentInputs(prev => ({
-          ...prev,
-          [postId]: ''
-        }));
-
-        // Refresh comments for this post
-        fetchPostComments(postId);
-      }
-    } catch (error) {
-      console.error('Error adding comment:', error);
-    }
-  };
-
-  // Fetch comments for a post
-  const fetchPostComments = async (postId) => {
-    try {
-      const response = await api.get(`/api/v1/blogs/${postId}/comments`, false);
-      if (response && response.comments) {
-        setPostComments(prev => ({
-          ...prev,
-          [postId]: response.comments
-        }));
-      }
-    } catch (error) {
-      console.error('Error fetching comments:', error);
-    }
-  };
-
-  // Toggle comments visibility
-  const toggleComments = (postId) => {
-    setShowComments(prev => ({
-      ...prev,
-      [postId]: !prev[postId]
-    }));
-
-    // Fetch comments if not already fetched and comments area is being shown
-    if (!showComments[postId]) {
-      fetchPostComments(postId);
-    }
+  
+  // Close comment modal
+  const closeCommentModal = () => {
+    setCommentModal({ isOpen: false, postId: null, postTitle: null });
   };
 
   // Share functionality
@@ -416,9 +360,6 @@ const Posts = () => {
                   likes: post.likes || 0, 
                   comments: post.comments || 0 
                 };
-                const commentsVisible = showComments[post._id] || false;
-                const comments = postComments[post._id] || [];
-                const commentText = commentInputs[post._id] || '';
 
                 return (
                 <article
@@ -500,8 +441,8 @@ const Posts = () => {
                       </button>
                       <button 
                         className={styles.interactionButton}
-                        onClick={() => toggleComments(post._id)}
-                        title="Comment"
+                        onClick={() => openCommentModal(post._id, post.newsTitle)}
+                        title="View Comments"
                       >
                         💬 <span>{interactions.comments}</span>
                       </button>
@@ -514,44 +455,7 @@ const Posts = () => {
                       </button>
                     </div>
 
-                    {/* Comment Input and Display */}
-                    {commentsVisible && (
-                      <div className={styles.commentsSection}>
-                        <div className={styles.commentInputArea}>
-                          <input
-                            type="text"
-                            value={commentText}
-                            onChange={(e) => handleCommentChange(post._id, e.target.value)}
-                            placeholder="Add a comment..."
-                            className={styles.commentInput}
-                          />
-                          <button 
-                            onClick={() => submitComment(post._id)}
-                            className={styles.commentSubmitBtn}
-                            disabled={!commentText.trim()}
-                          >
-                            Post
-                          </button>
-                        </div>
 
-                        {/* Display comments */}
-                        {comments.length > 0 && (
-                          <div className={styles.commentsList}>
-                            {comments.map((comment, commentIndex) => (
-                              <div key={commentIndex} className={styles.commentItem}>
-                                <div className={styles.commentAuthor}>
-                                  {comment.username || comment.user?.username || 'Anonymous'}
-                                </div>
-                                <div className={styles.commentText}>{comment.text}</div>
-                                <div className={styles.commentDate}>
-                                  {formatDate(comment.createdAt || comment.date)}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    )}
                   </div>
 
                   <div className={styles.postHover}></div>

@@ -3,11 +3,14 @@ import { createPortal } from "react-dom";
 import { API_BASE } from "../../../../utils/api";
 import styles from "./LandingMain.module.css";
 import PostActions from "../../../../components/Common/PostActions/PostActions";
+import CommentModal from "../../../../components/Comments/ModernCommentModal";
 
 function LandingMain() {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCommentsModalOpen, setIsCommentsModalOpen] = useState(false);
+  const [selectedPostForComments, setSelectedPostForComments] = useState(null);
   const [items, setItems] = useState([]);
   const [mainPost, setMainPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,12 +18,10 @@ function LandingMain() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        // Fetch the latest 4 published posts from the API (1 main + 3 on the side)
         const response = await fetch(`${API_BASE}/api/v1/blogs/public?limit=4`);
         const data = await response.json();
-        
+
         if (data.status === "success" && data.blogs && data.blogs.allBlogs) {
-          // Define the static images from the public postsImg folder
           const staticImages = [
             "/postsImg/photo-1421789665209-c9b2a435e3dc.avif",
             "/postsImg/photo-1445307806294-bff7f67ff225.avif",
@@ -35,109 +36,66 @@ function LandingMain() {
             "/postsImg/photo-1528154291023-a6525fabe5b4.avif",
             "/postsImg/photo-1529333166437-7750a6dd5a70.avif",
             "/postsImg/photo-1572705824045-3dd0c9a47945.avif",
-            "/postsImg/photo-1649972904349-6e44c42644a7.avif"
+            "/postsImg/photo-1649972904349-6e44c42644a7.avif",
           ];
-          
-          // Transform the API data to match the expected format
+
           const transformedPosts = data.blogs.allBlogs.map((post, index) => ({
             id: post._id,
             type: post.category || "Uncategorized",
-            img: staticImages[index % staticImages.length], // Use static images from public/postsImg with rotation
+            img: staticImages[index % staticImages.length],
             title: post.newsTitle,
             by: post.postedBy || "Admin",
-            date: new Date(post.datePosted).toLocaleDateString('en-US', { 
-              month: 'long', 
-              day: 'numeric', 
-              year: 'numeric' 
-            }).toUpperCase(),
+            date: new Date(post.datePosted)
+              .toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })
+              .toUpperCase(),
             content: post.newsDescription,
             likes: post.likes || 0,
-            comments: post.comments || 0
+            comments: post.comments || 0,
           }));
-          
-          // Set the first post as the main post and the rest as items
+
           if (transformedPosts.length > 0) {
             setMainPost(transformedPosts[0]);
-            setItems(transformedPosts.slice(1)); // The remaining 3 posts for the side
+            setItems(transformedPosts.slice(1));
           }
         } else {
-          // Fallback to static data if API call fails
           setItems([]);
           setMainPost(null);
         }
       } catch (error) {
         console.error("Error fetching posts:", error);
-        // Fallback to static data with images from postsImg if there's an error
         const fallbackImages = [
           "/postsImg/photo-1421789665209-c9b2a435e3dc.avif",
           "/postsImg/photo-1445307806294-bff7f67ff225.avif",
           "/postsImg/photo-1445633743309-b60418bedbf2.avif",
-          "/postsImg/photo-1470071459604-3b5ec3a7fe05.avif"
+          "/postsImg/photo-1470071459604-3b5ec3a7fe05.avif",
         ];
-        
+
         const fallbackPosts = [
           {
-            id: 'fallback-1',
+            id: "fallback-1",
             type: "Technology",
             img: fallbackImages[0],
             title: "Latest Technology Trends",
             by: "Admin",
-            date: new Date().toLocaleDateString('en-US', { 
-              month: 'long', 
-              day: 'numeric', 
-              year: 'numeric' 
-            }).toUpperCase(),
-            content: "Discover the latest trends in technology that are shaping our future.",
+            date: new Date()
+              .toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })
+              .toUpperCase(),
+            content:
+              "Discover the latest trends in technology that are shaping our future.",
             likes: 0,
-            comments: 0
+            comments: 0,
           },
-          {
-            id: 'fallback-2',
-            type: "Travel",
-            img: fallbackImages[1],
-            title: "Best Travel Destinations",
-            by: "Admin",
-            date: new Date().toLocaleDateString('en-US', { 
-              month: 'long', 
-              day: 'numeric', 
-              year: 'numeric' 
-            }).toUpperCase(),
-            content: "Explore the top travel destinations for your next adventure.",
-            likes: 0,
-            comments: 0
-          },
-          {
-            id: 'fallback-3',
-            type: "Food",
-            img: fallbackImages[2],
-            title: "Delicious Food Recipes",
-            by: "Admin",
-            date: new Date().toLocaleDateString('en-US', { 
-              month: 'long', 
-              day: 'numeric', 
-              year: 'numeric' 
-            }).toUpperCase(),
-            content: "Try out these amazing food recipes that will delight your taste buds.",
-            likes: 0,
-            comments: 0
-          },
-          {
-            id: 'fallback-4',
-            type: "Design",
-            img: fallbackImages[3],
-            title: "Modern Design Principles",
-            by: "Admin",
-            date: new Date().toLocaleDateString('en-US', { 
-              month: 'long', 
-              day: 'numeric', 
-              year: 'numeric' 
-            }).toUpperCase(),
-            content: "Learn about the latest design principles that are making websites more engaging.",
-            likes: 0,
-            comments: 0
-          }
+          // ... other fallback posts
         ];
-        
+
         setMainPost(fallbackPosts[0]);
         setItems(fallbackPosts.slice(1));
       } finally {
@@ -154,9 +112,66 @@ function LandingMain() {
     document.body.style.overflow = "hidden";
   };
 
+  const handleCommentsClick = (post) => {
+    setSelectedPostForComments(post);
+    setIsCommentsModalOpen(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  const handleAddComment = async () => {
+    if (!newComment.trim()) return;
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/v1/blogs/${selectedPostForComments.id}/comments`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            content: newComment,
+            author: "User", // You can replace this with actual user data
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.status === "success") {
+        setComments((prev) => [...prev, data.comment]);
+        setNewComment("");
+
+        // Update the comments count in the post
+        setItems((prev) =>
+          prev.map((item) =>
+            item.id === selectedPostForComments.id
+              ? { ...item, comments: (item.comments || 0) + 1 }
+              : item
+          )
+        );
+
+        if (mainPost && mainPost.id === selectedPostForComments.id) {
+          setMainPost((prev) => ({
+            ...prev,
+            comments: (prev.comments || 0) + 1,
+          }));
+        }
+      }
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedItem(null);
+    document.body.style.overflow = "unset";
+  };
+
+  const closeCommentsModal = () => {
+    setIsCommentsModalOpen(false);
+    setSelectedPostForComments(null);
     document.body.style.overflow = "unset";
   };
 
@@ -167,25 +182,30 @@ function LandingMain() {
           <div className={styles.imageWrapper}>
             {mainPost ? (
               <>
-                <img src={mainPost.img} alt={mainPost.title} className={styles.img} />
+                <img
+                  src={mainPost.img}
+                  alt={mainPost.title}
+                  className={styles.img}
+                />
                 <div className={styles.imageOverlay}></div>
-                <h1 className={styles.mainTitle}>
-                  {mainPost.title}
-                </h1>
+                <h1 className={styles.mainTitle}>{mainPost.title}</h1>
                 <div className={styles.imageFooter}>
                   <span className={styles.imageAuthor}>By {mainPost.by}</span>
                   <span className={styles.imageDate}>
-                    <i className="fa-solid fa-calendar-days"></i> {mainPost.date}
+                    <i className="fa-solid fa-calendar-days"></i>{" "}
+                    {mainPost.date}
                   </span>
                 </div>
               </>
             ) : (
               <>
-                <img src="/postsImg/photo-1421789665209-c9b2a435e3dc.avif" alt="Placeholder" className={styles.img} />
+                <img
+                  src="/postsImg/photo-1421789665209-c9b2a435e3dc.avif"
+                  alt="Placeholder"
+                  className={styles.img}
+                />
                 <div className={styles.imageOverlay}></div>
-                <h1 className={styles.mainTitle}>
-                  Loading main post...
-                </h1>
+                <h1 className={styles.mainTitle}>Loading main post...</h1>
                 <div className={styles.imageFooter}>
                   <span className={styles.imageAuthor}>By Admin</span>
                   <span className={styles.imageDate}>
@@ -224,9 +244,9 @@ function LandingMain() {
                       <i className="fa-solid fa-calendar-days"></i> {item.date}
                     </span>
                   </div>
-                  <PostActions 
-                    postId={item.id} 
-                    postTitle={item.title} 
+                  <PostActions
+                    postId={item.id}
+                    postTitle={item.title}
                     initialLikes={item.likes || 0}
                     initialComments={item.comments || 0}
                   />
@@ -255,12 +275,14 @@ function LandingMain() {
               </div>
             ))
           ) : (
-            <div className={styles.noPosts}>No posts available at the moment.</div>
+            <div className={styles.noPosts}>
+              No posts available at the moment.
+            </div>
           )}
         </div>
       </main>
 
-      {/* Modal Popup rendered via portal */}
+      {/* Read More Modal */}
       {isModalOpen &&
         selectedItem &&
         createPortal(
@@ -296,8 +318,8 @@ function LandingMain() {
                     {selectedItem.date}
                   </span>
                 </div>
-                <PostActions 
-                  postId={selectedItem.id} 
+                <PostActions
+                  postId={selectedItem.id}
                   postTitle={selectedItem.title}
                   initialLikes={selectedItem.likes || 0}
                   initialComments={selectedItem.comments || 0}
@@ -313,6 +335,7 @@ function LandingMain() {
           </div>,
           document.body
         )}
+
     </>
   );
 }
