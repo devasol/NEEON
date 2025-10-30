@@ -20,6 +20,10 @@ function MainHeader() {
   const [categories, setCategories] = useState([]);
   const [isCategoriesHovered, setIsCategoriesHovered] = useState(false);
   const [isPagesHovered, setIsPagesHovered] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const headerRef = useRef(null);
   const loginIconRef = useRef(null);
 
@@ -109,6 +113,29 @@ function MainHeader() {
       document.body.style.overflow = original;
     };
   }, [showLogin, showSignup]);
+  
+  // Close search when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const searchContainer = document.querySelector(`.${styles.searchContainer}`);
+      const searchIcon = document.querySelector(`.${styles.iconsWrapper} span`);
+      
+      if (isSearchOpen && searchContainer && !searchContainer.contains(event.target)) {
+        if (!searchIcon || !searchIcon.contains(event.target)) {
+          // Check if it's not the search results container either
+          const resultsContainer = document.querySelector(`.${styles.searchResults}`);
+          if (!resultsContainer || !resultsContainer.contains(event.target)) {
+            closeSearch();
+          }
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isSearchOpen]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -218,6 +245,58 @@ function MainHeader() {
   };
 
   const { token, isAdmin, logout } = useAuth();
+
+  // Function to handle search
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      setIsSearching(true);
+      try {
+        // Search in blog posts
+        const response = await api.get(`/api/v1/blogs/search?q=${encodeURIComponent(searchQuery)}`, false);
+        if (response && response.blogs && response.blogs.allBlogs) {
+          setSearchResults(response.blogs.allBlogs);
+        } else {
+          setSearchResults([]);
+        }
+      } catch (error) {
+        console.error('Search error:', error);
+        // Fallback: search in all blogs
+        try {
+          const allBlogsResponse = await api.get('/api/v1/blogs/public?limit=100', false);
+          if (allBlogsResponse && allBlogsResponse.blogs && allBlogsResponse.blogs.allBlogs) {
+            const filtered = allBlogsResponse.blogs.allBlogs.filter(blog => 
+              blog.newsTitle?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              blog.newsDescription?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              blog.category?.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            setSearchResults(filtered);
+          } else {
+            setSearchResults([]);
+          }
+        } catch (fallbackError) {
+          console.error('Fallback search also failed:', fallbackError);
+          setSearchResults([]);
+        }
+      } finally {
+        setIsSearching(false);
+      }
+    } else {
+      setSearchResults([]);
+    }
+  };
+  
+  // Function to open search
+  const openSearch = () => {
+    setIsSearchOpen(true);
+  };
+  
+  // Function to close search
+  const closeSearch = () => {
+    setIsSearchOpen(false);
+    setSearchQuery('');
+    setSearchResults([]);
+  };
 
   const navItems = [
     { name: "Home", path: "/", hasDropdown: false },
@@ -341,15 +420,30 @@ function MainHeader() {
           isMenuOpen ? styles.iconsOpen : ""
         }`}
       >
-        <span>
-          <i className="fa-solid fa-magnifying-glass"></i>
-        </span>
-        <span>
-          <i className="fa-solid fa-cart-shopping"></i>
-        </span>
-        <span>
-          <i className="fa-solid fa-bars-staggered"></i>
-        </span>
+        {isSearchOpen ? (
+          <div className={styles.searchContainer}>
+            <form onSubmit={handleSearch} className={styles.searchForm}>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search posts, articles, categories..."
+                className={styles.searchInput}
+                autoFocus
+              />
+              <button type="submit" className={styles.searchButton}>
+                <i className="fa-solid fa-search"></i>
+              </button>
+            </form>
+            <button className={styles.closeSearchButton} onClick={closeSearch}>
+              <i className="fa-solid fa-times"></i>
+            </button>
+          </div>
+        ) : (
+          <span onClick={openSearch} title="Search">
+            <i className="fa-solid fa-magnifying-glass"></i>
+          </span>
+        )}
         {isAdmin && (
           <button
             className={styles.loginButton}
@@ -384,6 +478,37 @@ function MainHeader() {
           </button>
         )}
       </div>
+      
+      {/* Search Results */}
+      {isSearchOpen && searchResults.length > 0 && (
+        <div className={styles.searchResults}>
+          <div className={styles.resultsContainer}>
+            {searchResults.map((result) => (
+              <a 
+                key={result._id} 
+                href={`/posts#${result._id}`} 
+                className={styles.resultItem}
+                onClick={closeSearch}
+              >
+                <h4>{result.newsTitle}</h4>
+                <p>{result.newsDescription?.substring(0, 100) + (result.newsDescription?.length > 100 ? '...' : '')}</p>
+                <span className={styles.resultCategory}>{result.category}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {/* No results message */}
+      {isSearchOpen && searchQuery && !isSearching && searchResults.length === 0 && (
+        <div className={styles.searchResults}>
+          <div className={styles.resultsContainer}>
+            <div className={styles.noResults}>
+              No results found for "{searchQuery}"
+            </div>
+          </div>
+        </div>
+      )}
       {showLogoutConfirm &&
         createPortal(
           <div

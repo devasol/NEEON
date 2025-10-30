@@ -5,7 +5,7 @@ import {
   FaTwitter,
   FaInstagram,
   FaLinkedinIn,
-  FaGoogle,
+  FaYoutube,
   FaPaperPlane,
   FaHeart,
 } from "react-icons/fa";
@@ -27,6 +27,7 @@ const Footer = () => {
   const handleSubscribe = (e) => {
     e.preventDefault();
     if (email && !isSubscribed) {
+      console.log("Subscribed with email:", email);
       setIsSubscribed(true);
       setTimeout(() => {
         setEmail("");
@@ -40,15 +41,14 @@ const Footer = () => {
       {/* Newsletter Section */}
       <div className={styles.newsletter}>
         <div className={styles.newsLeft}>
-          <img src={logo} alt="cleaning" className={styles.newsletterImage} />
+          <img src={logo} alt="NEEON Blog" className={styles.newsletterImage} />
         </div>
         <div className={styles.newsRight}>
           <h2>
-            Subscribe to our newsletter to get updates to our latest collections
+            Subscribe to our newsletter to get updates to our latest blog posts
           </h2>
           <p>
-            Get 20% off on your first order just by subscribing to our
-            newsletter
+            Stay informed with our latest articles, insights, and trending topics
           </p>
           <form onSubmit={handleSubscribe} className={styles.subscribeForm}>
             <div className={styles.subscribeBox}>
@@ -80,7 +80,7 @@ const Footer = () => {
           </form>
           <p className={styles.smallText}>
             You will be able to unsubscribe at any time. Read our privacy policy{" "}
-            <a href="#">here</a>.
+            <a href="/privacy-policy">here</a>.
           </p>
         </div>
       </div>
@@ -89,11 +89,10 @@ const Footer = () => {
       <div className={styles.footerContent}>
         {/* Left Side Logo & Social */}
         <div className={styles.brand}>
-          <h3 className={styles.logo}>Stay Clean</h3>
+          <h3 className={styles.logo}>NEEON</h3>
           <p>
-            We provide premium cleaning services that transform your space into
-            a spotless sanctuary. Experience the difference of professional
-            cleaning.
+            Your go-to destination for the latest news, insights, and stories. 
+            Discover engaging content across various topics and stay updated with our blog.
           </p>
           <div className={styles.socialIcons}>
             <a href="#" aria-label="Facebook" className={styles.socialLink}>
@@ -112,9 +111,9 @@ const Footer = () => {
               <FaLinkedinIn />
               <span className={styles.tooltip}>LinkedIn</span>
             </a>
-            <a href="#" aria-label="Google" className={styles.socialLink}>
-              <FaGoogle />
-              <span className={styles.tooltip}>Google</span>
+            <a href="#" aria-label="YouTube" className={styles.socialLink}>
+              <FaYoutube />
+              <span className={styles.tooltip}>YouTube</span>
             </a>
           </div>
         </div>
@@ -125,50 +124,50 @@ const Footer = () => {
             <h4>Company</h4>
             <ul>
               <li>
-                <a href="#">About Us</a>
+                <a href="/about">About Us</a>
               </li>
               <li>
-                <a href="#">Services</a>
+                <a href="/contact">Contact</a>
               </li>
               <li>
-                <a href="#">Community</a>
+                <a href="/categories">Categories</a>
               </li>
               <li>
-                <a href="#">Testimonial</a>
-              </li>
-            </ul>
-          </div>
-          <div className={styles.linkColumn}>
-            <h4>Support</h4>
-            <ul>
-              <li>
-                <a href="#">Help Center</a>
-              </li>
-              <li>
-                <a href="#">Tweet @ Us</a>
-              </li>
-              <li>
-                <a href="#">Webians</a>
-              </li>
-              <li>
-                <a href="#">Feedback</a>
+                <a href="/features">Features</a>
               </li>
             </ul>
           </div>
           <div className={styles.linkColumn}>
-            <h4>Links</h4>
+            <h4>Resources</h4>
             <ul>
               <li>
-                <a href="#">Courses</a>
+                <a href="/posts">Blog Posts</a>
               </li>
               <li>
-                <a href="#">Become Teacher</a>
+                <a href="/help">Help Center</a>
               </li>
               <li>
-                <a href="#">Service</a>
+                <a href="/community">Community</a>
               </li>
               <li>
-                <a href="#">All in One</a>
+                <a href="/feedback">Feedback</a>
+              </li>
+            </ul>
+          </div>
+          <div className={styles.linkColumn}>
+            <h4>Legal</h4>
+            <ul>
+              <li>
+                <a href="/privacy-policy">Privacy Policy</a>
+              </li>
+              <li>
+                <a href="/terms-of-service">Terms of Service</a>
+              </li>
+              <li>
+                <a href="/cookies-policy">Cookies Policy</a>
+              </li>
+              <li>
+                <a href="/disclaimer">Disclaimer</a>
               </li>
             </ul>
           </div>
@@ -176,12 +175,12 @@ const Footer = () => {
             <h4>Contact Us</h4>
             <ul>
               <li>
-                <a href="tel:+9198765432154">📞 (91) 98765 4321 54</a>
+                <a href="tel:+1234567890">📞 +1 (234) 567-890</a>
               </li>
               <li>
-                <a href="mailto:support@mail.com">📧 support@mail.com</a>
+                <a href="mailto:info@neeon.com">📧 info@neeon.com</a>
               </li>
-              <li>📍 123 Clean Street, Sparkle City</li>
+              <li>📍 123 Digital Street, Tech City</li>
             </ul>
           </div>
         </div>
@@ -190,15 +189,13 @@ const Footer = () => {
       {/* Bottom Row */}
       <div className={styles.bottom}>
         <p>
-          © {new Date().getFullYear()} Copyright by CodedUI. All rights
-          reserved. Made with <FaHeart className={styles.heartIcon} /> by Dawit
-          S.
+          © {new Date().getFullYear()} NEEON Blog. All rights reserved. Made with <FaHeart className={styles.heartIcon} /> by the NEEON Team
         </p>
         <div className={styles.bottomLinks}>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
-          <a href="#">Legal</a>
-          <a href="#">Site Map</a>
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/terms-of-service">Terms of Use</a>
+          <a href="/cookies-policy">Cookies</a>
+          <a href="/sitemap">Site Map</a>
         </div>
       </div>
     </footer>

@@ -15,12 +15,12 @@ function FirstHeader() {
     <header className={styles.container}>
       <div className={styles.logoContainer}>
         <div className={styles.logoAndTitle}>
-          <img src={logo} alt="Website Logo" />
-          <span>Neeon</span>
+          <img src={logo} alt="NEEON Blog Logo" />
+          <span>NEEON</span>
         </div>
-        <div className={styles.descritption}>
+        <div className={styles.description}>
           <span>
-            Here what a Battelfield Deluxe Hotel Area Edition Nmply Dummy Text
+            Your trusted source for the latest news, insights, and trending topics
           </span>
         </div>
       </div>
@@ -38,10 +38,10 @@ function FirstHeader() {
           <i className="fa-brands fa-twitter"></i>
         </span>
         <span>
-          <i className="fa-brands fa-twitter"></i>
+          <i className="fa-brands fa-instagram"></i>
         </span>
         <span>
-          <i className="fa-brands fa-pinterest"></i>
+          <i className="fa-brands fa-youtube"></i>
         </span>
       </div>
     </header>
