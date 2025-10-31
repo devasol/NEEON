@@ -236,6 +236,24 @@
   .linksContainer span:not(:last-child) {
     padding-right: 0;
   }
+  
+  /* Hide social icons when screen is very small */
+  .linksContainer span:nth-child(5),
+  .linksContainer span:nth-child(6),
+  .linksContainer span:nth-child(7),
+  .linksContainer span:nth-child(8) {
+    display: none;
+  }
+}
+
+/* Also hide social icons on medium screens if needed */
+@media (max-width: 768px) {
+  .linksContainer span:nth-child(5),
+  .linksContainer span:nth-child(6),
+  .linksContainer span:nth-child(7),
+  .linksContainer span:nth-child(8) {
+    display: none;
+  }
 }
 
 /* Animation for date update */
