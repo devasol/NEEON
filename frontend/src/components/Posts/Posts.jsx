@@ -4,6 +4,7 @@ import styles from "./Posts.module.css";
 import api from "../../utils/api";
 import useAuth from "../../hooks/useAuth";
 import CommentModal from "../Comments/ModernCommentModal";
+import PostModal from "./PostModal";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -16,6 +17,10 @@ const Posts = () => {
   const sectionRef = useRef(null);
   const { token } = useAuth();
   const navigate = useNavigate();
+  
+  // State for post modal
+  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
   
   // Function to trigger login modal
   const triggerLogin = () => {
@@ -142,6 +147,18 @@ const Posts = () => {
           console.error('Could not copy text: ', err);
         });
     }
+  };
+
+  // Open post modal
+  const openPostModal = (post) => {
+    setSelectedPost(post);
+    setIsPostModalOpen(true);
+  };
+
+  // Close post modal
+  const closePostModal = () => {
+    setIsPostModalOpen(false);
+    setSelectedPost(null);
   };
 
   useEffect(() => {
@@ -454,6 +471,14 @@ const Posts = () => {
                         📤
                       </button>
                     </div>
+                    
+                    {/* Read More Button */}
+                    <button 
+                      className={styles.readMoreButton}
+                      onClick={() => openPostModal(post)}
+                    >
+                      Read More
+                    </button>
 
 
                   </div>
@@ -538,6 +563,13 @@ const Posts = () => {
             }));
           }
         }}
+      />
+      
+      {/* Post Modal */}
+      <PostModal
+        post={selectedPost}
+        isOpen={isPostModalOpen}
+        onClose={closePostModal}
       />
     </section>
   );
