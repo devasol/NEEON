@@ -1,118 +1,176 @@
-/* Theme Toggle in Header */
+/* Modern Theme Toggle Button */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  z-index: 100;
+}
+
+.theme-switch-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  z-index: 1;
+}
+
+.theme-switch-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
+.theme-switch-button:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+/* Icon styling */
+.theme-icon {
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  z-index: 2;
+  position: relative;
+}
+
+/* Sun icon */
+.sun-icon {
+  color: #fbbf24;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+/* Moon icon */
+.moon-icon {
+  color: #a855f7;
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+}
+
+/* System icon */
+.system-icon {
+  color: #60a5fa;
+  text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+}
+
+/* Animation for theme change */
+.theme-switch-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.theme-switch-button:hover::before {
+  opacity: 1;
+}
+
+/* Special effects for each theme */
+.theme-toggle.light-mode .theme-switch-button {
+  background: linear-gradient(135deg, #fbbf24 0%, #f87171 100%);
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+}
+
+.theme-toggle.dark-mode .theme-switch-button {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+.theme-toggle.system-mode .theme-switch-button {
+  background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+
+/* Ripple effect animation */
+.theme-switch-button.ripple {
+  animation: ripple 0.6s linear;
+}
+
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(102, 126, 234, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .theme-toggle {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .theme-switch-button {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .theme-icon {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .theme-switch-button {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .theme-icon {
+    font-size: 1rem;
+  }
+}
+
+/* Dark mode styling for theme toggle */
+html[data-theme="dark"] .theme-toggle,
+body.dark .theme-toggle {
+  --theme-bg-light: rgba(255, 255, 255, 0.15);
+  --theme-text: #e0e0e0;
+}
+
+html[data-theme="dark"] .theme-switch-button {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* For header contexts */
 .iconsWrapper .theme-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.iconsWrapper .theme-dropdown {
-  padding: 0.5rem;
-  border-radius: 50px;
-  border: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  font-size: 0.85rem;
-  cursor: pointer;
-  outline: none;
-  transition: all 0.3s ease;
-  min-width: 140px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.iconsWrapper .theme-dropdown:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-.iconsWrapper .theme-dropdown:focus {
-  box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.5);
-}
-
-/* Dark mode styling */
-html[data-theme="dark"] .iconsWrapper .theme-dropdown,
-body.dark .iconsWrapper .theme-dropdown {
-  background: rgba(255, 255, 255, 0.15);
-  color: #e0e0e0;
-}
-
-html[data-theme="dark"] .iconsWrapper .theme-dropdown:hover,
-body.dark .iconsWrapper .theme-dropdown:hover {
-  background: rgba(255, 255, 255, 0.25);
-}
-
-/* Theme Toggle in Admin Header */
 .headerRight .theme-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.headerRight .theme-dropdown {
-  padding: 0.5rem;
-  border-radius: 50px;
-  border: 2px solid #e2e8f0;
-  background: white;
-  color: #1e293b;
-  font-size: 0.85rem;
-  cursor: pointer;
-  outline: none;
-  transition: all 0.3s ease;
-  min-width: 140px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-}
-
-.headerRight .theme-dropdown:hover {
-  border-color: #4ecdc4;
-  box-shadow: 0 4px 20px rgba(78, 205, 196, 0.15);
-  transform: translateY(-1px);
-}
-
-.headerRight .theme-dropdown:focus {
-  border-color: #4ecdc4;
-  box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.2);
-}
-
-/* Dark mode styling for admin header */
-html[data-theme="dark"] .headerRight .theme-dropdown,
-body.dark .headerRight .theme-dropdown {
-  background: #334155;
-  color: #f1f5f9;
-  border-color: #475569;
-}
-
-html[data-theme="dark"] .headerRight .theme-dropdown:hover,
-body.dark .headerRight .theme-dropdown:hover {
-  background: #475569;
-  border-color: #64748b;
-}
-
-/* For other contexts if needed */
-.theme-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0.5rem;
-}
-
-.theme-toggle .theme-dropdown {
-  padding: 0.5rem;
-  border-radius: 4px;
-  border: 1px solid var(--border-color, #ccc);
-  background-color: var(--bg-color, #fff);
-  color: var(--text-color, #333);
-  font-size: 0.9rem;
-  cursor: pointer;
-  outline: none;
-  transition: all 0.3s ease;
-}
-
-.theme-toggle .theme-dropdown:hover {
-  border-color: var(--primary-color, #007bff);
-}
-
-.theme-toggle .theme-dropdown:focus {
-  border-color: var(--primary-color, #007bff);
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
