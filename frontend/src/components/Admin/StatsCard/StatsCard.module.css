@@ -1,23 +1,40 @@
 /* StatsCard.module.css */
-:root {
-  --card-bg: #ffffff;
-  --muted: #6c757d;
+/* Light theme variables */
+:root, :root[data-theme="light"] {
+  --stats-card-bg: #ffffff;
+  --stats-card-text: #1e293b;
+  --stats-card-text-muted: #6c757d;
+  --stats-card-shadow: 0 8px 20px rgba(17, 23, 34, 0.06);
+  --stats-card-hover-shadow: 0 18px 30px rgba(17, 23, 34, 0.08);
+  --stats-card-positive: #10b981;
+  --stats-card-negative: #ef4444;
+}
+
+/* Dark theme variables */
+:root[data-theme="dark"] {
+  --stats-card-bg: #1e293b;
+  --stats-card-text: #e2e8f0;
+  --stats-card-text-muted: #94a3b8;
+  --stats-card-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  --stats-card-hover-shadow: 0 18px 30px rgba(0, 0, 0, 0.4);
+  --stats-card-positive: #34d399;
+  --stats-card-negative: #f87171;
 }
 
 .card {
-  background: var(--card-bg);
+  background: var(--stats-card-bg);
   padding: 1.5rem;
   border-radius: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 8px 20px rgba(17, 23, 34, 0.06);
+  box-shadow: var(--stats-card-shadow);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 18px 30px rgba(17, 23, 34, 0.08);
+  box-shadow: var(--stats-card-hover-shadow);
 }
 
 .cardLeft {
@@ -32,7 +49,7 @@
 }
 
 .cardTitle {
-  color: black;
+  color: var(--stats-card-text);
   font-weight: 600;
   font-size: 1rem;
 }
@@ -40,29 +57,18 @@
 .cardValue {
   font-size: 1.8rem;
   font-weight: 800;
-  color: #000000;
+  color: var(--stats-card-text);
 }
 
 .cardDelta {
-  color: #10b981;
   font-weight: 700;
   font-size: 1rem;
 }
 
-@media (max-width: 480px) {
-  .card {
-    padding: 1rem;
-  }
+.cardDelta.positive {
+  color: var(--stats-card-positive);
+}
 
-  .cardTitle {
-    font-size: 0.9rem;
-  }
-
-  .cardValue {
-    font-size: 1.5rem;
-  }
-
-  .cardDelta {
-    font-size: 0.9rem;
-  }
+.cardDelta.negative {
+  color: var(--stats-card-negative);
 }

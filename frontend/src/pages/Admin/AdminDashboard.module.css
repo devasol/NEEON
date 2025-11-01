@@ -1,12 +1,36 @@
+/* Light theme variables */
+:root, :root[data-theme="light"] {
+  --admin-dashboard-bg: #ffffff;
+  --admin-dashboard-text: #1e293b;
+  --admin-dashboard-text-secondary: #64748b;
+  --admin-dashboard-border: #e2e8f0;
+  --admin-dashboard-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --admin-dashboard-card-bg: #ffffff;
+  --admin-dashboard-hover-bg: #f8fafc;
+}
+
+/* Dark theme variables */
+:root[data-theme="dark"] {
+  --admin-dashboard-bg: #0f172a;
+  --admin-dashboard-text: #e2e8f0;
+  --admin-dashboard-text-secondary: #94a3b8;
+  --admin-dashboard-border: #334155;
+  --admin-dashboard-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --admin-dashboard-card-bg: #1e293b;
+  --admin-dashboard-hover-bg: #334155;
+}
+
 .content {
   padding: 2rem;
+  background: var(--admin-dashboard-bg);
+  color: var(--admin-dashboard-text);
 }
 
 .loading {
   padding: 2rem;
   text-align: center;
   font-size: 1.2rem;
-  color: #666;
+  color: var(--admin-dashboard-text-secondary);
 }
 
 .loadingSkeleton {
@@ -28,10 +52,10 @@
 }
 
 .loadingCard {
-  background: #fff;
+  background: var(--admin-dashboard-card-bg);
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--admin-dashboard-shadow);
   height: 100px;
 }
 

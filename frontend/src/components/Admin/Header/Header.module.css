@@ -1,12 +1,70 @@
 /* Header.module.css */
+/* Light theme variables */
+:root, :root[data-theme="light"] {
+  --header-bg: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  --header-text: #1e293b;
+  --header-text-secondary: #64748b;
+  --header-border: rgba(0, 0, 0, 0.05);
+  --header-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --header-input-bg: white;
+  --header-input-border: #e2e8f0;
+  --header-input-placeholder: #94a3b8;
+  --header-input-focus: #4ecdc4;
+  --header-input-focus-shadow: 0 4px 20px rgba(78, 205, 196, 0.15);
+  --header-icon-bg: white;
+  --header-icon-border: #e2e8f0;
+  --header-icon-hover: #4ecdc4;
+  --header-icon-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --header-notifications-bg: white;
+  --header-notifications-border: #f1f5f9;
+  --header-notifications-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  --header-dropdown-bg: #f8fafc;
+  --header-suggestions-bg: white;
+  --header-suggestions-border: #f1f5f9;
+  --header-suggestions-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  --header-button-bg: linear-gradient(135deg, #4ecdc4 0%, #ff6b6b 100%);
+  --header-button-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+  --header-user-bg: white;
+  --header-user-border: #e2e8f0;
+}
+
+/* Dark theme variables */
+:root[data-theme="dark"] {
+  --header-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  --header-text: #e2e8f0;
+  --header-text-secondary: #94a3b8;
+  --header-border: rgba(255, 255, 255, 0.1);
+  --header-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --header-input-bg: #2d3748;
+  --header-input-border: #475569;
+  --header-input-placeholder: #64748b;
+  --header-input-focus: #5eead4;
+  --header-input-focus-shadow: 0 4px 20px rgba(94, 234, 212, 0.15);
+  --header-icon-bg: #2d3748;
+  --header-icon-border: #475569;
+  --header-icon-hover: #5eead4;
+  --header-icon-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  --header-notifications-bg: #2d3748;
+  --header-notifications-border: #475569;
+  --header-notifications-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  --header-dropdown-bg: #334155;
+  --header-suggestions-bg: #2d3748;
+  --header-suggestions-border: #475569;
+  --header-suggestions-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  --header-button-bg: linear-gradient(135deg, #5eead4 0%, #f87171 100%);
+  --header-button-shadow: 0 4px 15px rgba(94, 234, 212, 0.3);
+  --header-user-bg: #2d3748;
+  --header-user-border: #475569;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 2rem;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
+  box-shadow: var(--header-shadow);
   position: relative;
   z-index: 100;
 }
@@ -65,16 +123,16 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  background: white;
-  border: 2px solid #e2e8f0;
+  background: var(--header-input-bg);
+  border: 2px solid var(--header-input-border);
   border-radius: 12px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 }
 
 .searchWrapper.focused {
-  border-color: #4ecdc4;
-  box-shadow: 0 4px 20px rgba(78, 205, 196, 0.15);
+  border-color: var(--header-input-focus);
+  box-shadow: var(--header-input-focus-shadow);
   transform: translateY(-1px);
 }
 
@@ -84,11 +142,11 @@
   outline: none;
   font-size: 0.95rem;
   background: transparent;
-  color: #1e293b;
+  color: var(--header-text);
 }
 
 .search::placeholder {
-  color: #94a3b8;
+  color: var(--header-input-placeholder);
 }
 
 .clearSearch {
@@ -154,8 +212,8 @@
 
 /* Icon Buttons */
 .iconBtn {
-  background: white;
-  border: 2px solid #e2e8f0;
+  background: var(--header-icon-bg);
+  border: 2px solid var(--header-icon-border);
   border-radius: 10px;
   padding: 0.75rem;
   cursor: pointer;
@@ -167,9 +225,9 @@
 }
 
 .iconBtn:hover {
-  border-color: #4ecdc4;
+  border-color: var(--header-icon-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--header-icon-shadow);
 }
 
 /* Notifications */
@@ -211,9 +269,9 @@
   top: 100%;
   right: 0;
   width: 320px;
-  background: white;
+  background: var(--header-notifications-bg);
   border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--header-notifications-shadow);
   margin-top: 1rem;
   z-index: 1000;
   animation: slideDown 0.3s ease;
@@ -221,18 +279,18 @@
 
 .notificationsHeader {
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--header-notifications-border);
 }
 
 .notificationsHeader h3 {
   margin: 0 0 0.25rem 0;
-  color: #1e293b;
+  color: var(--header-text);
   font-size: 1.1rem;
 }
 
 .notificationsCount {
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--header-text-secondary);
   font-weight: 600;
 }
 
@@ -310,7 +368,7 @@
 
 /* Action Button */
 .actionBtn {
-  background: linear-gradient(135deg, #4ecdc4 0%, #ff6b6b 100%);
+  background: var(--header-button-bg);
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 12px;
@@ -321,7 +379,7 @@
   align-items: center;
   gap: 0.5rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+  box-shadow: var(--header-button-shadow);
 }
 
 .actionBtn:hover {
@@ -342,8 +400,8 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: white;
-  border: 2px solid #e2e8f0;
+  background: var(--header-user-bg);
+  border: 2px solid var(--header-user-border);
   border-radius: 12px;
   padding: 0.5rem 0.75rem 0.5rem 0.5rem;
   cursor: pointer;
@@ -351,8 +409,8 @@
 }
 
 .userBtn:hover {
-  border-color: #4ecdc4;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-color: var(--header-icon-hover);
+  box-shadow: var(--header-icon-shadow);
 }
 
 .userAvatar {
@@ -392,7 +450,7 @@
 
 .userName {
   font-weight: 600;
-  color: #1e293b;
+  color: var(--header-text);
 }
 
 .userDropdown {

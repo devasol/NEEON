@@ -1,16 +1,68 @@
 /* SettingsView.module.css */
+/* Light theme variables */
+:root, :root[data-theme="light"] {
+  --settings-bg: #ffffff;
+  --settings-text: #333;
+  --settings-text-secondary: #666;
+  --settings-text-light: #155724;
+  --settings-text-error: #721c24;
+  --settings-border: #e0e0e0;
+  --settings-border-light: #e6eef7;
+  --settings-border-success: #c3e6cb;
+  --settings-border-error: #f5c6cb;
+  --settings-tab-hover: #f5f5f5;
+  --settings-tab-active: #007bff;
+  --settings-input-bg: #ffffff;
+  --settings-input-border: #e6eef7;
+  --settings-input-focus: #007bff;
+  --settings-input-focus-shadow: rgba(0, 123, 255, 0.25);
+  --settings-btn-gradient: linear-gradient(135deg, #4ecdc4, #ff6b6b);
+  --settings-btn-gradient-hover: linear-gradient(135deg, #45b7b0, #e55c5c);
+  --settings-status-success-bg: #d4edda;
+  --settings-status-success-text: #155724;
+  --settings-status-error-bg: #f8d7da;
+  --settings-status-error-text: #721c24;
+}
+
+/* Dark theme variables */
+:root[data-theme="dark"] {
+  --settings-bg: #1e293b;
+  --settings-text: #e2e8f0;
+  --settings-text-secondary: #94a3b8;
+  --settings-text-light: #6ee7b7;
+  --settings-text-error: #fecaca;
+  --settings-border: #475569;
+  --settings-border-light: #475569;
+  --settings-border-success: #34d399;
+  --settings-border-error: #f87171;
+  --settings-tab-hover: #334155;
+  --settings-tab-active: #60a5fa;
+  --settings-input-bg: #334155;
+  --settings-input-border: #475569;
+  --settings-input-focus: #60a5fa;
+  --settings-input-focus-shadow: rgba(96, 165, 250, 0.25);
+  --settings-btn-gradient: linear-gradient(135deg, #5eead4, #f87171);
+  --settings-btn-gradient-hover: linear-gradient(135deg, #5eead4, #ef4444);
+  --settings-status-success-bg: #27432d;
+  --settings-status-success-text: #6ee7b7;
+  --settings-status-error-bg: #43272e;
+  --settings-status-error-text: #fecaca;
+}
+
 .settingsView {
   padding: 1.5rem;
+  background: var(--settings-bg);
+  color: var(--settings-text);
 }
 
 .settingsView h2 {
   margin-bottom: 1.5rem;
-  color: #333;
+  color: var(--settings-text);
 }
 
 .tabs {
   display: flex;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--settings-border);
   margin-bottom: 1.5rem;
   overflow-x: auto;
 }
@@ -21,49 +73,18 @@
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  color: #666;
+  color: var(--settings-text-secondary);
   border-bottom: 2px solid transparent;
   white-space: nowrap;
 }
 
 .tab:hover {
-  background-color: #f5f5f5;
+  background-color: var(--settings-tab-hover);
 }
 
 .tab.activeTab {
-  color: #007bff;
-  border-bottom: 2px solid #007bff;
-}
-
-.settingsForm {
-  max-width: 800px;
-}
-
-.tabContent {
-  margin-bottom: 1.5rem;
-}
-
-.formGroup {
-  margin-bottom: 1.5rem;
-}
-
-.formGroup label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #333;
-}
-
-.formGroup .checkboxLabel {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: normal;
-  cursor: pointer;
-}
-
-.formGroup .checkboxLabel input[type="checkbox"] {
-  margin: 0;
+  color: var(--settings-tab-active);
+  border-bottom: 2px solid var(--settings-tab-active);
 }
 
 .input,
@@ -72,17 +93,19 @@
   padding: 0.6rem 0.8rem;
   width: 100%;
   border-radius: 8px;
-  border: 1px solid #e6eef7;
+  border: 1px solid var(--settings-input-border);
   margin-bottom: 0.75rem;
   font-size: 1rem;
   transition: border-color 0.2s;
+  background: var(--settings-input-bg);
+  color: var(--settings-text);
 }
 
 .input:focus,
 .textarea:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  border-color: var(--settings-input-focus);
+  box-shadow: 0 0 0 2px var(--settings-input-focus-shadow);
 }
 
 .textarea {
@@ -90,15 +113,36 @@
   resize: vertical;
 }
 
-.formActions {
-  margin-top: 2rem;
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--settings-text);
+}
+
+.formGroup .checkboxLabel {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: normal;
+  cursor: pointer;
+  color: var(--settings-text);
+}
+
+.saveStatus.success {
+  background-color: var(--settings-status-success-bg);
+  color: var(--settings-status-success-text);
+  border: 1px solid var(--settings-border-success);
+}
+
+.saveStatus.error {
+  background-color: var(--settings-status-error-bg);
+  color: var(--settings-status-error-text);
+  border: 1px solid var(--settings-border-error);
 }
 
 .actionBtn {
-  background: linear-gradient(135deg, #4ecdc4, #ff6b6b);
+  background: var(--settings-btn-gradient);
   color: white;
   padding: 0.6rem 0.9rem;
   border-radius: 8px;
@@ -106,65 +150,4 @@
   cursor: pointer;
   font-weight: 600;
   transition: opacity 0.2s;
-}
-
-.actionBtn:hover {
-  opacity: 0.9;
-}
-
-.actionBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.saveStatus {
-  margin-top: 0.75rem;
-  padding: 0.5rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  width: 100%;
-}
-
-.saveStatus.success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.saveStatus.error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-@media (max-width: 768px) {
-  .settingsView {
-    padding: 1rem;
-  }
-  
-  .tabs {
-    overflow-x: auto;
-    flex-wrap: nowrap;
-  }
-  
-  .tab {
-    white-space: nowrap;
-  }
-  
-  .tableCard {
-    padding: 0.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .input {
-    padding: 0.8rem;
-    font-size: 1rem;
-  }
-
-  .actionBtn {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
-  }
 }

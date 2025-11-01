@@ -1,68 +1,228 @@
+/* Light theme variables */
+:root, :root[data-theme="light"] {
+  --categories-bg: #f8fafc; /* slate-50 */
+  --categories-container-bg: #ffffff; /* white */
+  --categories-text: #1e293b; /* slate-800 */
+  --categories-text-secondary: #64748b; /* slate-600 */
+  --categories-text-light: #94a3b8; /* slate-400 */
+  --categories-border: #cbd5e1; /* slate-300 */
+  --categories-border-light: #e2e8f0; /* slate-200 */
+  --categories-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --categories-card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --categories-error-bg: #fee2e2; /* red-50 */
+  --categories-error-text: #dc2626; /* red-600 */
+  --categories-btn-primary: #3b82f6; /* blue-500 */
+  --categories-btn-primary-hover: #2563eb; /* blue-600 */
+  --categories-btn-edit: #dbeafe; /* blue-100 */
+  --categories-btn-edit-border: #3b82f6; /* blue-500 */
+  --categories-btn-delete: #fee2e2; /* red-50 */
+  --categories-btn-delete-border: #ef4444; /* red-500 */
+  --categories-btn-save: #10b981; /* emerald-500 */
+  --categories-btn-save-hover: #059669; /* emerald-600 */
+  --categories-btn-cancel: #ef4444; /* red-500 */
+  --categories-btn-cancel-hover: #dc2626; /* red-600 */
+  --categories-input-bg: #ffffff; /* white */
+  --categories-input-border: #cbd5e1; /* slate-300 */
+  --categories-no-data-text: #64748b; /* slate-600 */
+}
+
+/* Dark theme variables */
+:root[data-theme="dark"] {
+  --categories-bg: #0f172a; /* indigo-950 */
+  --categories-container-bg: #1e293b; /* slate-800 */
+  --categories-text: #e2e8f0; /* slate-200 */
+  --categories-text-secondary: #94a3b8; /* slate-400 */
+  --categories-text-light: #64748b; /* slate-500 */
+  --categories-border: #475569; /* slate-600 */
+  --categories-border-light: #334155; /* slate-700 */
+  --categories-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  --categories-card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --categories-error-bg: #43272e; /* rose-900/30 */
+  --categories-error-text: #f87171; /* rose-400 */
+  --categories-btn-primary: #60a5fa; /* blue-400 */
+  --categories-btn-primary-hover: #3b82f6; /* blue-500 */
+  --categories-btn-edit: #334155; /* slate-700 */
+  --categories-btn-edit-border: #60a5fa; /* blue-400 */
+  --categories-btn-delete: #43272e; /* rose-900/30 */
+  --categories-btn-delete-border: #f87171; /* rose-400 */
+  --categories-btn-save: #34d399; /* emerald-400 */
+  --categories-btn-save-hover: #10b981; /* emerald-500 */
+  --categories-btn-cancel: #f87171; /* rose-400 */
+  --categories-btn-cancel-hover: #ef4444; /* rose-500 */
+  --categories-input-bg: #334155; /* slate-700 */
+  --categories-input-border: #475569; /* slate-600 */
+  --categories-no-data-text: #94a3b8; /* slate-400 */
+}
+
 .container {
   padding: 20px;
+  background: var(--categories-bg);
+  color: var(--categories-text);
 }
 
 .loading {
   text-align: center;
   padding: 2rem;
   font-size: 1.1rem;
-  color: #666;
+  color: var(--categories-text-secondary);
 }
 
 .error {
   text-align: center;
   padding: 2rem;
   font-size: 1.1rem;
-  color: #d32f2f;
-  background-color: #ffebee;
+  color: var(--categories-error-text);
+  background-color: var(--categories-error-bg);
   border-radius: 8px;
   margin: 1rem 0;
 }
 
 .card {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--categories-container-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--categories-card-shadow);
+  color: var(--categories-text);
+  border: 1px solid var(--categories-border-light);
 }
 
 .card h3 {
   margin-top: 0;
-  margin-bottom: 15px;
-  color: #333;
+  margin-bottom: 1rem;
+  color: var(--categories-text);
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .card input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--categories-input-border);
   border-radius: 4px;
   margin-bottom: 10px;
   font-size: 1rem;
+  background: var(--categories-input-bg);
+  color: var(--categories-text);
 }
 
 .card form {
   display: flex;
   gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .card form input {
   flex: 1;
+  min-width: 200px;
 }
 
-.card button {
-  background-color: #007bff;
-  color: #fff;
+.card button[type="submit"] {
+  flex-shrink: 0;
+  align-self: flex-end;
+  margin-top: 10px;
+}
+
+/* Responsive form layout */
+@media (max-width: 768px) {
+  .card form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .card form input,
+  .card form button {
+    width: 100%;
+  }
+  
+  .card button[type="submit"] {
+    align-self: stretch;
+  }
+}
+
+.card button[type="submit"] {
+  background: linear-gradient(135deg, var(--categories-btn-primary) 0%, #2563eb 100%);
+  color: white;
   border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.card button:hover {
-  background-color: #0056b3;
+.card button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--categories-input-border);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  background: var(--categories-input-bg);
+  color: var(--categories-text);
+  transition: all 0.3s ease;
+}
+
+.card input:focus {
+  outline: none;
+  border-color: var(--categories-btn-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Style for other buttons (edit, delete, save, cancel) */
+.editBtn, .deleteBtn, .saveBtn, .cancelBtn {
+  padding: 6px 10px;
+  border: 1px solid var(--categories-input-border);
+  background-color: var(--categories-input-bg);
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--categories-text);
+  transition: all 0.3s ease;
+}
+
+.editBtn:hover {
+  background-color: var(--categories-btn-edit);
+  border-color: var(--categories-btn-edit-border);
+}
+
+.deleteBtn:hover {
+  background-color: var(--categories-btn-delete);
+  border-color: var(--categories-btn-delete-border);
+}
+
+.saveBtn {
+  background-color: var(--categories-btn-save);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.saveBtn:hover {
+  background-color: var(--categories-btn-save-hover);
+}
+
+.cancelBtn {
+  background-color: var(--categories-btn-cancel);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancelBtn:hover {
+  background-color: var(--categories-btn-cancel-hover);
 }
 
 .card ul {
@@ -76,7 +236,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--categories-border-light);
+  color: var(--categories-text);
 }
 
 .categoryItem:last-child {
@@ -93,54 +254,63 @@
 .categoryName {
   font-size: 16px;
   font-weight: 500;
-  color: #333;
+  color: var(--categories-text);
+  flex: 1;
+  word-break: break-word;
+  padding-right: 15px;
 }
 
 .categoryActions {
   display: flex;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .editBtn, .deleteBtn {
   padding: 6px 10px;
-  border: 1px solid #ccc;
-  background-color: #fff;
+  border: 1px solid var(--categories-input-border);
+  background-color: var(--categories-input-bg);
   cursor: pointer;
   border-radius: 4px;
   font-size: 14px;
+  color: var(--categories-text);
 }
 
 .editBtn:hover {
-  background-color: #e3f2fd;
-  border-color: #2196f3;
+  background-color: var(--categories-btn-edit);
+  border-color: var(--categories-btn-edit-border);
 }
 
 .deleteBtn:hover {
-  background-color: #ffebee;
-  border-color: #f44336;
+  background-color: var(--categories-btn-delete);
+  border-color: var(--categories-btn-delete-border);
 }
 
 .editForm {
   display: flex;
   width: 100%;
   gap: 10px;
+  align-items: center;
 }
 
 .editInput {
   flex: 1;
   padding: 8px 12px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--categories-input-border);
   border-radius: 4px;
   font-size: 1rem;
+  background: var(--categories-input-bg);
+  color: var(--categories-text);
 }
 
 .editActions {
   display: flex;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .saveBtn {
-  background-color: #4caf50;
+  background-color: var(--categories-btn-save);
   color: white;
   border: none;
   padding: 8px 12px;
@@ -149,11 +319,11 @@
 }
 
 .saveBtn:hover {
-  background-color: #45a049;
+  background-color: var(--categories-btn-save-hover);
 }
 
 .cancelBtn {
-  background-color: #f44336;
+  background-color: var(--categories-btn-cancel);
   color: white;
   border: none;
   padding: 8px 12px;
@@ -162,13 +332,13 @@
 }
 
 .cancelBtn:hover {
-  background-color: #da190b;
+  background-color: var(--categories-btn-cancel-hover);
 }
 
 .noData {
   text-align: center;
   padding: 20px;
-  color: #666;
+  color: var(--categories-no-data-text);
   font-style: italic;
 }
 

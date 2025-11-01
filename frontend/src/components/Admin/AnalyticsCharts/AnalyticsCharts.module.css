@@ -1,24 +1,47 @@
+/* Light theme variables */
+:root, :root[data-theme="light"] {
+  --analytics-bg: #ffffff;
+  --analytics-container-bg: #f9f9f9;
+  --analytics-text: #333;
+  --analytics-text-secondary: #666;
+  --analytics-text-light: #999;
+  --analytics-border: #ccc;
+  --analytics-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --analytics-error-bg: #ffebee;
+  --analytics-error-text: #d32f2f;
+  --analytics-grid-bg: #f9f9f9;
+}
+
+/* Dark theme variables */
+:root[data-theme="dark"] {
+  --analytics-bg: #1e293b;
+  --analytics-container-bg: #2d3748;
+  --analytics-text: #e2e8f0;
+  --analytics-text-secondary: #94a3b8;
+  --analytics-text-light: #64748b;
+  --analytics-border: #475569;
+  --analytics-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  --analytics-error-bg: #43272e;
+  --analytics-error-text: #f87171;
+  --analytics-grid-bg: #2d3748;
+}
+
 .analyticsCharts {
   margin-top: 2rem;
   padding: 1.5rem;
-  background: white;
+  background: var(--analytics-bg);
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--analytics-shadow);
+  color: var(--analytics-text);
 }
 
 .analyticsCharts h3 {
   margin-bottom: 1.5rem;
-  color: #333;
-}
-
-.chartGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 1.5rem;
+  color: var(--analytics-text);
 }
 
 .chartContainer {
-  background: #f9f9f9;
+  background: var(--analytics-grid-bg);
   padding: 1rem;
   border-radius: 8px;
 }
@@ -26,32 +49,22 @@
 .chartContainer h4 {
   margin-bottom: 1rem;
   text-align: center;
-  color: #333;
+  color: var(--analytics-text);
 }
 
 .loading {
   text-align: center;
   padding: 2rem;
   font-size: 1.1rem;
-  color: #666;
+  color: var(--analytics-text-secondary);
 }
 
 .error {
   text-align: center;
   padding: 2rem;
   font-size: 1.1rem;
-  color: #d32f2f;
-  background-color: #ffebee;
+  color: var(--analytics-error-text);
+  background-color: var(--analytics-error-bg);
   border-radius: 8px;
   margin: 1rem 0;
-}
-
-@media (max-width: 768px) {
-  .chartGrid {
-    grid-template-columns: 1fr;
-  }
-  
-  .analyticsCharts {
-    padding: 1rem;
-  }
 }

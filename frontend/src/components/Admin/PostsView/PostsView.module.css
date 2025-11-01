@@ -1,8 +1,101 @@
+/* Light theme variables */
+:root, :root[data-theme="light"] {
+  --posts-bg: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  --posts-text: #1e293b;
+  --posts-text-secondary: #64748b;
+  --posts-text-muted: #94a3b8;
+  --posts-border: #f1f5f9;
+  --posts-border-light: #e2e8f0;
+  --posts-card-bg: #ffffff;
+  --posts-card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --posts-hover-bg: #f8fafc;
+  --posts-hover-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  --posts-modal-bg: #ffffff;
+  --posts-modal-overlay: rgba(15, 23, 42, 0.8);
+  --posts-stats-bg: #f8fafc;
+  --posts-search-bg: #ffffff;
+  --posts-filter-bg: #ffffff;
+  --posts-filter-border: #e2e8f0;
+  --posts-stat-number: #1e293b;
+  --posts-stat-label: #64748b;
+  --posts-table-header-bg: #fafbff;
+  --posts-table-border: #f8fafc;
+  --posts-table-hover: #f8fafc;
+  --posts-table-title: #1e293b;
+  --posts-table-excerpt: #64748b;
+  --posts-table-author: #94a3b8;
+  --posts-category-badge-bg: #f1f5f9;
+  --posts-category-badge-text: #475569;
+  --posts-metric-color: #64748b;
+  --posts-no-posts-text: #64748b;
+  --posts-no-posts-title: #475569;
+  --posts-btn-secondary-bg: #f1f5f9;
+  --posts-btn-secondary-text: #475569;
+  --posts-btn-secondary-border: #e2e8f0;
+  --posts-tab-bg: #f8fafc;
+  --posts-tab-text: #64748b;
+  --posts-tab-active-text: #667eea;
+  --posts-form-bg: #ffffff;
+  --posts-form-border: #e2e8f0;
+  --posts-form-focus: #667eea;
+  --posts-form-error: #ef4444;
+  --posts-upload-bg: #fafbff;
+  --posts-upload-border: #cbd5e1;
+  --posts-upload-text: #64748b;
+}
+
+/* Dark theme variables */
+:root[data-theme="dark"] {
+  --posts-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  --posts-text: #e2e8f0;
+  --posts-text-secondary: #cbd5e1;
+  --posts-text-muted: #94a3b8;
+  --posts-border: #334155;
+  --posts-border-light: #475569;
+  --posts-card-bg: #2d3748;
+  --posts-card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --posts-hover-bg: #334155;
+  --posts-hover-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  --posts-modal-bg: #2d3748;
+  --posts-modal-overlay: rgba(0, 0, 0, 0.8);
+  --posts-stats-bg: #334155;
+  --posts-search-bg: #334155;
+  --posts-filter-bg: #334155;
+  --posts-filter-border: #475569;
+  --posts-stat-number: #e2e8f0;
+  --posts-stat-label: #94a3b8;
+  --posts-table-header-bg: #334155;
+  --posts-table-border: #334155;
+  --posts-table-hover: #334155;
+  --posts-table-title: #e2e8f0;
+  --posts-table-excerpt: #cbd5e1;
+  --posts-table-author: #94a3b8;
+  --posts-category-badge-bg: #334155;
+  --posts-category-badge-text: #cbd5e1;
+  --posts-metric-color: #94a3b8;
+  --posts-no-posts-text: #94a3b8;
+  --posts-no-posts-title: #cbd5e1;
+  --posts-btn-secondary-bg: #334155;
+  --posts-btn-secondary-text: #cbd5e1;
+  --posts-btn-secondary-border: #475569;
+  --posts-tab-bg: #334155;
+  --posts-tab-text: #94a3b8;
+  --posts-tab-active-text: #818cf8;
+  --posts-form-bg: #334155;
+  --posts-form-border: #475569;
+  --posts-form-focus: #818cf8;
+  --posts-form-error: #f87171;
+  --posts-upload-bg: #334155;
+  --posts-upload-border: #475569;
+  --posts-upload-text: #94a3b8;
+}
+
 .postsView {
   padding: 2rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: var(--posts-bg);
   min-height: 100vh;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--posts-text);
 }
 
 /* Header */
@@ -84,8 +177,8 @@
 .searchBox {
   display: flex;
   align-items: center;
-  background: white;
-  border: 2px solid #e2e8f0;
+  background: var(--posts-search-bg);
+  border: 2px solid var(--posts-filter-border);
   border-radius: 12px;
   padding: 0.75rem 1rem;
   flex: 1;
@@ -114,13 +207,14 @@
 }
 
 .filterSelect {
-  background: white;
-  border: 2px solid #e2e8f0;
+  background: var(--posts-filter-bg);
+  border: 2px solid var(--posts-filter-border);
   border-radius: 8px;
   padding: 0.75rem;
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  color: var(--posts-text);
 }
 
 .filterSelect:hover {
@@ -137,15 +231,16 @@
 }
 
 .statCard {
-  background: white;
+  background: var(--posts-card-bg);
   padding: 1.5rem;
   border-radius: 16px;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--posts-card-shadow);
   transition: all 0.3s ease;
-  border: 1px solid #f1f5f9;
+  border: 1px solid var(--posts-border-light);
   position: relative;
   overflow: hidden;
+  color: var(--posts-text);
 }
 
 .statCard::before {
@@ -191,12 +286,13 @@
 
 /* Table */
 .tableCard {
-  background: white;
+  background: var(--posts-card-bg);
   border-radius: 20px;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  border: 1px solid #f1f5f9;
+  box-shadow: var(--posts-card-shadow);
+  border: 1px solid var(--posts-border-light);
   animation: slideUp 0.6s ease 0.3s both;
+  color: var(--posts-text);
 }
 
 .tableContainer {
@@ -439,15 +535,16 @@
 
 /* Post Detail Modal */
 .modal {
-  background: white;
+  background: var(--posts-modal-bg);
   border-radius: 24px;
   max-width: 600px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
   animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--posts-card-shadow);
   position: relative;
+  color: var(--posts-text);
 }
 
 @keyframes modalSlideUp {
@@ -645,16 +742,17 @@
 
 /* Enhanced Create Post Modal */
 .createPostModal {
-  background: white;
+  background: var(--posts-modal-bg);
   border-radius: 24px;
   max-width: 800px;
   width: 95%;
   max-height: 90vh;
   overflow: hidden;
   animation: modalSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--posts-card-shadow);
+  border: 1px solid var(--posts-border-light);
   backdrop-filter: blur(20px);
+  color: var(--posts-text);
 }
 
 @keyframes modalSlideIn {
@@ -745,7 +843,7 @@
 .activeTab {
   color: #667eea;
   border-bottom-color: #667eea;
-  background: white;
+  background: var(--posts-card-bg);
 }
 
 .newPostForm {
@@ -799,11 +897,12 @@
 .formSelect {
   width: 100%;
   padding: 1rem;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--posts-form-border);
   border-radius: 12px;
   font-size: 1rem;
   transition: all 0.3s ease;
-  background: white;
+  background: var(--posts-form-bg);
+  color: var(--posts-text);
 }
 
 .formInput:focus,
@@ -898,7 +997,7 @@
   color: #64748b;
   font-size: 0.9rem;
   font-weight: 500;
-  background: white; /* So text overlays the line */
+  background: var(--posts-card-bg); /* So text overlays the line */
   z-index: 1;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -913,16 +1012,17 @@
 
 .urlInputContainer .formInput {
   padding: 12px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--posts-form-border);
   border-radius: 12px;
   font-size: 1rem;
   transition: all 0.3s ease;
-  background: white;
+  background: var(--posts-form-bg);
+  color: var(--posts-text);
 }
 
 .urlInputContainer .formInput:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--posts-form-focus);
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   transform: translateY(-1px);
 }
@@ -1031,7 +1131,7 @@
   content: "";
   width: 8px;
   height: 8px;
-  background: white;
+  background: var(--posts-text);
   border-radius: 50%;
   position: absolute;
   top: 50%;
@@ -1105,12 +1205,13 @@
 }
 
 .previewCard {
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--posts-border-light);
   border-radius: 16px;
   overflow: hidden;
-  background: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  background: var(--posts-card-bg);
+  box-shadow: var(--posts-card-shadow);
   transition: transform 0.3s ease;
+  color: var(--posts-text);
 }
 
 .previewCard:hover {
@@ -1175,9 +1276,9 @@
 
 .cancelBtn {
   padding: 0.75rem 1.5rem;
-  border: 2px solid #e2e8f0;
-  background: white;
-  color: #64748b;
+  border: 2px solid var(--posts-form-border);
+  background: var(--posts-form-bg);
+  color: var(--posts-text-secondary);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1198,7 +1299,7 @@
 .saveDraftBtn {
   padding: 0.75rem 1.5rem;
   border: 2px solid #f59e0b;
-  background: white;
+  background: var(--posts-form-bg);
   color: #f59e0b;
   border-radius: 10px;
   cursor: pointer;

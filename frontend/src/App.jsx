@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Routes, Route, useLocation } from 'react-router-dom';
 import HomePage from "./pages/HomePage/HomePage.jsx";
+import PostsPage from "./pages/Posts/PostsPage.jsx";
+import CategoriesPage from "./pages/Categories/CategoriesPage.jsx";
+import Contact from "./pages/Contact/ContactPage.jsx";
 import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
 import AdminLayout from "./pages/Admin/AdminLayout.jsx";
-import PostsPage from "./pages/Posts/PostsPage.jsx";
-import Contact from "./pages/Contact/ContactPage.jsx";
 import { ToastProvider } from "./context/ToastContext.jsx";
 import ScrollToTop from "./components/Common/ScrollToTop/ScrollToTop.jsx";
 
@@ -22,6 +23,9 @@ function PageTitle() {
         break;
       case "/posts":
         title = "NEEON | Posts";
+        break;
+      case "/categories":
+        title = "NEEON | Categories";
         break;
       case "/contact":
         title = "NEEON | Contact";
@@ -51,6 +55,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/posts" element={<PostsPage />} />
+        <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/contact" element={<Contact />} />
         <Route
           path="/admin"

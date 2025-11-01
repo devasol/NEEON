@@ -19,7 +19,6 @@ function MainHeader() {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [isFeaturesHovered, setIsFeaturesHovered] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [isCategoriesHovered, setIsCategoriesHovered] = useState(false);
   const [isPagesHovered, setIsPagesHovered] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -313,7 +312,7 @@ function MainHeader() {
         { name: "Commenting System" },
       ],
     },
-    { name: "Categories", path: "#", hasDropdown: true },
+    { name: "Categories", path: "/categories", hasDropdown: false },
     { name: "Posts/Blogs", path: "/posts", hasDropdown: false },
     { name: "Contact", path: "/contact", hasDropdown: false },
   ];
@@ -355,12 +354,10 @@ function MainHeader() {
               key={index}
               onMouseEnter={() => {
                 if (item.name === "Features") setIsFeaturesHovered(true);
-                if (item.name === "Categories") setIsCategoriesHovered(true);
                 if (item.name === "Pages") setIsPagesHovered(true);
               }}
               onMouseLeave={() => {
                 if (item.name === "Features") setIsFeaturesHovered(false);
-                if (item.name === "Categories") setIsCategoriesHovered(false);
                 if (item.name === "Pages") setIsPagesHovered(false);
               }}
               className={`${item.hasDropdown ? styles.hasDropdown : ""} ${item.name === "Categories" || item.name === "Features" ? styles.noUnderline : ""}`}
@@ -374,7 +371,6 @@ function MainHeader() {
                 {item.name}
               </NavLink>
               {(item.name === "Features" ||
-                item.name === "Categories" ||
                 item.name === "Pages") && (
                 <i className="fa-solid fa-chevron-down"></i>
               )}
@@ -384,19 +380,6 @@ function MainHeader() {
                     {item.dropdown.map((dropdownItem, dropdownIndex) => (
                       <span key={dropdownIndex}>{dropdownItem.name}</span>
                     ))}
-                  </div>
-                </div>
-              )}
-              {item.name === "Categories" && isCategoriesHovered && (
-                <div className={`${styles.dropdown} ${styles.dropdownOpen}`}>
-                  <div className={styles.dropdownContent}>
-                    {categories.length > 0 ? (
-                      categories.map((category, categoryIndex) => (
-                        <span key={category._id || categoryIndex}>{category.name}</span>
-                      ))
-                    ) : (
-                      <span>No categories available</span>
-                    )}
                   </div>
                 </div>
               )}

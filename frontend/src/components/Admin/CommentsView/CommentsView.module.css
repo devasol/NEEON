@@ -1,41 +1,99 @@
 /* CommentsView.module.css */
+/* Light theme variables */
+:root, :root[data-theme="light"] {
+  --comments-bg: #ffffff;
+  --comments-text: #2d3748;
+  --comments-text-secondary: #4a5568;
+  --comments-text-muted: #6c757d;
+  --comments-text-light: #718096;
+  --comments-text-extra-light: #a0aec0;
+  --comments-border: #e2e8f0;
+  --comments-header-border: #f1f5f9;
+  --comments-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --comments-hover-bg: #f8fafc;
+  --comments-hover-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --comments-modal-bg: #ffffff;
+  --comments-modal-border: #e2e8f0;
+  --comments-comment-bg: #f8fafc;
+  --comments-status-pending-bg: #fffaf0;
+  --comments-status-pending-text: #dd6b20;
+  --comments-status-pending-border: #fed7aa;
+  --comments-status-approved-bg: #f0fff4;
+  --comments-status-approved-text: #38a169;
+  --comments-status-approved-border: #9ae6b4;
+  --comments-status-rejected-bg: #fff5f5;
+  --comments-status-rejected-text: #e53e3e;
+  --comments-status-rejected-border: #fcb9b9;
+  --comments-status-btn-bg: #e2e8f0;
+  --comments-approve-color: #38a169;
+  --comments-reject-color: #e53e3e;
+  --comments-accent: #4ecdc4;
+}
+
+/* Dark theme variables */
+:root[data-theme="dark"] {
+  --comments-bg: #1e293b;
+  --comments-text: #e2e8f0;
+  --comments-text-secondary: #cbd5e1;
+  --comments-text-muted: #94a3b8;
+  --comments-text-light: #94a3b8;
+  --comments-text-extra-light: #64748b;
+  --comments-border: #475569;
+  --comments-header-border: #334155;
+  --comments-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --comments-hover-bg: #334155;
+  --comments-hover-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --comments-modal-bg: #2d3748;
+  --comments-modal-border: #475569;
+  --comments-comment-bg: #334155;
+  --comments-status-pending-bg: #4a3a1a;
+  --comments-status-pending-text: #f6ad55;
+  --comments-status-pending-border: #d69e2e;
+  --comments-status-approved-bg: #27432d;
+  --comments-status-approved-text: #68d391;
+  --comments-status-approved-border: #38a169;
+  --comments-status-rejected-bg: #43272e;
+  --comments-status-rejected-text: #fc8181;
+  --comments-status-rejected-border: #e53e3e;
+  --comments-status-btn-bg: #475569;
+  --comments-approve-color: #68d391;
+  --comments-reject-color: #fc8181;
+  --comments-accent: #5eead4;
+}
+
 .commentsView {
   padding: 2rem;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--comments-bg);
+  color: var(--comments-text);
 }
 
 .commentsView h2 {
   margin-bottom: 1.5rem;
-  color: #2d3748;
+  color: var(--comments-text);
   font-size: 1.8rem;
   font-weight: 700;
-  border-bottom: 3px solid #4ecdc4;
+  border-bottom: 3px solid var(--comments-accent);
   padding-bottom: 0.5rem;
   display: inline-block;
 }
 
 .tableCard {
-  background: #fff;
+  background: var(--comments-bg);
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e2e8f0;
+  box-shadow: var(--comments-shadow);
+  border: 1px solid var(--comments-border);
 }
 
 .commentsHeader {
   display: flex;
   justify-content: space-between;
   padding: 1rem 0.5rem;
-  border-bottom: 2px solid #f1f5f9;
+  border-bottom: 2px solid var(--comments-header-border);
   margin-bottom: 1rem;
   font-weight: 600;
-  color: #4a5568;
-}
-
-.commentsList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  color: var(--comments-text-secondary);
 }
 
 .commentItem {
@@ -43,20 +101,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 0.75rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--comments-header-border);
   cursor: pointer;
   transition: all 0.3s ease;
   border-radius: 8px;
+  background: var(--comments-bg);
+  color: var(--comments-text);
 }
 
 .commentItem:hover {
-  background-color: #f8fafc;
+  background-color: var(--comments-hover-bg);
   transform: translateX(5px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.commentContent {
-  flex: 1;
+  box-shadow: var(--comments-hover-shadow);
 }
 
 .commentAuthor {
@@ -65,43 +121,28 @@
   margin-bottom: 0.5rem;
 }
 
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 1rem;
-  object-fit: cover;
-  border: 2px solid #e2e8f0;
-}
-
 .commentEmail {
   display: block;
   font-size: 0.8rem;
-  color: #718096;
+  color: var(--comments-text-light);
   margin-top: 0.2rem;
 }
 
 .commentPost {
   margin-bottom: 0.5rem;
-  color: #4a5568;
+  color: var(--comments-text-secondary);
 }
 
 .commentText {
   margin: 0.5rem 0;
-  color: #6c757d;
+  color: var(--comments-text-muted);
   font-style: italic;
   line-height: 1.4;
 }
 
-.commentMeta {
-  display: flex;
-  gap: 1rem;
-  margin-top: 0.5rem;
-}
-
 .commentDate {
   font-size: 0.8rem;
-  color: #a0aec0;
+  color: var(--comments-text-extra-light);
 }
 
 .status {
@@ -113,27 +154,21 @@
 }
 
 .status.pending {
-  background-color: #fffaf0;
-  color: #dd6b20;
-  border: 1px solid #fed7aa;
+  background-color: var(--comments-status-pending-bg);
+  color: var(--comments-status-pending-text);
+  border: 1px solid var(--comments-status-pending-border);
 }
 
 .status.approved {
-  background-color: #f0fff4;
-  color: #38a169;
-  border: 1px solid #9ae6b4;
+  background-color: var(--comments-status-approved-bg);
+  color: var(--comments-status-approved-text);
+  border: 1px solid var(--comments-status-approved-border);
 }
 
 .status.rejected {
-  background-color: #fff5f5;
-  color: #e53e3e;
-  border: 1px solid #fcb9b9;
-}
-
-.commentActions {
-  display: flex;
-  gap: 0.5rem;
-  flex-shrink: 0;
+  background-color: var(--comments-status-rejected-bg);
+  color: var(--comments-status-rejected-text);
+  border: 1px solid var(--comments-status-rejected-border);
 }
 
 .smallBtn {
@@ -145,32 +180,29 @@
   font-size: 0.8rem;
   transition: all 0.3s ease;
   font-weight: 500;
-}
-
-.smallBtn:hover {
-  transform: translateY(-1px);
+  color: var(--comments-text);
 }
 
 .approveBtn {
-  color: #38a169;
-  border-color: #9ae6b4;
+  color: var(--comments-approve-color);
+  border-color: var(--comments-status-approved-border);
 }
 
 .approveBtn:hover {
-  background-color: #f0fff4;
+  background-color: var(--comments-status-approved-bg);
 }
 
 .deleteBtn {
-  color: #e53e3e;
-  border-color: #fcb9b9;
+  color: var(--comments-reject-color);
+  border-color: var(--comments-status-rejected-border);
 }
 
 .deleteBtn:hover {
-  background-color: #fff5f5;
+  background-color: var(--comments-status-rejected-bg);
 }
 
 .viewMoreBtn {
-  background: #4ecdc4;
+  background: var(--comments-accent);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -255,7 +287,7 @@
 }
 
 .closeButton:hover {
-  background: #ff6b6b;
+  background: var(--comments-reject-color);
   color: white;
   transform: rotate(90deg);
 }
@@ -265,7 +297,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 2rem 2rem 1rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--comments-modal-border);
 }
 
 .modalAuthor {
@@ -348,22 +380,23 @@
 
 .statusBtn {
   padding: 0.4rem 0.8rem;
-  border: 1px solid #cbd5e1;
-  background: white;
+  border: 1px solid var(--comments-modal-border);
+  background: var(--comments-bg);
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.8rem;
   transition: all 0.3s ease;
+  color: var(--comments-text);
 }
 
 .statusBtn.active {
-  background: #4ecdc4;
+  background: var(--comments-accent);
   color: white;
-  border-color: #4ecdc4;
+  border-color: var(--comments-accent);
 }
 
 .statusBtn:hover {
-  background: #e2e8f0;
+  background: var(--comments-status-btn-bg);
 }
 
 .statusBtn.active:hover {

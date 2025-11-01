@@ -1,3 +1,23 @@
+/* Light theme variables */
+:root, :root[data-theme="light"] {
+  --admin-bg: #ffffff;
+  --admin-text: #1e293b;
+  --admin-text-secondary: #64748b;
+  --admin-border: #e2e8f0;
+  --admin-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --admin-hover-bg: #f8fafc;
+}
+
+/* Dark theme variables */
+:root[data-theme="dark"] {
+  --admin-bg: #0f172a;
+  --admin-text: #e2e8f0;
+  --admin-text-secondary: #94a3b8;
+  --admin-border: #334155;
+  --admin-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --admin-hover-bg: #1e293b;
+}
+
 .adminLayout {
   display: flex;
   min-height: 100vh; /* Ensure layout takes full viewport height */
@@ -12,6 +32,8 @@
   flex-grow: 1;
   transition: margin-left 0.3s ease;
   overflow-x: hidden; /* Prevent horizontal scrolling */
+  background: var(--admin-bg);
+  color: var(--admin-text);
 }
 
 .mainContent.shifted {
@@ -23,6 +45,8 @@
   width: 100%; /* Ensure content takes full width */
   max-width: 100%; /* Prevent content overflow */
   margin: 0 auto; /* Center content */
+  background: var(--admin-bg);
+  color: var(--admin-text);
 }
 
 @media (max-width: 900px) {
