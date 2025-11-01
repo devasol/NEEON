@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import useAuth from "../../../hooks/useAuth";
+import ThemeToggle from "../../Theme/ThemeToggle.jsx";
 import styles from "./Header.module.css";
 
 // Icons (you can replace with actual icon components)
@@ -154,6 +155,9 @@ const Header = ({ toggleSidebar }) => {
             </div>
           )}
         </div>
+
+        {/* Theme Toggle */}
+        <ThemeToggle />
 
         {/* Notifications Bell */}
         <div className={styles.notificationsContainer} ref={notificationsRef}>

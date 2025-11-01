@@ -1,27 +1,4 @@
-/* Variables */
-:root {
-  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --google-red: #db4437;
-  --google-blue: #4285f4;
-  --google-green: #0f9d58;
-  --google-yellow: #f4b400;
-  --success: #10b981;
-  --error: #ef4444;
-  --warning: #f59e0b;
-  --text-primary: #1f2937;
-  --text-secondary: #6b7280;
-  --text-tertiary: #9ca3af;
-  --border-light: #e5e7eb;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f3f4f6;
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
-    0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1),
-    0 8px 10px -6px rgb(0 0 0 / 0.1);
-}
+/* Use theme variables */
 
 /* Base Styles */
 .loginContainer {
@@ -31,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-secondary);
+  background: var(--card-bg);
   padding: 1rem;
   position: relative;
   overflow: hidden;
@@ -96,10 +73,10 @@
 
 /* Clean embedded theme: minimal, white card with subtle shadow */
 :global(.embedded.clean) .loginCard {
-  background: var(--bg-primary);
+  background: var(--card-bg);
   padding: 2rem 2rem; /* larger padding for cleaner look */
   border-radius: 12px;
-  box-shadow: 0 14px 40px rgba(15, 23, 36, 0.12);
+  box-shadow: var(--shadow);
   max-width: 600px; /* wider card */
 }
 
@@ -120,7 +97,7 @@
   -webkit-background-clip: unset;
   background-clip: unset;
   -webkit-text-fill-color: unset;
-  color: var(--text-primary);
+  color: var(--text-color);
 }
 
 :global(.embedded.clean) .loginCard .logoIcon {
@@ -141,11 +118,11 @@
   border: none;
   font-size: 1.25rem;
   cursor: pointer;
-  color: var(--text-secondary);
+  color: var(--secondary-color);
 }
 
 .innerClose:hover {
-  color: var(--text-primary);
+  color: var(--text-color);
 }
 
 @keyframes gradientShift {
@@ -236,10 +213,10 @@
 
 /* Login Card */
 .loginCard {
-  background: var(--bg-primary);
+  background: var(--card-bg);
   padding: 3rem;
   border-radius: 24px;
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow);
   width: 100%;
   max-width: 560px;
   position: relative;
@@ -296,7 +273,7 @@
 .header h1 {
   font-size: 2rem;
   font-weight: 800;
-  background: var(--primary-gradient);
+  background: linear-gradient(135deg, var(--primary-color) 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -304,7 +281,7 @@
 }
 
 .subtitle {
-  color: var(--text-secondary);
+  color: var(--secondary-color);
   font-size: 1.1rem;
   margin: 0;
   line-height: 1.5;
@@ -314,9 +291,9 @@
 .googleButton {
   width: 100%;
   padding: 1rem 1.5rem;
-  border: 2px solid var(--border-light);
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  border: 2px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-color);
   border-radius: 12px;
   font-size: 1rem;
   font-weight: 600;
@@ -377,7 +354,7 @@
   position: relative;
   text-align: center;
   margin: 2rem 0;
-  color: var(--text-tertiary);
+  color: var(--secondary-color);
   font-size: 0.9rem;
 }
 
@@ -388,12 +365,12 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: var(--border-light);
+  background: var(--border-color);
   z-index: 1;
 }
 
 .divider span {
-  background: var(--bg-primary);
+  background: var(--card-bg);
   padding: 0 1rem;
   position: relative;
   z-index: 2;
@@ -431,11 +408,11 @@
 .input {
   width: 100%;
   padding: 1.25rem 1.25rem 1.25rem 3.25rem;
-  border: 2px solid var(--border-light);
+  border: 2px solid var(--border-color);
   border-radius: 12px;
   font-size: 1rem;
-  background: var(--bg-primary);
-  color: #ffffff; /* make typed text white */
+  background: var(--card-bg);
+  color: var(--text-color);
   transition: all 0.3s ease;
   position: relative;
   z-index: 1;
@@ -443,17 +420,17 @@
 
 .input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   transform: translateY(-1px);
 }
 
 .input.focused {
-  border-color: #667eea;
+  border-color: var(--primary-color);
 }
 
 .input.error {
-  border-color: var(--error);
+  border-color: var(--error-color);
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
@@ -466,7 +443,7 @@
   position: absolute;
   left: 3.25rem; /* Keep same left alignment as input text */
   top: 0.1rem; /* Position higher to create more space between label and input text */
-  color: var(--text-secondary);
+  color: var(--secondary-color);
   font-size: 0.9rem;
   pointer-events: none;
   transition: all 0.3s ease;
@@ -478,13 +455,13 @@
 .input:not(:placeholder-shown) + .label {
   top: -1rem; /* Move up when focused to make room for input text */
   font-size: 0.8rem;
-  color: #667eea;
+  color: var(--primary-color);
 }
 
 .input.error:focus + .label,
 .input.error:not(:placeholder-shown) + .label {
   top: -1.2rem; /* Match the focused position */
-  color: var(--error);
+  color: var(--error-color);
 }
 
 .passwordToggle {
@@ -520,7 +497,7 @@
 }
 
 .errorText {
-  color: var(--error);
+  color: var(--error-color);
   font-size: 0.85rem;
   margin-top: 0.25rem;
   animation: shake 0.5s ease-in-out;
@@ -553,12 +530,12 @@
   gap: 0.5rem;
   cursor: pointer;
   font-size: 0.9rem;
-  color: var(--text-secondary);
+  color: var(--secondary-color);
   transition: color 0.3s ease;
 }
 
 .checkboxLabel:hover {
-  color: var(--text-primary);
+  color: var(--text-color);
 }
 
 .checkbox {
@@ -568,14 +545,14 @@
 .checkmark {
   width: 18px;
   height: 18px;
-  border: 2px solid var(--border-light);
+  border: 2px solid var(--border-color);
   border-radius: 4px;
   position: relative;
   transition: all 0.3s ease;
 }
 
 .checkbox:checked + .checkmark {
-  background: var(--primary-gradient);
+  background: linear-gradient(135deg, var(--primary-color) 0%, #764ba2 100%);
   border-color: transparent;
 }
 
@@ -593,7 +570,7 @@
 .forgotPassword {
   background: none;
   border: none;
-  color: #667eea;
+  color: var(--primary-color);
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -601,7 +578,7 @@
 }
 
 .forgotPassword:hover {
-  color: #5a6fd8;
+  color: var(--primary-color);
   text-decoration: underline;
 }
 
@@ -614,7 +591,7 @@
 .submitButton {
   width: 100%;
   padding: 1rem 1.5rem;
-  background: var(--primary-gradient);
+  background: linear-gradient(135deg, var(--primary-color) 0%, #764ba2 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -691,12 +668,12 @@
 .footer {
   text-align: center;
   margin-top: 2rem;
-  color: var(--text-secondary);
+  color: var(--secondary-color);
   font-size: 0.9rem;
 }
 
 .signupLink {
-  color: #667eea;
+  color: var(--primary-color);
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -709,7 +686,7 @@
 }
 
 .signupLink:hover {
-  color: #5a6fd8;
+  color: var(--primary-color);
   text-decoration: underline;
 }
 
@@ -717,11 +694,11 @@
 .demoHint {
   margin-top: 1.5rem;
   padding: 1rem;
-  background: var(--bg-tertiary);
+  background: var(--hover-bg);
   border-radius: 8px;
   text-align: center;
   font-size: 0.8rem;
-  color: var(--text-tertiary);
+  color: var(--secondary-color);
   animation: pulse 2s ease-in-out infinite;
 }
 

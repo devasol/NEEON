@@ -1,0 +1,118 @@
+/* Theme Toggle in Header */
+.iconsWrapper .theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconsWrapper .theme-dropdown {
+  padding: 0.5rem;
+  border-radius: 50px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+  min-width: 140px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.iconsWrapper .theme-dropdown:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.iconsWrapper .theme-dropdown:focus {
+  box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.5);
+}
+
+/* Dark mode styling */
+html[data-theme="dark"] .iconsWrapper .theme-dropdown,
+body.dark .iconsWrapper .theme-dropdown {
+  background: rgba(255, 255, 255, 0.15);
+  color: #e0e0e0;
+}
+
+html[data-theme="dark"] .iconsWrapper .theme-dropdown:hover,
+body.dark .iconsWrapper .theme-dropdown:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Theme Toggle in Admin Header */
+.headerRight .theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerRight .theme-dropdown {
+  padding: 0.5rem;
+  border-radius: 50px;
+  border: 2px solid #e2e8f0;
+  background: white;
+  color: #1e293b;
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+  min-width: 140px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.headerRight .theme-dropdown:hover {
+  border-color: #4ecdc4;
+  box-shadow: 0 4px 20px rgba(78, 205, 196, 0.15);
+  transform: translateY(-1px);
+}
+
+.headerRight .theme-dropdown:focus {
+  border-color: #4ecdc4;
+  box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.2);
+}
+
+/* Dark mode styling for admin header */
+html[data-theme="dark"] .headerRight .theme-dropdown,
+body.dark .headerRight .theme-dropdown {
+  background: #334155;
+  color: #f1f5f9;
+  border-color: #475569;
+}
+
+html[data-theme="dark"] .headerRight .theme-dropdown:hover,
+body.dark .headerRight .theme-dropdown:hover {
+  background: #475569;
+  border-color: #64748b;
+}
+
+/* For other contexts if needed */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem;
+}
+
+.theme-toggle .theme-dropdown {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color, #ccc);
+  background-color: var(--bg-color, #fff);
+  color: var(--text-color, #333);
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle .theme-dropdown:hover {
+  border-color: var(--primary-color, #007bff);
+}
+
+.theme-toggle .theme-dropdown:focus {
+  border-color: var(--primary-color, #007bff);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}

@@ -1,5 +1,5 @@
 /* Modern CSS Variables */
-:root {
+:root, :root[data-theme="light"] {
   --primary: #6366f1;
   --primary-dark: #4f46e5;
   --secondary: #f8fafc;
@@ -8,6 +8,24 @@
   --border: #e2e8f0;
   --shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --form-bg: rgba(255, 255, 255, 0.95);
+}
+
+/* Dark theme variables */
+:root[data-theme="dark"] {
+  --primary: #818cf8;
+  --primary-dark: #6366f1;
+  --secondary: #1e293b;
+  --text: #e2e8f0;
+  --text-light: #94a3b8;
+  --border: #475569;
+  --shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  --gradient: linear-gradient(135deg, #4f46e5 0%, #7e22ce 100%);
+  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  --card-bg: rgba(30, 41, 59, 0.95);
+  --form-bg: rgba(30, 41, 59, 0.95);
 }
 
 .container {
@@ -15,18 +33,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: var(--bg-gradient);
   padding: 20px;
   position: relative;
   overflow: hidden;
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--card-bg);
   backdrop-filter: blur(20px);
   border-radius: 24px;
   padding: 50px 40px;
-  box-shadow: var(--shadow), 0 0 0 1px rgba(255, 255, 255, 0.8);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(255, 255, 255, 0.1);
   max-width: 480px;
   width: 100%;
   position: relative;

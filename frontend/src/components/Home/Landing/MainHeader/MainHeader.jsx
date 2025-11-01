@@ -7,6 +7,7 @@ import Login from "../../Login/Login";
 import Signup from "../../Signup/Signup";
 import useAuth from "../../../../hooks/useAuth";
 import api, { API_BASE } from "../../../../utils/api";
+import ThemeToggle from "../../../Theme/ThemeToggle.jsx";
 
 function MainHeader() {
   const location = useLocation();
@@ -420,6 +421,7 @@ function MainHeader() {
           isMenuOpen ? styles.iconsOpen : ""
         }`}
       >
+        <ThemeToggle />
         {isSearchOpen ? (
           <div className={styles.searchContainer}>
             <form onSubmit={handleSearch} className={styles.searchForm}>
