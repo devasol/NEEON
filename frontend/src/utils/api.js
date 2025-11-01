@@ -5,6 +5,12 @@ const getAuthToken = () => {
   return localStorage.getItem('token');
 };
 
+const clearAuthToken = () => {
+  localStorage.removeItem('token');
+  // Optionally redirect to login page or show a message
+  // window.location.href = '/login'; // Uncomment if you want to redirect
+};
+
 const api = {
   post: async (endpoint, data, includeAuth = false) => {
     try {
@@ -24,6 +30,29 @@ const api = {
         headers,
         body: JSON.stringify(data),
       });
+      
+      // Check if the response is due to an invalid JWT token
+      if (response.status === 401 || response.status === 500) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const result = await response.json();
+          
+          // If it's a JWT-related error (includes common JWT error messages or status is 401 from auth protection), clear the token
+          if (result.message && (result.message.includes('invalid signature') || 
+                                result.message.includes('jwt malformed') ||
+                                result.message.includes('invalid token') ||
+                                result.message.includes('jwt expired') ||
+                                result.message.includes('Please log in again') ||
+                                result.message.includes('not logged in'))) {
+            clearAuthToken();
+            // Optionally redirect user to login or show a message
+          }
+          
+          throw new Error(result.message || 'Request failed');
+        } else {
+          throw new Error('Request failed');
+        }
+      }
       
       // Check if response is JSON before parsing
       const contentType = response.headers.get('content-type');
@@ -46,6 +75,13 @@ const api = {
       }
     } catch (error) {
       console.error('API POST error:', error);
+      // If it's a JWT signature error, clear the token
+      if (error.message.includes('invalid signature') || 
+          error.message.includes('jwt malformed') ||
+          error.message.includes('invalid token') ||
+          error.message.includes('jwt expired')) {
+        clearAuthToken();
+      }
       throw error;
     }
   },
@@ -64,6 +100,29 @@ const api = {
       const response = await fetch(`${API_BASE}${endpoint}`, {
         headers
       });
+      
+      // Check if the response is due to an invalid JWT token
+      if (response.status === 401 || response.status === 500) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const result = await response.json();
+          
+          // If it's a JWT-related error (includes common JWT error messages or status is 401 from auth protection), clear the token
+          if (result.message && (result.message.includes('invalid signature') || 
+                                result.message.includes('jwt malformed') ||
+                                result.message.includes('invalid token') ||
+                                result.message.includes('jwt expired') ||
+                                result.message.includes('Please log in again') ||
+                                result.message.includes('not logged in'))) {
+            clearAuthToken();
+            // Optionally redirect user to login or show a message
+          }
+          
+          throw new Error(result.message || 'Request failed');
+        } else {
+          throw new Error('Request failed');
+        }
+      }
       
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
@@ -85,6 +144,13 @@ const api = {
       }
     } catch (error) {
       console.error('API GET error:', error);
+      // If it's a JWT signature error, clear the token
+      if (error.message.includes('invalid signature') || 
+          error.message.includes('jwt malformed') ||
+          error.message.includes('invalid token') ||
+          error.message.includes('jwt expired')) {
+        clearAuthToken();
+      }
       throw error;
     }
   },
@@ -108,6 +174,29 @@ const api = {
         body: JSON.stringify(data),
       });
       
+      // Check if the response is due to an invalid JWT token
+      if (response.status === 401 || response.status === 500) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const result = await response.json();
+          
+          // If it's a JWT-related error (includes common JWT error messages or status is 401 from auth protection), clear the token
+          if (result.message && (result.message.includes('invalid signature') || 
+                                result.message.includes('jwt malformed') ||
+                                result.message.includes('invalid token') ||
+                                result.message.includes('jwt expired') ||
+                                result.message.includes('Please log in again') ||
+                                result.message.includes('not logged in'))) {
+            clearAuthToken();
+            // Optionally redirect user to login or show a message
+          }
+          
+          throw new Error(result.message || 'Request failed');
+        } else {
+          throw new Error('Request failed');
+        }
+      }
+      
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         const result = await response.json();
@@ -128,6 +217,13 @@ const api = {
       }
     } catch (error) {
       console.error('API PUT error:', error);
+      // If it's a JWT signature error, clear the token
+      if (error.message.includes('invalid signature') || 
+          error.message.includes('jwt malformed') ||
+          error.message.includes('invalid token') ||
+          error.message.includes('jwt expired')) {
+        clearAuthToken();
+      }
       throw error;
     }
   },
@@ -151,6 +247,29 @@ const api = {
         body: JSON.stringify(data),
       });
       
+      // Check if the response is due to an invalid JWT token
+      if (response.status === 401 || response.status === 500) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const result = await response.json();
+          
+          // If it's a JWT-related error (includes common JWT error messages or status is 401 from auth protection), clear the token
+          if (result.message && (result.message.includes('invalid signature') || 
+                                result.message.includes('jwt malformed') ||
+                                result.message.includes('invalid token') ||
+                                result.message.includes('jwt expired') ||
+                                result.message.includes('Please log in again') ||
+                                result.message.includes('not logged in'))) {
+            clearAuthToken();
+            // Optionally redirect user to login or show a message
+          }
+          
+          throw new Error(result.message || 'Request failed');
+        } else {
+          throw new Error('Request failed');
+        }
+      }
+      
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         const result = await response.json();
@@ -171,6 +290,13 @@ const api = {
       }
     } catch (error) {
       console.error('API PATCH error:', error);
+      // If it's a JWT signature error, clear the token
+      if (error.message.includes('invalid signature') || 
+          error.message.includes('jwt malformed') ||
+          error.message.includes('invalid token') ||
+          error.message.includes('jwt expired')) {
+        clearAuthToken();
+      }
       throw error;
     }
   },
@@ -190,6 +316,29 @@ const api = {
         method: 'DELETE',
         headers
       });
+      
+      // Check if the response is due to an invalid JWT token
+      if (response.status === 401 || response.status === 500) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const result = await response.json();
+          
+          // If it's a JWT-related error (includes common JWT error messages or status is 401 from auth protection), clear the token
+          if (result.message && (result.message.includes('invalid signature') || 
+                                result.message.includes('jwt malformed') ||
+                                result.message.includes('invalid token') ||
+                                result.message.includes('jwt expired') ||
+                                result.message.includes('Please log in again') ||
+                                result.message.includes('not logged in'))) {
+            clearAuthToken();
+            // Optionally redirect user to login or show a message
+          }
+          
+          throw new Error(result.message || 'Request failed');
+        } else {
+          throw new Error('Request failed');
+        }
+      }
       
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
@@ -211,6 +360,13 @@ const api = {
       }
     } catch (error) {
       console.error('API DELETE error:', error);
+      // If it's a JWT signature error, clear the token
+      if (error.message.includes('invalid signature') || 
+          error.message.includes('jwt malformed') ||
+          error.message.includes('invalid token') ||
+          error.message.includes('jwt expired')) {
+        clearAuthToken();
+      }
       throw error;
     }
   }

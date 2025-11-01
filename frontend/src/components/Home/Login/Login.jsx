@@ -157,7 +157,7 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
       if (res && res.token) {
         const token = res.token;
         const decodedToken = jwtDecode(token);
-        const isAdmin = decodedToken.role === 'admin';
+        const isAdmin = decodedToken.role && decodedToken.role.toLowerCase() === 'admin';
 
         auth.login(token, { isAdmin });
         setToast({ message: "Login successful!", type: "success" });

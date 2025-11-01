@@ -7,11 +7,20 @@ exports.getPublicBlogs = async (req, res) => {
   try {
     const limit = req.query.limit ? parseInt(req.query.limit) : 3; // Default to 3 posts
     const allBlogs = await BlogNewsModel.find({ status: "Published" }).select("-image").limit(limit);
+    
+    // Calculate actual counts from arrays to ensure accuracy
+    const blogsWithCorrectCounts = allBlogs.map(blog => {
+      const blogObj = blog.toObject();
+      blogObj.likes = blog.likedBy ? blog.likedBy.length : 0;
+      blogObj.comments = blog.commentsList ? blog.commentsList.length : 0;
+      return blogObj;
+    });
+    
     res.status(200).json({
       status: "success",
       message: `Successfully got ${allBlogs.length} public Blogs.`,
       blogs: {
-        allBlogs,
+        allBlogs: blogsWithCorrectCounts,
       },
     });
   } catch (err) {
@@ -33,13 +42,22 @@ exports.getAllBlogs = async (req, res) => {
     }
 
     const allBlogs = await query;
+    
+    // Calculate actual counts from arrays to ensure accuracy
+    const blogsWithCorrectCounts = allBlogs.map(blog => {
+      const blogObj = blog.toObject();
+      blogObj.likes = blog.likedBy ? blog.likedBy.length : 0;
+      blogObj.comments = blog.commentsList ? blog.commentsList.length : 0;
+      return blogObj;
+    });
+    
     res.status(200).json({
       status: "success",
       message: limit
         ? `Successfully got ${allBlogs.length} Blogs (limited).`
         : "Successfully got all Blogs.",
       blogs: {
-        allBlogs,
+        allBlogs: blogsWithCorrectCounts,
       },
     });
   } catch (err) {
@@ -68,29 +86,44 @@ exports.likeBlog = async (req, res) => {
     // Check if user already liked the post
     const alreadyLiked = blog.likedBy.includes(userId);
 
+    let updatedBlog;
     if (alreadyLiked) {
       // Unlike the post
-      await BlogNewsModel.findByIdAndUpdate(blogId, {
+      updatedBlog = await BlogNewsModel.findByIdAndUpdate(blogId, {
         $pull: { likedBy: userId },
         $inc: { likes: -1 },
-      });
+      }, { new: true }).select("-image");
+
+      // Calculate actual counts from arrays to ensure accuracy in the response
+      const blogObj = updatedBlog.toObject();
+      blogObj.likes = updatedBlog.likedBy ? updatedBlog.likedBy.length : 0;
+      blogObj.comments = updatedBlog.commentsList ? updatedBlog.commentsList.length : 0;
 
       return res.status(200).json({
         status: "success",
         message: "Blog unliked successfully",
         liked: false,
+        likes: blogObj.likes,
+        blog: blogObj,
       });
     } else {
       // Like the post
-      await BlogNewsModel.findByIdAndUpdate(blogId, {
+      updatedBlog = await BlogNewsModel.findByIdAndUpdate(blogId, {
         $push: { likedBy: userId },
         $inc: { likes: 1 },
-      });
+      }, { new: true }).select("-image");
+
+      // Calculate actual counts from arrays to ensure accuracy in the response
+      const blogObj = updatedBlog.toObject();
+      blogObj.likes = updatedBlog.likedBy ? updatedBlog.likedBy.length : 0;
+      blogObj.comments = updatedBlog.commentsList ? updatedBlog.commentsList.length : 0;
 
       return res.status(200).json({
         status: "success",
         message: "Blog liked successfully",
         liked: true,
+        likes: blogObj.likes,
+        blog: blogObj,
       });
     }
   } catch (err) {
@@ -147,10 +180,15 @@ exports.addComment = async (req, res) => {
       { new: true }
     ).select("-image");
 
+    // Calculate actual counts from arrays to ensure accuracy in the response
+    const blogObj = updatedBlog.toObject();
+    blogObj.likes = updatedBlog.likedBy ? updatedBlog.likedBy.length : 0;
+    blogObj.comments = updatedBlog.commentsList ? updatedBlog.commentsList.length : 0;
+
     res.status(200).json({
       status: "success",
       message: "Comment added successfully",
-      blog: updatedBlog,
+      blog: blogObj,
     });
   } catch (err) {
     res.status(500).json({
@@ -248,7 +286,7 @@ exports.deleteComment = async (req, res) => {
   try {
     const { blogId, commentId } = req.params;
 
-    const blog = await BlogNewsModel.findOne({ _id: blogId });
+    const blog = await BlogNewsModel.findById(blogId);
     if (!blog) {
       return res.status(404).json({
         status: "fail",
@@ -270,8 +308,21 @@ exports.deleteComment = async (req, res) => {
 
     // Remove the comment from the commentsList
     blog.commentsList.splice(commentIndex, 1);
-    blog.comments = Math.max(0, blog.comments - 1); // Decrement total comment count
-    await blog.save();
+    
+    // Update the blog document with the modified commentsList and decrement the counter
+    const updatedBlog = await BlogNewsModel.findByIdAndUpdate(
+      blogId,
+      { 
+        commentsList: blog.commentsList,
+        $inc: { comments: -1 }
+      },
+      { new: true }
+    ).select("-image");
+
+    // Calculate actual counts from arrays to ensure accuracy in the response
+    const blogObj = updatedBlog.toObject();
+    blogObj.likes = updatedBlog.likedBy ? updatedBlog.likedBy.length : 0;
+    blogObj.comments = updatedBlog.commentsList ? updatedBlog.commentsList.length : 0;
 
     res.status(200).json({
       status: "success",
@@ -309,7 +360,10 @@ exports.createBlog = async (req, res) => {
       image: imageValue,
     });
 
+    // Calculate actual counts from arrays to ensure accuracy
     const blogResponse = newBlog.toObject();
+    blogResponse.likes = newBlog.likedBy ? newBlog.likedBy.length : 0;
+    blogResponse.comments = newBlog.commentsList ? newBlog.commentsList.length : 0;
     if (blogResponse.image) delete blogResponse.image;
 
     res.status(200).json({
@@ -329,12 +383,24 @@ exports.getBlog = async (req, res) => {
   try {
     const id = req.params.id;
     const blog = await BlogNewsModel.findById(id).select("-image");
+    
+    if (!blog) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Blog not found",
+      });
+    }
+
+    // Calculate actual counts from arrays to ensure accuracy
+    const blogObj = blog.toObject();
+    blogObj.likes = blog.likedBy ? blog.likedBy.length : 0;
+    blogObj.comments = blog.commentsList ? blog.commentsList.length : 0;
 
     res.status(200).json({
       status: "success",
       message: "Successfully got a Blog.",
       blog: {
-        blog,
+        blog: blogObj,
       },
     });
   } catch (err) {
@@ -370,14 +436,25 @@ exports.updateBlog = async (req, res) => {
       { new: true, runValidators: true }
     ).select("-image");
 
-    const response = updatedBlog ? updatedBlog.toObject() : null;
-    res.status(200).json({
-      status: "success",
-      message: "Blog updated successfully.",
-      blog: {
-        updatedBlog: response,
-      },
-    });
+    if (updatedBlog) {
+      // Calculate actual counts from arrays to ensure accuracy
+      const response = updatedBlog.toObject();
+      response.likes = updatedBlog.likedBy ? updatedBlog.likedBy.length : 0;
+      response.comments = updatedBlog.commentsList ? updatedBlog.commentsList.length : 0;
+      
+      res.status(200).json({
+        status: "success",
+        message: "Blog updated successfully.",
+        blog: {
+          updatedBlog: response,
+        },
+      });
+    } else {
+      res.status(404).json({
+        status: "fail",
+        message: "Blog not found",
+      });
+    }
   } catch (err) {
     res.status(404).json({
       status: "fail",
@@ -390,21 +467,33 @@ exports.updateBlog = async (req, res) => {
 exports.deleteBlog = async (req, res) => {
   try {
     const id = req.params.id;
-    const deletedBlog = await BlogNewsModel.findOneAndDelete({
-      _id: id,
-    }).select("-image");
+    const deletedBlog = await BlogNewsModel.findById(id);
+    
+    if (!deletedBlog) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Blog not found",
+      });
+    }
+    
+    // Calculate actual counts from arrays to ensure accuracy in the response
+    const blogObj = deletedBlog.toObject();
+    blogObj.likes = deletedBlog.likedBy ? deletedBlog.likedBy.length : 0;
+    blogObj.comments = deletedBlog.commentsList ? deletedBlog.commentsList.length : 0;
+    
+    await BlogNewsModel.findByIdAndDelete(id);
 
     res.status(200).json({
       status: "success",
       message: "Blog deleted successfully.",
       blog: {
-        deletedBlog,
+        deletedBlog: blogObj,
       },
     });
   } catch (err) {
     res.status(404).json({
       status: "fail",
-      message: `Can't Update Blog! ${err}`,
+      message: `Can't Delete Blog! ${err}`,
     });
   }
 };

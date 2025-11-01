@@ -141,7 +141,7 @@ function MainHeader() {
     const fetchCategories = async () => {
       try {
         // Try the most common endpoint format used in the app
-        const response = await api.get("/api/v1/categories", false);
+        const response = await api.get("/api/categories", false);
         if (response) {
           // Check different possible response structures
           if (response.categories) {
@@ -158,7 +158,7 @@ function MainHeader() {
           setCategories([]);
         }
       } catch (error) {
-        console.error("Error fetching categories from /api/v1/categories:", error);
+        console.error("Error fetching categories from /api/categories:", error);
         // Try alternative endpoints
         try {
           // Try the original endpoint again
@@ -189,7 +189,7 @@ function MainHeader() {
           console.error("Error fetching categories from /api/categories:", secondError);
           // Try with the API_BASE constant
           try {
-            const response = await fetch(`${API_BASE}/api/v1/categories`);
+            const response = await fetch(`${API_BASE}/api/categories`);
             if (response.ok) {
               const data = await response.json();
               if (data.categories) {
@@ -444,28 +444,34 @@ function MainHeader() {
             <i className="fa-solid fa-magnifying-glass"></i>
           </span>
         )}
-        {isAdmin && (
-          <button
-            className={styles.loginButton}
-            onClick={() => (window.location.href = "/admin")}
-            aria-label="Admin"
-            title="Admin"
-          >
-            <i className="fa-solid fa-gauge"></i>
-            Admin
-          </button>
-        )}
         {token ? (
-          <button
-            className={styles.logoutButton}
-            onClick={() => setShowLogoutConfirm(true)}
-            aria-label="Logout"
-            title="Logout"
-          >
-            <i className="fa-solid fa-right-from-bracket"></i>
-            Logout
-          </button>
+          // User is logged in
+          <div className={styles.userActions}>
+            {isAdmin && (
+              // Show admin button for admin users
+              <button
+                className={styles.loginButton}
+                onClick={() => (window.location.href = "/admin")}
+                aria-label="Admin Dashboard"
+                title="Admin Dashboard"
+              >
+                <i className="fa-solid fa-gauge"></i>
+                Admin
+              </button>
+            )}
+            {/* Show logout button for all logged in users */}
+            <button
+              className={styles.logoutButton}
+              onClick={() => setShowLogoutConfirm(true)}
+              aria-label="Logout"
+              title="Logout"
+            >
+              <i className="fa-solid fa-right-from-bracket"></i>
+              Logout
+            </button>
+          </div>
         ) : (
+          // No user is logged in: show login button
           <button
             ref={loginIconRef}
             className={styles.loginButton}

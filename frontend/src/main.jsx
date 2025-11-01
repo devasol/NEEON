@@ -18,7 +18,7 @@ function checkUrlParams() {
       
       // Decode token to check if user is admin
       const decodedToken = jwtDecode(token);
-      const isAdmin = decodedToken.role === 'admin';
+      const isAdmin = decodedToken.role && decodedToken.role.toLowerCase() === 'admin';
       localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
       
       // Remove token from URL to prevent it from appearing in the address bar

@@ -1035,6 +1035,12 @@
   border-radius: 4px;
 }
 
+.userActions {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
 /* Reduced motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
   * {

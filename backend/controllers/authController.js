@@ -63,7 +63,19 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   console.log(token);
 
-  const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+  // Wrap jwt.verify in try-catch to handle malformed tokens gracefully
+  let decoded;
+  try {
+    decoded = await jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+      return next(
+        new AppError("Invalid token. Please log in again.", 401)
+      );
+    }
+    // For other JWT errors, throw them
+    throw err;
+  }
 
   const freshUser = await User.findById(decoded.id);
   if (!freshUser) {
