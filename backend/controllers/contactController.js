@@ -5,9 +5,9 @@ const sendContactEmail = async (req, res, next) => {
   try {
     const { name, email, subject, message } = req.body;
 
-    console.log('Contact form received:', { name, email, subject, message }); // Log the received data
+    console.log('Contact form received:', { name, email, subject, message }); 
 
-    // Validate required fields
+    
     if (!name || !email || !subject || !message) {
       return res.status(400).json({
         status: 'fail',
@@ -15,7 +15,7 @@ const sendContactEmail = async (req, res, next) => {
       });
     }
 
-    // Validate email format
+    
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({
@@ -24,9 +24,9 @@ const sendContactEmail = async (req, res, next) => {
       });
     }
 
-    console.log('Creating transporter...'); // Debug log
+    console.log('Creating transporter...'); 
 
-    // Create a transporter using Gmail SMTP
+    
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -34,21 +34,21 @@ const sendContactEmail = async (req, res, next) => {
         pass: process.env.EMAIL_PASSWORD,
       },
       tls: {
-        rejectUnauthorized: false  // This might help with some SSL issues
+        rejectUnauthorized: false  
       }
     });
 
-    console.log('Verifying transporter...'); // Debug log
+    console.log('Verifying transporter...'); 
 
-    // Verify transporter configuration
+    
     await transporter.verify();
-    console.log('Transporter verified successfully'); // Debug log
+    console.log('Transporter verified successfully'); 
 
-    // Prepare email options
+    
     const mailOptions = {
       from: process.env.EMAIL,
-      to: process.env.EMAIL, // Send to the same email address (admin email)
-      replyTo: email, // This allows the admin to reply directly to the user
+      to: process.env.EMAIL, 
+      replyTo: email, 
       subject: `Contact Form Submission: ${subject}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -69,25 +69,25 @@ const sendContactEmail = async (req, res, next) => {
       `,
     };
 
-    console.log('Sending email...'); // Debug log
+    console.log('Sending email...'); 
 
-    // Send the email
+    
     const info = await transporter.sendMail(mailOptions);
 
-    console.log('Email sent successfully:', info.messageId); // Debug log
+    console.log('Email sent successfully:', info.messageId); 
 
-    // Success response
+    
     res.status(200).json({
       status: 'success',
       message: 'Your message has been sent successfully. We will get back to you soon.',
       messageId: info.messageId,
     });
   } catch (err) {
-    console.error('Error sending contact email:', err); // Full error log
-    console.error('Error code:', err.code); // Log specific error code
-    console.error('Error message:', err.message); // Log error message
+    console.error('Error sending contact email:', err); 
+    console.error('Error code:', err.code); 
+    console.error('Error message:', err.message); 
 
-    // Handle specific errors
+    
     if (err.code === 'EAUTH') {
       return res.status(500).json({
         status: 'error',
@@ -109,7 +109,7 @@ const sendContactEmail = async (req, res, next) => {
       });
     }
 
-    // Generic error response with more detail
+    
     res.status(500).json({
       status: 'error',
       message: `There was an error sending your message: ${err.message}. Make sure you are using an App Password with 2-factor authentication enabled.`,

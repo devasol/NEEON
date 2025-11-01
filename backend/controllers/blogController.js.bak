@@ -2,13 +2,13 @@ const BlogNewsModel = require("./../models/blogModel");
 const UserModel = require("./../models/userModel");
 const path = require("path");
 const fs = require("fs");
-
+//Get Public Blogs (limited, no auth required)
 exports.getPublicBlogs = async (req, res) => {
   try {
-    const limit = req.query.limit ? parseInt(req.query.limit) : 3; 
+    const limit = req.query.limit ? parseInt(req.query.limit) : 3; // Default to 3 posts
     const allBlogs = await BlogNewsModel.find({ status: "Published" }).select("-image").limit(limit);
     
-    
+    // Calculate actual counts from arrays to ensure accuracy
     const blogsWithCorrectCounts = allBlogs.map(blog => {
       const blogObj = blog.toObject();
       blogObj.likes = blog.likedBy ? blog.likedBy.length : 0;
@@ -31,7 +31,7 @@ exports.getPublicBlogs = async (req, res) => {
   }
 };
 
-
+//Get All Blogs
 exports.getAllBlogs = async (req, res) => {
   try {
     const limit = req.query.limit ? parseInt(req.query.limit) : null;
@@ -43,7 +43,7 @@ exports.getAllBlogs = async (req, res) => {
 
     const allBlogs = await query;
     
-    
+    // Calculate actual counts from arrays to ensure accuracy
     const blogsWithCorrectCounts = allBlogs.map(blog => {
       const blogObj = blog.toObject();
       blogObj.likes = blog.likedBy ? blog.likedBy.length : 0;
@@ -68,7 +68,7 @@ exports.getAllBlogs = async (req, res) => {
   }
 };
 
-
+// Like a blog post
 exports.likeBlog = async (req, res) => {
   try {
     const blogId = req.params.id;
@@ -83,18 +83,18 @@ exports.likeBlog = async (req, res) => {
       });
     }
 
-    
+    // Check if user already liked the post
     const alreadyLiked = blog.likedBy.includes(userId);
 
     let updatedBlog;
     if (alreadyLiked) {
-      
+      // Unlike the post
       updatedBlog = await BlogNewsModel.findByIdAndUpdate(blogId, {
         $pull: { likedBy: userId },
         $inc: { likes: -1 },
       }, { new: true }).select("-image");
 
-      
+      // Calculate actual counts from arrays to ensure accuracy in the response
       const blogObj = updatedBlog.toObject();
       blogObj.likes = updatedBlog.likedBy ? updatedBlog.likedBy.length : 0;
       blogObj.comments = updatedBlog.commentsList ? updatedBlog.commentsList.length : 0;
@@ -107,13 +107,13 @@ exports.likeBlog = async (req, res) => {
         blog: blogObj,
       });
     } else {
-      
+      // Like the post
       updatedBlog = await BlogNewsModel.findByIdAndUpdate(blogId, {
         $push: { likedBy: userId },
         $inc: { likes: 1 },
       }, { new: true }).select("-image");
 
-      
+      // Calculate actual counts from arrays to ensure accuracy in the response
       const blogObj = updatedBlog.toObject();
       blogObj.likes = updatedBlog.likedBy ? updatedBlog.likedBy.length : 0;
       blogObj.comments = updatedBlog.commentsList ? updatedBlog.commentsList.length : 0;
@@ -134,7 +134,7 @@ exports.likeBlog = async (req, res) => {
   }
 };
 
-
+// Add a comment to a blog post
 exports.addComment = async (req, res) => {
   try {
     const blogId = req.params.id;
@@ -180,7 +180,7 @@ exports.addComment = async (req, res) => {
       { new: true }
     ).select("-image");
 
-    
+    // Calculate actual counts from arrays to ensure accuracy in the response
     const blogObj = updatedBlog.toObject();
     blogObj.likes = updatedBlog.likedBy ? updatedBlog.likedBy.length : 0;
     blogObj.comments = updatedBlog.commentsList ? updatedBlog.commentsList.length : 0;
@@ -198,7 +198,7 @@ exports.addComment = async (req, res) => {
   }
 };
 
-
+// Get all comments for a blog post
 exports.getComments = async (req, res) => {
   try {
     const blogId = req.params.id;
@@ -229,7 +229,7 @@ exports.getComments = async (req, res) => {
   }
 };
 
-
+// Get all comments across all blog posts
 exports.getAllComments = async (req, res) => {
   try {
     console.log("getAllComments endpoint called by user:", req.user ? req.user.id : "unauthenticated");
@@ -243,7 +243,7 @@ exports.getAllComments = async (req, res) => {
 
     console.log("Found blogs with comments:", blogs.length);
 
-    
+    // Flatten all comments from all blogs into a single array
     let allComments = [];
     if (blogs && blogs.length > 0) {
       blogs.forEach(blog => {
@@ -262,7 +262,7 @@ exports.getAllComments = async (req, res) => {
 
     console.log("Total comments found:", allComments.length);
 
-    
+    // Sort by creation date (newest first)
     if (allComments.length > 0) {
       allComments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     }
@@ -281,7 +281,7 @@ exports.getAllComments = async (req, res) => {
   }
 };
 
-
+// Delete a specific comment from a blog post
 exports.deleteComment = async (req, res) => {
   try {
     const { blogId, commentId } = req.params;
@@ -294,7 +294,7 @@ exports.deleteComment = async (req, res) => {
       });
     }
 
-    
+    // Find the index of the comment to delete
     const commentIndex = blog.commentsList.findIndex(comment => 
       comment._id.toString() === commentId
     );
@@ -306,10 +306,10 @@ exports.deleteComment = async (req, res) => {
       });
     }
 
-    
+    // Remove the comment from the commentsList
     blog.commentsList.splice(commentIndex, 1);
     
-    
+    // Update the blog document with the modified commentsList and decrement the counter
     const updatedBlog = await BlogNewsModel.findByIdAndUpdate(
       blogId,
       { 
@@ -319,7 +319,7 @@ exports.deleteComment = async (req, res) => {
       { new: true }
     ).select("-image");
 
-    
+    // Calculate actual counts from arrays to ensure accuracy in the response
     const blogObj = updatedBlog.toObject();
     blogObj.likes = updatedBlog.likedBy ? updatedBlog.likedBy.length : 0;
     blogObj.comments = updatedBlog.commentsList ? updatedBlog.commentsList.length : 0;
@@ -340,17 +340,17 @@ exports.createBlog = async (req, res) => {
   try {
     let imageValue = null;
     if (req.file) {
-      
+      // If multer memoryStorage is used, file.buffer will be present
       if (req.file.buffer) {
         imageValue = { data: req.file.buffer, contentType: req.file.mimetype };
       } else if (req.file.path) {
-        
+        // disk storage - read file into buffer
         const filePath = path.join(__dirname, "..", req.file.path);
         if (fs.existsSync(filePath)) {
           const fileBuffer = fs.readFileSync(filePath);
           imageValue = { data: fileBuffer, contentType: req.file.mimetype };
-          
-          
+          // NOTE: previously we removed the uploaded file from disk here.
+          // To preserve uploads in the `uploads/` folder, we intentionally do NOT unlink the file.
         }
       }
     }
@@ -360,7 +360,7 @@ exports.createBlog = async (req, res) => {
       image: imageValue,
     });
 
-    
+    // Calculate actual counts from arrays to ensure accuracy
     const blogResponse = newBlog.toObject();
     blogResponse.likes = newBlog.likedBy ? newBlog.likedBy.length : 0;
     blogResponse.comments = newBlog.commentsList ? newBlog.commentsList.length : 0;
@@ -378,7 +378,7 @@ exports.createBlog = async (req, res) => {
     });
   }
 };
-
+//Get a Blog
 exports.getBlog = async (req, res) => {
   try {
     const id = req.params.id;
@@ -391,7 +391,7 @@ exports.getBlog = async (req, res) => {
       });
     }
 
-    
+    // Calculate actual counts from arrays to ensure accuracy
     const blogObj = blog.toObject();
     blogObj.likes = blog.likedBy ? blog.likedBy.length : 0;
     blogObj.comments = blog.commentsList ? blog.commentsList.length : 0;
@@ -410,18 +410,18 @@ exports.getBlog = async (req, res) => {
     });
   }
 };
-
+//Updating a Blog
 exports.updateBlog = async (req, res) => {
   try {
     const id = req.params.id;
     const body = { ...req.body };
 
-    
+    // handle image if uploaded via multer memoryStorage
     if (req.file) {
       if (req.file.buffer) {
         body.image = { data: req.file.buffer, contentType: req.file.mimetype };
       } else if (req.file.path) {
-        
+        // disk-based upload
         const filePath = path.join(__dirname, "..", req.file.path);
         if (fs.existsSync(filePath)) {
           const fileBuffer = fs.readFileSync(filePath);
@@ -437,7 +437,7 @@ exports.updateBlog = async (req, res) => {
     ).select("-image");
 
     if (updatedBlog) {
-      
+      // Calculate actual counts from arrays to ensure accuracy
       const response = updatedBlog.toObject();
       response.likes = updatedBlog.likedBy ? updatedBlog.likedBy.length : 0;
       response.comments = updatedBlog.commentsList ? updatedBlog.commentsList.length : 0;
@@ -463,7 +463,7 @@ exports.updateBlog = async (req, res) => {
   }
 };
 
-
+//Deleting a Blog
 exports.deleteBlog = async (req, res) => {
   try {
     const id = req.params.id;
@@ -476,7 +476,7 @@ exports.deleteBlog = async (req, res) => {
       });
     }
     
-    
+    // Calculate actual counts from arrays to ensure accuracy in the response
     const blogObj = deletedBlog.toObject();
     blogObj.likes = deletedBlog.likedBy ? deletedBlog.likedBy.length : 0;
     blogObj.comments = deletedBlog.commentsList ? deletedBlog.commentsList.length : 0;
@@ -506,16 +506,16 @@ exports.getImage = async (req, res) => {
       return res.status(404).send("Image not found");
     }
 
-    
+    // If image stored in MongoDB as { data: Buffer, contentType: String }
     if (blog.image.data) {
-      
+      // blog.image.data may already be a Buffer or a plain object when serialized
       let buffer;
       if (Buffer.isBuffer(blog.image.data)) {
         buffer = blog.image.data;
       } else if (Array.isArray(blog.image.data)) {
         buffer = Buffer.from(blog.image.data);
       } else if (blog.image.data.data && Array.isArray(blog.image.data.data)) {
-        
+        // sometimes it's { data: { type: 'Buffer', data: [...] } }
         buffer = Buffer.from(blog.image.data.data);
       }
 
@@ -527,7 +527,7 @@ exports.getImage = async (req, res) => {
       }
     }
 
-    
+    // If image stored as a path string (e.g. 'uploads/xxx.jpg')
     if (typeof blog.image === "string") {
       const imagePath = path.join(__dirname, "..", blog.image);
       if (!fs.existsSync(imagePath)) {
@@ -536,7 +536,7 @@ exports.getImage = async (req, res) => {
       return res.sendFile(imagePath);
     }
 
-    
+    // Fallback: not a recognized format
     return res.status(404).send("Image not available");
   } catch (err) {
     res.status(500).json({ message: err.message });

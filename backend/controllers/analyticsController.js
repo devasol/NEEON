@@ -3,25 +3,25 @@ const UserModel = require('./../models/userModel');
 
 exports.getDashboardStats = async (req, res) => {
   try {
-    // Get total posts count
+    
     const totalPosts = await BlogNewsModel.countDocuments();
     
-    // Get published posts count
+    
     const publishedPosts = await BlogNewsModel.countDocuments({ status: 'Published' });
     
-    // Get draft posts count
+    
     const draftPosts = await BlogNewsModel.countDocuments({ status: 'Draft' });
     
-    // Get total users count
+    
     const totalUsers = await UserModel.countDocuments();
     
-    // Get total comments count
+    
     const totalComments = await BlogNewsModel.aggregate([
       { $group: { _id: null, total: { $sum: "$comments" } } }
     ]);
     const totalCommentCount = totalComments.length > 0 ? totalComments[0].total : 0;
     
-    // Get recent posts (last 30 days)
+    
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     
@@ -29,18 +29,18 @@ exports.getDashboardStats = async (req, res) => {
       createdAt: { $gte: thirtyDaysAgo }
     });
     
-    // Get recent users (last 30 days)
+    
     const recentUsers = await UserModel.countDocuments({
       createdAt: { $gte: thirtyDaysAgo }
     });
     
-    // Get total views (assuming you have a views field in your blog model)
+    
     const totalViews = await BlogNewsModel.aggregate([
       { $group: { _id: null, total: { $sum: "$views" } } }
     ]);
     const totalViewCount = totalViews.length > 0 ? totalViews[0].total : 0;
     
-    // Get total categories (if you have a categories collection)
+    
     const Category = require('./../models/categoryModel');
     const totalCategories = await Category.countDocuments();
     
@@ -69,7 +69,7 @@ exports.getDashboardStats = async (req, res) => {
 
 exports.getRecentPosts = async (req, res) => {
   try {
-    // Get the 5 most recent posts
+    
     const recentPosts = await BlogNewsModel.find({})
       .sort({ createdAt: -1 })
       .limit(5)
@@ -92,7 +92,7 @@ exports.getRecentPosts = async (req, res) => {
 
 exports.getTopPosts = async (req, res) => {
   try {
-    // Get top 5 posts by views
+    
     const topPosts = await BlogNewsModel.find({ status: 'Published' })
       .sort({ views: -1 })
       .limit(5)
@@ -115,7 +115,7 @@ exports.getTopPosts = async (req, res) => {
 
 exports.getPostsByCategory = async (req, res) => {
   try {
-    // Get post count by category
+    
     const postsByCategory = await BlogNewsModel.aggregate([
       {
         $group: {
@@ -145,7 +145,7 @@ exports.getPostsByCategory = async (req, res) => {
 
 exports.getUserActivity = async (req, res) => {
   try {
-    // Get user registration trends for the last 30 days
+    
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     

@@ -6,8 +6,8 @@ const handleCastErrorDB = (err) => {
 };
 
 const handleDuplicateFieldsDB = (err) => {
-  // Support for modern Mongo/Mongoose duplicate key error shape
-  // Prefer the value from keyValue; fallback to parsing message
+  
+  
   let value = "";
   let field = "";
 
@@ -66,13 +66,13 @@ const sendErrorProd = (err, res) => {
 };
 
 module.exports = (err, req, res, next) => {
-  // console.log(err.stack);
+  
 
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
 
   const env = process.env.NODE_ENV || "development";
-  // Normalize common DB errors for all envs so clients get meaningful status codes
+  
   let normalizedError = err;
   if (err.name === "CastError") normalizedError = handleCastErrorDB(err);
   if (err.code === 11000) normalizedError = handleDuplicateFieldsDB(err);
@@ -82,11 +82,11 @@ module.exports = (err, req, res, next) => {
   if (env === "development") {
     sendErrorDev(normalizedError, res);
   } else if (env === "production") {
-    // In production, hide details for unknown errors but keep operational ones
+    
     const safeError = { ...normalizedError };
     sendErrorProd(safeError, res);
   } else {
-    // Fallback to development-style errors for unknown envs
+    
     sendErrorDev(normalizedError, res);
   }
 };

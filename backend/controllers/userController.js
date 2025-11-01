@@ -1,7 +1,7 @@
 const userModel = require("./../models/userModel");
 const path = require("path");
 const fs = require("fs");
-//Get All Blogs
+
 exports.getAllUsers = async (req, res) => {
   try {
     const allUsers = await userModel.find().select("-image");
@@ -24,11 +24,11 @@ exports.createUser = async (req, res) => {
   try {
     let imageValue = null;
     if (req.file) {
-      // If multer memoryStorage is used, file.buffer will be present
+      
       if (req.file.buffer) {
         imageValue = { data: req.file.buffer, contentType: req.file.mimetype };
       } else if (req.file.path) {
-        // disk storage - read file into buffer
+        
         const filePath = path.join(__dirname, "..", req.file.path);
         if (fs.existsSync(filePath)) {
           const fileBuffer = fs.readFileSync(filePath);
@@ -37,22 +37,22 @@ exports.createUser = async (req, res) => {
       }
     }
 
-    // fallback: accept base64 image string in req.body.image
+    
     if (!imageValue && req.body && req.body.image) {
       const imgStr = req.body.image;
-      // data:[<mediatype>][;base64],<data>
+      
       const matches = imgStr.match(/^data:(.+);base64,(.+)$/);
       if (matches) {
         const contentType = matches[1];
         const data = Buffer.from(matches[2], "base64");
         imageValue = { data, contentType };
       } else {
-        // assume plain base64 without data URI
+        
         try {
           const data = Buffer.from(imgStr, "base64");
           imageValue = { data, contentType: "application/octet-stream" };
         } catch (e) {
-          // ignore invalid base64
+          
         }
       }
     }
@@ -62,7 +62,7 @@ exports.createUser = async (req, res) => {
       image: imageValue,
     });
 
-    // remove binary image before sending response
+    
     const userResponse = newUser.toObject();
     if (userResponse.image) delete userResponse.image;
 
@@ -78,7 +78,7 @@ exports.createUser = async (req, res) => {
     });
   }
 };
-// //Get a User
+
 exports.getUser = async (req, res) => {
   try {
     const id = req.params.id;
@@ -98,7 +98,7 @@ exports.getUser = async (req, res) => {
     });
   }
 };
-//Updating a Blog
+
 exports.updateUser = async (req, res) => {
   try {
     const id = req.params.id;
@@ -125,7 +125,7 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-// Deleting a Blog
+
 exports.deleteUser = async (req, res) => {
   try {
     const id = req.params.id;
@@ -149,46 +149,46 @@ exports.deleteUser = async (req, res) => {
     });
   }
 };
-// exports.getImage = async (req, res) => {
-//   try {
-//     const blog = await BlogNewsModel.findById(req.params.id);
 
-//     if (!blog || !blog.image) {
-//       return res.status(404).send("Image not found");
-//     }
-//     // If image stored in MongoDB as { data: Buffer, contentType: String }
-//     if (blog.image.data) {
-//       // blog.image.data may already be a Buffer or a plain object when serialized
-//       let buffer;
-//       if (Buffer.isBuffer(blog.image.data)) {
-//         buffer = blog.image.data;
-//       } else if (Array.isArray(blog.image.data)) {
-//         buffer = Buffer.from(blog.image.data);
-//       } else if (blog.image.data.data && Array.isArray(blog.image.data.data)) {
-//         // sometimes it's { data: { type: 'Buffer', data: [...] } }
-//         buffer = Buffer.from(blog.image.data.data);
-//       }
 
-//       if (buffer) {
-//         const contentType =
-//           blog.image.contentType || "application/octet-stream";
-//         res.set("Content-Type", contentType);
-//         return res.send(buffer);
-//       }
-//     }
 
-//     // If image stored as a path string (e.g. 'uploads/xxx.jpg')
-//     if (typeof blog.image === "string") {
-//       const imagePath = path.join(__dirname, "..", blog.image);
-//       if (!fs.existsSync(imagePath)) {
-//         return res.status(404).send("Image file missing");
-//       }
-//       return res.sendFile(imagePath);
-//     }
 
-//     // Fallback: not a recognized format
-//     return res.status(404).send("Image not available");
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

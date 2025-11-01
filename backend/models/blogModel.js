@@ -15,7 +15,7 @@ const blogNewsSchema = new mongoose.Schema({
   },
   postedBy: {
     type: String,
-    // required:[true,""]
+    
     default: "Admin",
   },
   datePosted: {
@@ -70,13 +70,13 @@ const blogNewsSchema = new mongoose.Schema({
         if (v) {
           return /^https?:\/\/.+\..+/.test(v);
         }
-        return true; // Allow null/undefined
+        return true; 
       },
       message: 'Please provide a valid URL for the image'
     }
   },
 });
-// enable timestamps so createdAt is available
+
 blogNewsSchema.set("timestamps", true);
 
 const BlogNewsModel = mongoose.model("Blog", blogNewsSchema);

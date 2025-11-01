@@ -22,5 +22,8 @@
   "description": "",
   "devDependencies": {
     "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "strip-comments": "^2.0.1"
   }
 }

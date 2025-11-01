@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const User = require("./models/userModel.js");
 
-// Load environment variables
+
 dotenv.config({ path: "./config.env" });
 
-// Initialize Passport configuration
+
 require("./config/passport");
 
 const app = require("./app");
