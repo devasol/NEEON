@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
-import { FaSun, FaMoon, FaDesktop } from 'react-icons/fa';
+import { FaSun, FaMoon } from 'react-icons/fa';
 import './ThemeToggle.css';
 
 const ThemeToggle = () => {
@@ -8,63 +8,38 @@ const ThemeToggle = () => {
   const [isAnimating, setIsAnimating] = useState(false);
 
   const getThemeIcon = () => {
-    switch (theme) {
-      case THEMES.LIGHT:
-        return <FaSun className="theme-icon sun-icon" />;
-      case THEMES.DARK:
-        return <FaMoon className="theme-icon moon-icon" />;
-      case THEMES.DEVICE:
-        return <FaDesktop className="theme-icon system-icon" />;
-      default:
-        return <FaSun className="theme-icon sun-icon" />;
+    // Simplified to just show sun/moon based on current theme
+    if (theme === THEMES.DARK) {
+      return <FaMoon className="theme-icon" />;
     }
-  };
-
-  const nextTheme = () => {
-    if (theme === THEMES.LIGHT) return THEMES.DARK;
-    if (theme === THEMES.DARK) return THEMES.DEVICE;
-    return THEMES.LIGHT;
-  };
-
-  const handleClick = () => {
-    // Add ripple animation class
-    setIsAnimating(true);
-    // Remove the animation class after the animation completes
-    setTimeout(() => setIsAnimating(false), 600);
-    
-    // Toggle the theme
-    toggleTheme(nextTheme());
+    return <FaSun className="theme-icon" />;
   };
 
   const getThemeLabel = () => {
-    switch (theme) {
-      case THEMES.LIGHT:
-        return "Light Theme";
-      case THEMES.DARK:
-        return "Dark Theme";
-      case THEMES.DEVICE:
-        return "System Theme";
-      default:
-        return "Theme";
-    }
+    return theme === THEMES.DARK ? "Switch to Light Mode" : "Switch to Dark Mode";
   };
 
-  const getThemeClass = () => {
-    switch (theme) {
-      case THEMES.LIGHT:
-        return "light-mode";
-      case THEMES.DARK:
-        return "dark-mode";
-      case THEMES.DEVICE:
-        return "system-mode";
-      default:
-        return "";
-    }
+  const handleClick = () => {
+    // Add animation class
+    setIsAnimating(true);
+    // Remove the animation class after the animation completes
+    setTimeout(() => setIsAnimating(false), 500);
+    
+    // Toggle between light and dark (simplified)
+    const newTheme = theme === THEMES.DARK ? THEMES.LIGHT : THEMES.DARK;
+    toggleTheme(newTheme);
   };
+
+  // Add class based on current theme for styling
+  const themeClass = theme === THEMES.DARK ? 'dark-theme' : 'light-theme';
 
   return (
-    <div className={`theme-toggle ${getThemeClass()}`} onClick={handleClick} title={getThemeLabel()}>
-      <button className={`theme-switch-button ${isAnimating ? 'ripple' : ''}`}>
+    <div className="theme-toggle" title={getThemeLabel()}>
+      <button 
+        className={`theme-switch-button ${themeClass} ${isAnimating ? 'animating' : ''}`}
+        onClick={handleClick}
+        aria-label={getThemeLabel()}
+      >
         {getThemeIcon()}
       </button>
     </div>

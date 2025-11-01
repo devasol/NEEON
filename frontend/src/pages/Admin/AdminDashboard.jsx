@@ -98,6 +98,19 @@ const AdminDashboard = ({ selectedView, setSelectedView }) => {
       case "dashboard":
         return (
           <>
+            {/* Dashboard Header */}
+            <div className={styles.dashboardHeader}>
+              <div className={styles.headerContent}>
+                <h1 className={styles.dashboardTitle}>Dashboard Overview</h1>
+                <p className={styles.dashboardSubtitle}>Welcome back! Here's what's happening with your blog today.</p>
+              </div>
+              <div className={styles.headerActions}>
+                <button className={styles.headerBtn}>
+                  Quick Actions
+                </button>
+              </div>
+            </div>
+            
             <div className={styles.statsGrid}>
               <StatsCard
                 title="Total Posts"
@@ -109,13 +122,13 @@ const AdminDashboard = ({ selectedView, setSelectedView }) => {
                 title="Published Posts"
                 value={stats.publishedPosts.toLocaleString()}
                 change={stats.publishedPosts > 0 ? `${Math.round((stats.publishedPosts / stats.totalPosts) * 100)}% published` : ''}
-                icon="file-alt"
+                icon="chart-line"
               />
               <StatsCard
                 title="Total Comments"
                 value={stats.totalComments.toLocaleString()}
                 change="+12%"
-                icon="comments"
+                icon="comments-dollar"
               />
               <StatsCard
                 title="Total Users"

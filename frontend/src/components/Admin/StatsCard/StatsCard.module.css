@@ -4,6 +4,7 @@
   --stats-card-bg: #ffffff;
   --stats-card-text: #1e293b;
   --stats-card-text-muted: #6c757d;
+  --stats-card-icon: #4f46e5;
   --stats-card-shadow: 0 8px 20px rgba(17, 23, 34, 0.06);
   --stats-card-hover-shadow: 0 18px 30px rgba(17, 23, 34, 0.08);
   --stats-card-positive: #10b981;
@@ -15,6 +16,7 @@
   --stats-card-bg: #1e293b;
   --stats-card-text: #e2e8f0;
   --stats-card-text-muted: #94a3b8;
+  --stats-card-icon: #818cf8;
   --stats-card-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   --stats-card-hover-shadow: 0 18px 30px rgba(0, 0, 0, 0.4);
   --stats-card-positive: #34d399;
@@ -46,6 +48,17 @@
 .cardIcon {
   font-size: 1.8rem;
   margin-bottom: -0.5rem;
+  color: var(--stats-card-icon);
+  transition: transform 0.3s ease;
+}
+
+.statsIcon {
+  transition: all 0.3s ease;
+}
+
+.card:hover .statsIcon {
+  transform: translateY(-3px);
+  color: var(--stats-card-icon);
 }
 
 .cardTitle {
