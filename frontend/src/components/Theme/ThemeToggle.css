@@ -1,4 +1,4 @@
-/* Modern & Minimalist Theme Toggle Button */
+
 .theme-toggle {
   display: flex;
   align-items: center;
@@ -9,7 +9,7 @@
   z-index: 100;
 }
 
-/* Create a more amazing gradient background */
+
 .theme-switch-button {
   width: 44px;
   height: 44px;
@@ -28,7 +28,7 @@
   overflow: hidden;
 }
 
-/* Create a subtle gradient overlay for more depth */
+
 .theme-switch-button::before {
   content: '';
   position: absolute;
@@ -45,13 +45,13 @@
   opacity: 1;
 }
 
-/* Light theme specific styling */
+
 .theme-switch-button.light-theme {
   --theme-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
   --theme-color: #f59e0b;
 }
 
-/* Dark theme specific styling */
+
 .theme-switch-button.dark-theme {
   --theme-bg: linear-gradient(135deg, #334155 0%, #1e293b 100%);
   --theme-color: #fbbf24;
@@ -62,12 +62,12 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Add transition for smooth theme switching */
+
 .theme-switch-button {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
 }
 
-/* Icon styling */
+
 .theme-icon {
   font-size: 1.1rem;
   color: var(--theme-color, #64748b);
@@ -76,7 +76,7 @@
   position: relative;
 }
 
-/* Animation for theme change */
+
 .theme-switch-button.animating {
   animation: themeSwitch 0.5s ease;
 }
@@ -93,19 +93,19 @@
   }
 }
 
-/* Pulse effect on click */
+
 .theme-switch-button:active {
   transform: scale(0.95);
 }
 
-/* Clean transition between themes */
+
 html[data-theme="dark"] .theme-switch-button {
   --theme-bg: #334155;
   --theme-color: #fbbf24;
   --theme-bg-hover: #475569;
 }
 
-/* Responsive design */
+
 @media (max-width: 768px) {
   .theme-switch-button {
     width: 40px;
@@ -117,7 +117,7 @@ html[data-theme="dark"] .theme-switch-button {
   }
 }
 
-/* For header contexts */
+
 .iconsWrapper .theme-toggle {
   display: flex;
   align-items: center;

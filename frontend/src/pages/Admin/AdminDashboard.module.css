@@ -1,4 +1,4 @@
-/* Light theme variables */
+
 :root, :root[data-theme="light"] {
   --admin-dashboard-bg: #ffffff;
   --admin-dashboard-text: #1e293b;
@@ -9,7 +9,7 @@
   --admin-dashboard-hover-bg: #f8fafc;
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
   --admin-dashboard-bg: #0f172a;
   --admin-dashboard-text: #e2e8f0;
@@ -20,7 +20,7 @@
   --admin-dashboard-hover-bg: #334155;
 }
 
-/* Enhanced Admin Dashboard Styles */
+
 .content {
   padding: 2rem;
   background: var(--admin-dashboard-bg);
@@ -39,7 +39,7 @@
   }
 }
 
-/* Enhanced Stats Grid */
+
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -59,7 +59,7 @@
   }
 }
 
-/* Dashboard Header */
+
 .dashboardHeader {
   display: flex;
   justify-content: space-between;
@@ -111,7 +111,7 @@
   box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
 }
 
-/* Enhanced loading state */
+
 .loading {
   padding: 2rem;
   text-align: center;

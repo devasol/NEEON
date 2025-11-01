@@ -1,5 +1,5 @@
-/* Sidebar.module.css */
-/* Light theme variables */
+
+
 :root, :root[data-theme="light"] {
   --sidebar-bg: #0f1724;
   --sidebar-text: #ffffff;
@@ -23,7 +23,7 @@
   --modal-footer-bg: rgba(255, 255, 255, 0.02);
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
   --sidebar-bg: #1e293b;
   --sidebar-text: #e2e8f0;
@@ -57,15 +57,15 @@
   flex-direction: column;
   gap: 1rem;
   box-shadow: var(--sidebar-shadow);
-  /* make the sidebar fixed and non-scrollable */
+  
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
-  overflow-y: auto; /* Allow scrolling for sidebar content */
-  z-index: 101; /* Higher than header */
+  overflow-y: auto; 
+  z-index: 101; 
   transition: transform 0.3s ease;
-  padding-top: 6rem; /* Increased padding to account for header height */
+  padding-top: 6rem; 
 }
 
 .sidebar.open {
@@ -153,7 +153,7 @@
   border-top: 1px solid var(--sidebar-border);
 }
 
-/* Modal Styles */
+
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -412,7 +412,7 @@
   color: var(--sidebar-text);
 }
 
-/* Responsive Design */
+
 @media (max-width: 900px) {
   .sidebar {
     transform: translateX(-100%);

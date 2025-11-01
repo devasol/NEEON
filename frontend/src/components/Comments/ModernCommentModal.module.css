@@ -5,10 +5,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999999; /* Very high z-index to ensure it appears on top of everything */
+  z-index: 999999; 
   padding: 1rem;
   overflow: hidden;
-  backdrop-filter: blur(2px); /* Add slight blur to background */
+  backdrop-filter: blur(2px); 
 }
 
 .modalOverlay::before {
@@ -458,7 +458,7 @@
   text-decoration: underline;
 }
 
-/* Animations */
+
 @keyframes fadeInUp {
   to {
     opacity: 1;
@@ -475,7 +475,7 @@
   }
 }
 
-/* Scrollbar styling */
+
 .commentsSection::-webkit-scrollbar {
   width: 8px;
 }
@@ -494,7 +494,7 @@
   background: rgba(255, 255, 255, 0.5);
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .modalContent {
     padding: 2rem 1.5rem;
@@ -524,7 +524,7 @@
   }
 }
 
-/* Reduced motion support */
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
@@ -543,9 +543,9 @@
   }
 }
 
-/* Dark mode support - kept for compatibility */
 
-/* Reduced motion for accessibility */
+
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

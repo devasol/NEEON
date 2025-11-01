@@ -33,7 +33,7 @@ const UsersTable = () => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(null);
 
-  // Filter and sort users
+  
   const filteredUsers = users
     .filter(
       (user) =>
@@ -59,11 +59,11 @@ const UsersTable = () => {
   };
 
   const handleRemoveUser = async (userId) => {
-    // Optimistic UI: keep current users in case of rollback
+    
     const previous = users;
     setDeletingId(userId);
     try {
-      // remove optimistically (match either _id or user.id)
+      
       console.debug("Attempting to delete userId:", userId);
       setUsers((prev) =>
         prev.filter((user) => (user._id || user.id) !== userId)
@@ -74,18 +74,18 @@ const UsersTable = () => {
       );
       console.debug("Delete response:", res.status, res.data);
 
-      // accept any 2xx response as success
+      
       if (!(res.status >= 200 && res.status < 300)) {
-        // rollback on non-OK
+        
         setUsers(previous);
         console.error("Failed to delete user", res.data);
-        // Show error toast
+        
         const errorEvent = new CustomEvent("showToast", {
           detail: { message: "Failed to delete user", type: "error" },
         });
         window.dispatchEvent(errorEvent);
       } else {
-        // Show success toast
+        
         const successEvent = new CustomEvent("showToast", {
           detail: { message: "User deleted successfully", type: "success" },
         });
@@ -93,13 +93,13 @@ const UsersTable = () => {
       }
       setDeletingId(null);
     } catch (err) {
-      // rollback and show error
+      
       setUsers(previous);
       console.error("Error deleting user:", err);
-      // give clearer message when CORS or network error occurs
+      
       const msg =
         err.response?.data?.message || err.message || "Network or CORS error";
-      // Show error toast
+      
       const errorEvent = new CustomEvent("showToast", {
         detail: { message: "Error deleting user: " + msg, type: "error" },
       });
@@ -110,7 +110,7 @@ const UsersTable = () => {
 
   const handleViewUser = (user) => {
     setSelectedUser(user);
-    setTimeout(() => setSelectedUser(null), 3000); // Auto-close after 3 seconds
+    setTimeout(() => setSelectedUser(null), 3000); 
   };
 
   const handleEditRole = async (user) => {
@@ -132,14 +132,14 @@ const UsersTable = () => {
           (u._id || u.id) === (user._id || user.id) ? { ...u, role: next } : u
         )
       );
-      // Show success toast
+      
       const successEvent = new CustomEvent("showToast", {
         detail: { message: "Role updated successfully", type: "success" },
       });
       window.dispatchEvent(successEvent);
     } catch (err) {
       console.error("Error updating role:", err);
-      // Show error toast
+      
       const errorEvent = new CustomEvent("showToast", {
         detail: { message: "Failed to update role", type: "error" },
       });
@@ -366,7 +366,7 @@ const UsersTable = () => {
         )}
       </div>
 
-      {/* User Detail Modal */}
+      {}
       {selectedUser && (
         <div
           className={styles.modalOverlay}
@@ -451,7 +451,7 @@ const UsersTable = () => {
                 className={`${styles.smallBtn} ${styles.removeBtn}`}
                 onClick={() => {
                   setConfirmOpen(false);
-                  // call delete handler
+                  
                   if (pendingDelete) handleRemoveUser(pendingDelete);
                   setPendingDelete(null);
                 }}

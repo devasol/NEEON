@@ -1,6 +1,6 @@
-/* NewsSection.module.css */
 
-/* Light theme variables */
+
+
 :root, :root[data-theme="light"] {
   --news-container-bg: #fff;
   --news-item-bg: #fff;
@@ -15,7 +15,7 @@
   --news-hover-bg: #f9f9f9;
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
   --news-container-bg: #2d2d2d;
   --news-item-bg: #2d2d2d;
@@ -141,7 +141,7 @@
 .imageContainer {
   position: relative;
   width: 100%;
-  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  padding-top: 56.25%; 
   overflow: hidden;
 }
 
@@ -272,7 +272,7 @@
   border-radius: 8px;
 }
 
-/* Right Section */
+
 .socialList {
   display: flex;
   flex-direction: column;
@@ -384,7 +384,7 @@
   background-color: #c62828;
 }
 
-/* Modal Styles */
+
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -533,7 +533,7 @@
   background-color: #c62828;
 }
 
-/* Responsive */
+
 @media (max-width: 992px) {
   .container {
     flex-direction: column;
@@ -595,7 +595,7 @@
   transform: translateY(-2px);
 }
 
-/* Loading styles */
+
 .loading {
   padding: 2rem;
   text-align: center;

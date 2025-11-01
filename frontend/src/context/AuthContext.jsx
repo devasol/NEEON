@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
 				localStorage.removeItem(TOKEN_KEY);
 			}
 		} catch {
-			// ignore storage errors
+			
 		}
 	}, [token]);
 
@@ -43,7 +43,7 @@ export function AuthProvider({ children }) {
 				localStorage.removeItem(ADMIN_KEY);
 			}
 		} catch {
-			// ignore storage errors
+			
 		}
 	}, [isAdmin]);
 

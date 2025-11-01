@@ -1,8 +1,8 @@
-/*!
- * Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com
- * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
- * Copyright 2025 Fonticons, Inc.
- */
+
+
+
+
+
 (function () {
   'use strict';
 
@@ -11,7 +11,7 @@
   try {
     if (typeof window !== 'undefined') _WINDOW = window;
     if (typeof document !== 'undefined') _DOCUMENT = document;
-  } catch (e) {} // eslint-disable-line no-empty
+  } catch (e) {} 
 
   var _ref = _WINDOW.navigator || {},
     _ref$userAgent = _ref.userAgent,
@@ -575,7 +575,7 @@
     }
   }();
   function familyProxy(obj) {
-    // Defaults to the classic family if family is not available
+    
     return new Proxy(obj, {
       get: function get(target, prop) {
         return prop in target ? target[prop] : target[a];
@@ -584,17 +584,17 @@
   }
   var _PREFIX_TO_STYLE = _objectSpread2({}, z);
 
-  // We changed FACSSClassesToStyleId in the icons repo to be canonical and as such, "classic" family does not have any
-  // duotone styles.  But we do still need duotone in _PREFIX_TO_STYLE below, so we are manually adding
-  // {'fa-duotone': 'duotone'}
+  
+  
+  
   _PREFIX_TO_STYLE[a] = _objectSpread2(_objectSpread2(_objectSpread2(_objectSpread2({}, {
     'fa-duotone': 'duotone'
   }), z[a]), Oo['kit']), Oo['kit-duotone']);
   var PREFIX_TO_STYLE = familyProxy(_PREFIX_TO_STYLE);
   var _STYLE_TO_PREFIX = _objectSpread2({}, Ro);
 
-  // We changed FAStyleIdToShortPrefixId in the icons repo to be canonical and as such, "classic" family does not have any
-  // duotone styles.  But we do still need duotone in _STYLE_TO_PREFIX below, so we are manually adding {duotone: 'fad'}
+  
+  
   _STYLE_TO_PREFIX[a] = _objectSpread2(_objectSpread2(_objectSpread2(_objectSpread2({}, {
     duotone: 'fad'
   }), _STYLE_TO_PREFIX[a]), dt['kit']), dt['kit-duotone']);
@@ -652,12 +652,12 @@
       namespace.styles[prefix] = _objectSpread2(_objectSpread2({}, namespace.styles[prefix] || {}), normalized);
     }
 
-    /**
-     * Font Awesome 4 used the prefix of `fa` for all icons. With the introduction
-     * of new styles we needed to differentiate between them. Prefix `fa` is now an alias
-     * for `fas` so we'll ease the upgrade process for our users by automatically defining
-     * this as well.
-     */
+    
+
+
+
+
+
     if (prefix === 'fas') {
       defineIcons('fa', icons);
     }

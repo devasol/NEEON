@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./RecentPosts.module.css";
 
 const RecentPosts = ({ data }) => {
-  // If data is provided, use it; otherwise use fallback data
+  
   const posts = data && data.length > 0 ? data : [
     {
       newsTitle: "How to get the best deals on flights",
@@ -21,7 +21,7 @@ const RecentPosts = ({ data }) => {
     },
   ];
 
-  // Format date for display
+  
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { 
@@ -29,6 +29,16 @@ const RecentPosts = ({ data }) => {
       month: 'short', 
       day: 'numeric' 
     });
+  };
+
+  
+  const getStatusClass = (status) => {
+    if (!status) return '';
+    const lowerStatus = status.toLowerCase();
+    if (lowerStatus.includes('publish')) return styles.statusPublished;
+    if (lowerStatus.includes('draft')) return styles.statusDraft;
+    if (lowerStatus.includes('pending')) return styles.statusPending;
+    return '';
   };
 
   return (
@@ -40,7 +50,10 @@ const RecentPosts = ({ data }) => {
             <div>
               <div className={styles.postTitle}>{p.newsTitle || p.title}</div>
               <div className={styles.postMeta}>
-                {formatDate(p.createdAt || p.date)} • {p.status || p.status}
+                <span>{formatDate(p.createdAt || p.date)}</span>
+                <span className={`${styles.statusBadge} ${getStatusClass(p.status)}`}>
+                  {p.status || 'Draft'}
+                </span>
               </div>
             </div>
             <div className={styles.postActions}>

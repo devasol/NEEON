@@ -116,7 +116,7 @@
   background: linear-gradient(90deg, var(--bg-color) 25%, #e0e0e0 50%, var(--bg-color) 75%);
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s infinite;
-  border-radius: 20px 20px 0 0; /* Match the card's border-radius */
+  border-radius: 20px 20px 0 0; 
   z-index: 1;
   transition: opacity 0.3s ease;
 }
@@ -236,7 +236,7 @@
   font-weight: 500;
 }
 
-/* Post Interaction Styles */
+
 .postInteractions {
   display: flex;
   gap: 15px;
@@ -574,7 +574,7 @@
   animation: pulse 2s ease-in-out infinite 0.4s;
 }
 
-/* Animations */
+
 @keyframes float {
   0%,
   100% {
@@ -691,7 +691,7 @@
   z-index: 2;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .posts {
     padding: 40px 15px;
@@ -780,7 +780,7 @@
   }
 }
 
-/* Extra small devices */
+
 @media (max-width: 360px) {
   .posts {
     padding: 20px 10px;
@@ -799,7 +799,7 @@
   }
 }
 
-/* Pagination styles */
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -851,7 +851,7 @@
   text-align: center;
 }
 
-/* Responsive pagination */
+
 @media (max-width: 768px) {
   .paginationControls {
     flex-direction: column;
@@ -869,7 +869,7 @@
   }
 }
 
-/* Login Modal Styles */
+
 .loginModalOverlay {
   position: fixed;
   top: 0;
@@ -979,7 +979,7 @@
   transform: translateY(-3px);
 }
 
-/* Responsive modal */
+
 @media (max-width: 768px) {
   .loginModal {
     width: 95%;

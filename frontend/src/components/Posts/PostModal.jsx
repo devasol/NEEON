@@ -26,7 +26,7 @@ const PostModal = ({ post, isOpen, onClose }) => {
 
   const calculateReadTime = (description) => {
     if (!description) return "5 min read";
-    // Average reading speed is about 200 words per minute
+    
     const wordsPerMinute = 200;
     const wordCount = description.split(/\s+/).length;
     const readTime = Math.ceil(wordCount / wordsPerMinute);

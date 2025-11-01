@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./AdminDashboard.module.css";
 import api from "../../utils/api";
 
-// Import your admin components
+
 import CategoriesView from "../../components/Admin/CategoriesView/CategoriesView.jsx";
 import CommentsView from "../../components/Admin/CommentsView/CommentsView.jsx";
 import PostsView from "../../components/Admin/PostsView/PostsView.jsx";
@@ -25,7 +25,7 @@ const AdminDashboard = ({ selectedView, setSelectedView }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch dashboard statistics from backend
+  
   useEffect(() => {
     const fetchDashboardStats = async () => {
       try {
@@ -98,7 +98,7 @@ const AdminDashboard = ({ selectedView, setSelectedView }) => {
       case "dashboard":
         return (
           <>
-            {/* Dashboard Header */}
+            {}
             <div className={styles.dashboardHeader}>
               <div className={styles.headerContent}>
                 <h1 className={styles.dashboardTitle}>Dashboard Overview</h1>

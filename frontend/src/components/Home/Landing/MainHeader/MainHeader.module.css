@@ -1,4 +1,4 @@
-/* Light theme variables */
+
 :root, :root[data-theme="light"] {
   --header-bg: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   --header-text: #1e293b;
@@ -12,7 +12,7 @@
   --logout-btn-gradient: linear-gradient(135deg, #ff6b6b 0%, #7c3aed 100%);
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
   --header-bg: linear-gradient(135deg, #2c3e50 0%, #1a1f25 100%);
   --header-text: #ffffff;
@@ -41,7 +41,7 @@
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Sticky header styles */
+
 .container.sticky {
   position: fixed;
   top: 0;
@@ -362,7 +362,7 @@
   background: linear-gradient(45deg, var(--header-accent-secondary), var(--header-accent));
   opacity: 0;
   transition: opacity 0.3s ease;
-  z-index: 0; /* keep pseudo behind content but non-negative to avoid stacking issues */
+  z-index: 0; 
 }
 
 .iconsWrapper span:hover::before {
@@ -383,7 +383,7 @@
   transform: scale(1.2);
 }
 
-/* Unique styling for the login/user icon on the home page header */
+
 .loginIcon {
   width: 100px;
   height: 44px;
@@ -412,7 +412,7 @@
   outline-offset: 3px;
 }
 
-/* New explicit button styling for Login in header */
+
 .loginButton {
   display: inline-flex;
   align-items: center;
@@ -445,7 +445,7 @@
   outline-offset: 3px;
 }
 
-/* Gorgeous logout button styles */
+
 .logoutButton {
   display: inline-flex;
   align-items: center;
@@ -465,7 +465,7 @@
   z-index: 1000;
 }
 
-/* icon removed per request */
+
 
 .logoutButton:hover {
   transform: translateY(-3px);
@@ -489,7 +489,7 @@
   color: currentColor;
 }
 
-/* Confirmation Modal Styles */
+
 .confirmOverlay {
   position: fixed;
   inset: 0;
@@ -612,7 +612,7 @@
   }
 }
 
-/* optional small badge for login state (e.g., notification) */
+
 .loginIconBadge {
   position: absolute;
   top: -4px;
@@ -626,7 +626,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
-/* Login modal overlay and modal box styles */
+
 .loginModalOverlay {
   position: fixed;
   inset: 0;
@@ -639,7 +639,7 @@
 }
 
 .loginModal {
-  /* make wrapper transparent so the inner login card is the visible element */
+  
   background: transparent;
   border-radius: 0;
   padding: 0;
@@ -694,7 +694,7 @@
   }
 }
 
-/* Mobile menu button (hidden by default) */
+
 .mobileMenuButton {
   display: none;
   flex-direction: column;
@@ -731,7 +731,7 @@
   background: var(--header-accent-secondary) !important;
 }
 
-/* Close button in sidebar - FIXED Z-INDEX */
+
 .closeButton {
   display: none;
   position: absolute;
@@ -740,7 +740,7 @@
   width: 40px;
   height: 40px;
   cursor: pointer;
-  z-index: 2010; /* Increased z-index to be above sticky header */
+  z-index: 2010; 
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -769,7 +769,7 @@
   transform: scale(1.1);
 }
 
-/* Responsive Design */
+
 @media (max-width: 1024px) {
   .navigator ul {
     gap: 1.5rem;
@@ -798,7 +798,7 @@
     padding-top: 80px;
     transition: right 0.4s ease;
     box-shadow: -5px 0 25px rgba(0, 0, 0, 0.3);
-    z-index: 2005; /* Increased z-index to be above sticky header */
+    z-index: 2005; 
     overflow-y: auto;
   }
 
@@ -847,7 +847,7 @@
     padding: 1.5rem;
     transition: bottom 0.4s ease;
     box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.2);
-    z-index: 2001; /* Increased z-index to be above sticky header */
+    z-index: 2001; 
   }
 
   .iconsOpen {
@@ -876,7 +876,7 @@
     width: 80%;
     top: 0;
     height: 100vh;
-    z-index: 2005; /* Increased z-index to be above sticky header */
+    z-index: 2005; 
   }
 
   .iconsWrapper span {
@@ -903,7 +903,7 @@
     width: 100%;
     top: 0;
     height: 100vh;
-    z-index: 2005; /* Increased z-index to be above sticky header */
+    z-index: 2005; 
   }
 
   .closeButton {
@@ -921,7 +921,7 @@
   }
 }
 
-/* Search Form Styles */
+
 .searchContainer {
   display: flex;
   align-items: center;
@@ -984,7 +984,7 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Search Results Styles */
+
 .searchResults {
   position: absolute;
   top: 100%;
@@ -1051,7 +1051,7 @@
   font-style: italic;
 }
 
-/* Focus states for accessibility */
+
 .navigator li:focus,
 .iconsWrapper span:focus,
 .mobileMenuButton:focus,
@@ -1070,7 +1070,7 @@
   align-items: center;
 }
 
-/* Reduced motion for accessibility */
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

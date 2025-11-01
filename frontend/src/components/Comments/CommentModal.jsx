@@ -81,7 +81,7 @@ const CommentModal = ({ postId, postTitle, isOpen, onClose }) => {
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        {/* Modal Header */}
+        {}
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>
             Comments for: {postTitle || "Post"}
@@ -91,7 +91,7 @@ const CommentModal = ({ postId, postTitle, isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* Comments List */}
+        {}
         <div className={styles.commentsSection}>
           {loadingComments ? (
             <div className={styles.loadingComments}>
@@ -124,7 +124,7 @@ const CommentModal = ({ postId, postTitle, isOpen, onClose }) => {
           )}
         </div>
 
-        {/* Add Comment Form */}
+        {}
         {!token ? (
           <div className={styles.loginPrompt}>
             <p>Please login to add a comment</p>

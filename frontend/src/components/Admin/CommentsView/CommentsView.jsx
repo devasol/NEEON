@@ -9,19 +9,19 @@ const CommentsView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch comments from the backend
+  
   useEffect(() => {
     const fetchComments = async () => {
       try {
         setLoading(true);
         console.log("Fetching comments from API...");
-        const response = await api.get("/api/v1/blogs/all-comments", true); // true to include auth token
+        const response = await api.get("/api/v1/blogs/all-comments", true); 
         console.log("API response:", response);
         if (response && response.status === "success" && response.comments !== undefined) {
-          // Transform the data to match the format expected by the component
+          
           const transformedComments = Array.isArray(response.comments) ? response.comments.map((comment, index) => ({
-            id: index + 1, // Use index as ID for frontend purposes
-            _id: comment._id, // Keep the original MongoDB _id for API operations
+            id: index + 1, 
+            _id: comment._id, 
             text: comment.text || "No comment text",
             excerpt: comment.text?.substring(0, 30) + (comment.text?.length > 30 ? "..." : "") || "No comment text",
             post: comment.post || "Unknown Post",
@@ -30,8 +30,8 @@ const CommentsView = () => {
             author: comment.username || "Anonymous User",
             email: "", // Backend doesn't provide email in this response
             date: new Date(comment.createdAt).toLocaleString() || "Unknown Date",
-            status: "Pending", // Backend doesn't provide status, defaulting to Pending
-            avatar: "https://via.placeholder.com/50", // Default avatar since we don't have user avatars in the backend response
+            status: "Pending", 
+            avatar: "https://via.placeholder.com/50", 
             postId: comment.postId || null
           })) : [];
           setComments(transformedComments);
@@ -63,28 +63,28 @@ const CommentsView = () => {
     document.body.style.overflow = "unset";
   };
 
-  // Update handleApprove to work with backend
+  
   const handleApprove = async (commentId, e) => {
     e.stopPropagation();
-    // Get the actual comment object by its id
+    
     const comment = comments.find(c => c.id === commentId);
     if (!comment || !comment.postId || !comment._id) return;
 
     try {
-      // In a real implementation, you might have a separate approval system
-      // For now, just update the status locally and show confirmation
+      
+      
       setComments(prevComments => prevComments.map(c => 
         c.id === commentId ? { ...c, status: "Approved" } : c
       ));
       
-      // Show success toast
+      
       const successEvent = new CustomEvent("showToast", {
         detail: { message: `Comment on "${comment.post}" approved!`, type: "success" },
       });
       window.dispatchEvent(successEvent);
     } catch (error) {
       console.error("Error approving comment:", error);
-      // Show error toast
+      
       const errorEvent = new CustomEvent("showToast", {
         detail: { message: "Failed to approve comment", type: "error" },
       });
@@ -92,7 +92,7 @@ const CommentsView = () => {
     }
   };
 
-  // Update handleDelete to work with backend
+  
   const handleDelete = async (commentId, e) => {
     e.stopPropagation();
     const comment = comments.find(c => c.id === commentId);
@@ -103,20 +103,20 @@ const CommentsView = () => {
     }
 
     try {
-      // Delete the comment using the stored MongoDB _id
+      
       await api.delete(`/api/v1/blogs/${comment.postId}/comments/${comment._id}`, true);
       
-      // Update local state to remove the comment
+      
       setComments(prevComments => prevComments.filter(c => c.id !== commentId));
       
-      // Show success toast
+      
       const successEvent = new CustomEvent("showToast", {
         detail: { message: `Comment on "${comment.post}" deleted!`, type: "success" },
       });
       window.dispatchEvent(successEvent);
     } catch (error) {
       console.error("Error deleting comment:", error);
-      // Show error toast
+      
       const errorEvent = new CustomEvent("showToast", {
         detail: { message: "Failed to delete comment", type: "error" },
       });
@@ -130,7 +130,7 @@ const CommentsView = () => {
       c.id === commentId ? { ...c, status: newStatus } : c
     ));
     
-    // Show status change toast
+    
     const statusChangeEvent = new CustomEvent("showToast", {
       detail: { message: `Comment status changed to ${newStatus}`, type: "info" },
     });
@@ -228,7 +228,7 @@ const CommentsView = () => {
         </ul>
       </div>
 
-      {/* Comment Detail Modal */}
+      {}
       {isModalOpen && selectedComment && (
         <div className={styles.modalOverlay} onClick={closeModal}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>

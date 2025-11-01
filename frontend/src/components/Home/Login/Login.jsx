@@ -6,7 +6,7 @@ import styles from "./Login.module.css";
 import useAuth from "../../../hooks/useAuth";
 import Toast from "../../Ui/Toast";
 
-// Animated Icons
+
 const GoogleIcon = () => (
   <svg className={styles.googleIcon} viewBox="0 0 24 24">
     <path
@@ -86,11 +86,11 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
   useEffect(() => {
     setAnimate(true);
 
-    // Pre-fill demo credentials for testing
-    // setFormData({
-    //   email: "demo@example.com",
-    //   password: "demopassword",
-    // });
+    
+    
+    
+    
+    
   }, []);
 
   const handleInputChange = (e) => {
@@ -100,7 +100,7 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
       [name]: value,
     }));
 
-    // Clear error when user starts typing
+    
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -147,12 +147,12 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
 
     if (!validateForm()) return;
     setIsLoading(true);
-    setToast({ message: "", type: "success" }); // Clear previous messages
+    setToast({ message: "", type: "success" }); 
     try {
       const res = await api.post("/api/v1/users/login", {
         email: formData.email,
         password: formData.password,
-      }, false); // Don't include auth for login
+      }, false); 
 
       if (res && res.token) {
         const token = res.token;
@@ -192,12 +192,12 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
   const handleGoogleLogin = () => {
     setIsLoading(true);
 
-    // Redirect to backend Google OAuth endpoint
+    
     window.location.href = `${API_BASE}/auth/google`;
   };
 
   const handleForgotPassword = () => {
-    // Implement forgot password logic
+    
     alert("Forgot password feature coming soon!");
   };
 
@@ -218,7 +218,7 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
           ×
         </button>
       )}
-      {/* Animated Background Elements */}
+      {}
       <div className={styles.backgroundElements}>
         <div
           className={styles.floatingCircle}
@@ -235,7 +235,7 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
         <SparkleIcon />
       </div>
 
-      {/* Header Section */}
+      {}
       <div className={styles.header}>
         <div className={styles.logo}>
           <div className={styles.logoIcon}>⚡</div>
@@ -244,7 +244,7 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
         <p className={styles.subtitle}>Sign in to your account to continue</p>
       </div>
 
-      {/* Google OAuth Button */}
+      {}
       <button
         className={styles.googleButton}
         onClick={handleGoogleLogin}
@@ -256,16 +256,16 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
         <span className={styles.buttonLoader}></span>
       </button>
 
-      {/* Divider */}
+      {}
       <div className={styles.divider}>
         <span>or continue with email</span>
       </div>
 
 
 
-      {/* Login Form */}
+      {}
       <form className={styles.loginForm} onSubmit={handleSubmit}>
-        {/* Email Field */}
+        {}
         <div className={styles.inputGroup}>
           <div className={styles.inputContainer}>
             <EmailIcon />
@@ -290,7 +290,7 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
           )}
         </div>
 
-        {/* Password Field */}
+        {}
         <div className={styles.inputGroup}>
           <div className={styles.inputContainer}>
             <PasswordIcon />
@@ -323,7 +323,7 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
           )}
         </div>
 
-        {/* Options Row */}
+        {}
         <div className={styles.optionsRow}>
           <label className={styles.checkboxLabel}>
             <input
@@ -346,7 +346,7 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
           </button>
         </div>
 
-        {/* Submit Button */}
+        {}
         <button
           type="submit"
           className={`${styles.submitButton} ${
@@ -365,7 +365,7 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
         </button>
       </form>
 
-      {/* Footer */}
+      {}
       <div className={styles.footer}>
         <p>
           Don't have an account?{" "}
@@ -385,9 +385,9 @@ const Login = ({ noContainer = false, onClose, onSignupClick }) => {
         </p>
       </div>
 
-      {/* Demo Credentials Hint */}
+      {}
       <div className={styles.demoHint}>
-        {/* <p>Demo credentials: demo@example.com / demopassword</p> */}
+        {}
       </div>
     </div>
   );

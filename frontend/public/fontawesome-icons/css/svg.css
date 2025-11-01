@@ -1,8 +1,8 @@
-/*!
- * Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com
- * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
- * Copyright 2025 Fonticons, Inc.
- */
+
+
+
+
+
 :root, :host {
   --fa-font-solid: normal 900 1em/1 "Font Awesome 7 Free";
   --fa-font-regular: normal 400 1em/1 "Font Awesome 7 Free";
@@ -63,7 +63,7 @@
 .svg-inline--fa.fa-li {
   width: var(--fa-li-width, 2em);
   inset-inline-start: calc(-1 * var(--fa-li-width, 2em));
-  inset-block-start: 0.25em; /* syncing vertical alignment with Web Font rendering */
+  inset-block-start: 0.25em; 
 }
 
 .fa-layers-counter, .fa-layers-text {

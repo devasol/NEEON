@@ -1,5 +1,5 @@
-/* CommentsView.module.css */
-/* Light theme variables */
+
+
 :root, :root[data-theme="light"] {
   --comments-bg: #ffffff;
   --comments-text: #2d3748;
@@ -30,7 +30,7 @@
   --comments-accent: #4ecdc4;
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
   --comments-bg: #1e293b;
   --comments-text: #e2e8f0;
@@ -218,7 +218,7 @@
   transform: translateY(-1px);
 }
 
-/* Modal Styles */
+
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -439,7 +439,7 @@
   background: #c53030;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .commentsView {
     padding: 1rem;

@@ -11,35 +11,35 @@ const Posts = () => {
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const [showingLimited, setShowingLimited] = useState(false);
-  const [limit, setLimit] = useState(12); // Default limit
-  const [currentPage, setCurrentPage] = useState(1); // For pagination
-  const [totalPosts, setTotalPosts] = useState(0); // Total number of posts
+  const [limit, setLimit] = useState(12); 
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [totalPosts, setTotalPosts] = useState(0); 
   const sectionRef = useRef(null);
   const { token } = useAuth();
   const navigate = useNavigate();
   
-  // State for post modal
+  
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   
-  // Function to trigger login modal
+  
   const triggerLogin = () => {
-    // Try to trigger the login modal by dispatching a custom event
+    
     const loginEvent = new CustomEvent('triggerLoginModal', { bubbles: true, cancelable: true });
     document.dispatchEvent(loginEvent);
   };
 
-  // State to hold all posts for pagination
+  
   const [allPosts, setAllPosts] = useState([]);
-  const [postInteractions, setPostInteractions] = useState({}); // Store likes, comments, etc. for each post
-  const [commentInputs, setCommentInputs] = useState({}); // Store comment input values for each post
-  const [showComments, setShowComments] = useState({}); // Track which post's comments are visible
-  const [postComments, setPostComments] = useState({}); // Store comments for each post
-  const [showLoginModal, setShowLoginModal] = useState(false); // For login modal when non-logged in users try to interact
-  // State for the comment modal
+  const [postInteractions, setPostInteractions] = useState({}); 
+  const [commentInputs, setCommentInputs] = useState({}); 
+  const [showComments, setShowComments] = useState({}); 
+  const [postComments, setPostComments] = useState({}); 
+  const [showLoginModal, setShowLoginModal] = useState(false); 
+  
   const [commentModal, setCommentModal] = useState({ isOpen: false, postId: null, postTitle: null });
 
-  // Update posts when pagination changes for logged-in users
+  
   useEffect(() => {
     if (token && allPosts.length > 0) {
       const startIndex = (currentPage - 1) * limit;
@@ -48,7 +48,7 @@ const Posts = () => {
     }
   }, [currentPage, token, allPosts, limit]);
 
-  // Initialize post interactions when posts change
+  
   useEffect(() => {
     const initialInteractions = {};
     const initialCommentInputs = {};
@@ -57,7 +57,7 @@ const Posts = () => {
 
     posts.forEach(post => {
       initialInteractions[post._id] = {
-        liked: post.likedBy?.includes(token) || false, // Assuming token is user ID
+        liked: post.likedBy?.includes(token) || false, 
         likes: post.likes || 0,
         comments: post.comments || 0,
       };
@@ -177,10 +177,10 @@ const Posts = () => {
         if (!token) {
           params.append('limit', '3');
         } else {
-          // For logged-in users, don't specify a limit to get all posts
-          // Note: This might need a backend update for actual pagination
-          // For now, we'll fetch with a high limit and handle pagination in frontend
-          params.append('limit', '100'); // Fetch more than we'll likely have
+          
+          
+          
+          params.append('limit', '100'); 
         }
         
         const url = params.toString() ? `${endpoint}?${params}` : endpoint;
@@ -188,7 +188,7 @@ const Posts = () => {
         const response = await api.get(url, !!token);
         
         if (response && response.blogs && response.blogs.allBlogs) {
-          // Define static images from the public postsImg folder
+          
           const staticImages = [
             "/postsImg/photo-1421789665209-c9b2a435e3dc.avif",
             "/postsImg/photo-1445307806294-bff7f67ff225.avif",
@@ -207,8 +207,8 @@ const Posts = () => {
           ];
           
           if (!token) {
-            // Non-logged-in user: just set the posts directly
-            // Add imageIndex to each post for static image selection
+            
+            
             const postsWithImages = response.blogs.allBlogs.map((post, index) => ({
               ...post,
               staticImage: staticImages[index % staticImages.length]
@@ -216,17 +216,17 @@ const Posts = () => {
             setPosts(postsWithImages);
             setShowingLimited(true);
           } else {
-            // Logged-in user: store all posts and set the first page
-            // Add imageIndex to each post for static image selection
+            
+            
             const allPostsWithImages = response.blogs.allBlogs.map((post, index) => ({
               ...post,
               staticImage: staticImages[index % staticImages.length]
             }));
             setAllPosts(allPostsWithImages);
             setTotalPosts(allPostsWithImages.length);
-            const postsWithImages = allPostsWithImages.slice(0, limit); // Default first page
+            const postsWithImages = allPostsWithImages.slice(0, limit); 
             setPosts(postsWithImages);
-            setShowingLimited(false); // Logged-in users see full content
+            setShowingLimited(false); 
           }
         } else {
           setPosts([]);
@@ -234,7 +234,7 @@ const Posts = () => {
         }
       } catch (error) {
         console.error("Error fetching posts:", error);
-        // Fallback to empty array
+        
         setPosts([]);
         setAllPosts([]);
       } finally {
@@ -281,7 +281,7 @@ const Posts = () => {
 
   const calculateReadTime = (description) => {
     if (!description) return "5 min read";
-    // Average reading speed is about 200 words per minute
+    
     const wordsPerMinute = 200;
     const wordCount = description.split(/\s+/).length;
     const readTime = Math.ceil(wordCount / wordsPerMinute);
@@ -290,7 +290,7 @@ const Posts = () => {
 
   console.log("Rendering - loading:", loading, "posts count:", posts.length);
 
-  // Debug: Check if styles are loading
+  
   console.log("Styles object:", styles);
 
   if (loading) {
@@ -323,7 +323,7 @@ const Posts = () => {
   return (
     <section ref={sectionRef} className={styles.posts}>
       <div className={`${styles.container} ${isVisible ? styles.visible : ""}`}>
-        {/* Login Modal for non-logged in users */}
+        {}
         {showLoginModal && (
           <div className={styles.loginModalOverlay}>
             <div className={styles.loginModal}>
@@ -338,10 +338,10 @@ const Posts = () => {
                 <button 
                   className={styles.loginModalBtn}
                   onClick={() => {
-                    // Trigger the login modal using the custom event system
+                    
                     const loginEvent = new CustomEvent('openLoginModal');
                     document.dispatchEvent(loginEvent);
-                    closeLoginModal(); // Close this modal after opening the login modal
+                    closeLoginModal(); 
                   }}
                 >
                   Login
@@ -395,10 +395,10 @@ const Posts = () => {
                       <div className={styles.skeletonLoader}></div>
                     </div>
                     <img 
-                      src={post.staticImage} // Use static image from postsImg folder
+                      src={post.staticImage} 
                       alt={post.newsTitle} 
                       onLoad={(e) => {
-                        // Hide skeleton when image loads successfully
+                        
                         const skeleton = e.target.previousElementSibling;
                         if (skeleton) skeleton.style.opacity = '0';
                         
@@ -446,7 +446,7 @@ const Posts = () => {
                       </div>
                     </div>
 
-                    {/* Post Interaction Buttons - Likes, Comments, Shares */}
+                    {}
                     <div className={styles.postInteractions}>
                       <button 
                         className={`${styles.interactionButton} ${interactions.liked ? styles.liked : ''}`}
@@ -472,7 +472,7 @@ const Posts = () => {
                       </button>
                     </div>
                     
-                    {/* Read More Button */}
+                    {}
                     <button 
                       className={styles.readMoreButton}
                       onClick={() => openPostModal(post)}
@@ -500,9 +500,9 @@ const Posts = () => {
                   <button
                     className={styles.loginButton}
                     onClick={() => {
-                      // Navigate to homepage and trigger login modal
+                      
                       navigate('/');
-                      // Use a timeout to ensure the page has loaded before triggering the event
+                      
                       setTimeout(() => {
                         const loginEvent = new CustomEvent('openLoginModal');
                         document.dispatchEvent(loginEvent);
@@ -515,7 +515,7 @@ const Posts = () => {
               </div>
             )}
 
-            {/* Pagination controls for logged-in users */}
+            {}
             {token && totalPosts > 0 && (
               <div className={styles.pagination}>
                 <div className={styles.paginationControls}>
@@ -545,14 +545,14 @@ const Posts = () => {
         )}
       </div>
       
-      {/* Comment Modal */}
+      {}
       <CommentModal 
         postId={commentModal.postId} 
         postTitle={commentModal.postTitle} 
         isOpen={commentModal.isOpen} 
         onClose={closeCommentModal}
         onCommentAdded={() => {
-          // Update the comment count in the interactions state
+          
           if (commentModal.postId) {
             setPostInteractions(prev => ({
               ...prev,
@@ -565,7 +565,7 @@ const Posts = () => {
         }}
       />
       
-      {/* Post Modal */}
+      {}
       <PostModal
         post={selectedPost}
         isOpen={isPostModalOpen}

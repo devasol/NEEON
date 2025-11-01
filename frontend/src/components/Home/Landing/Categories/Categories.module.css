@@ -1,4 +1,4 @@
-/* Light theme variables */
+
 :root, :root[data-theme="light"] {
   --category-container-bg: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
   --category-card-hover: rgba(255, 255, 255, 0.7);
@@ -11,7 +11,7 @@
   --category-gradient-reverse: linear-gradient(135deg, #4ecdc4, #ff6b6b);
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
   --category-container-bg: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
   --category-card-hover: rgba(70, 70, 70, 0.7);
@@ -248,7 +248,7 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Responsive Design */
+
 @media (max-width: 1024px) {
   .container {
     height: 130px;
@@ -314,7 +314,7 @@
   }
 }
 
-/* Reduced motion for accessibility */
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

@@ -36,12 +36,12 @@ const SettingsView = () => {
   const [saveStatus, setSaveStatus] = useState("");
   const [activeTab, setActiveTab] = useState("general");
 
-  // Fetch settings from backend
+  
   useEffect(() => {
     const fetchSettings = async () => {
       try {
         setLoading(true);
-        // For now, using localStorage as a fallback since backend doesn't have settings endpoint yet
+        
         const savedSettings = localStorage.getItem('blogSettings');
         if (savedSettings) {
           setSettings(JSON.parse(savedSettings));
@@ -64,10 +64,10 @@ const SettingsView = () => {
       const updatedSettings = { ...prev };
       
       if (nameParts.length === 1) {
-        // Direct property update
+        
         updatedSettings[nameParts[0]] = type === 'checkbox' ? checked : value;
       } else {
-        // Nested property update (e.g., socialLinks.twitter)
+        
         updatedSettings[nameParts[0]] = {
           ...updatedSettings[nameParts[0]],
           [nameParts[1]]: type === 'checkbox' ? checked : value
@@ -111,7 +111,7 @@ const SettingsView = () => {
     <section className={styles.settingsView}>
       <h2>Site Settings</h2>
       
-      {/* Tabs */}
+      {}
       <div className={styles.tabs}>
         {tabs.map(tab => (
           <button
@@ -125,7 +125,7 @@ const SettingsView = () => {
       </div>
 
       <form onSubmit={handleSave} className={styles.settingsForm}>
-        {/* General Settings */}
+        {}
         {activeTab === "general" && (
           <div className={styles.tabContent}>
             <div className={styles.formGroup}>
@@ -183,7 +183,7 @@ const SettingsView = () => {
           </div>
         )}
 
-        {/* Social Settings */}
+        {}
         {activeTab === "social" && (
           <div className={styles.tabContent}>
             <div className={styles.formGroup}>
@@ -227,7 +227,7 @@ const SettingsView = () => {
           </div>
         )}
 
-        {/* Email Settings */}
+        {}
         {activeTab === "email" && (
           <div className={styles.tabContent}>
             <div className={styles.formGroup}>
@@ -284,7 +284,7 @@ const SettingsView = () => {
           </div>
         )}
 
-        {/* Analytics Settings */}
+        {}
         {activeTab === "analytics" && (
           <div className={styles.tabContent}>
             <div className={styles.formGroup}>
@@ -315,7 +315,7 @@ const SettingsView = () => {
           </div>
         )}
 
-        {/* Privacy Settings */}
+        {}
         {activeTab === "privacy" && (
           <div className={styles.tabContent}>
             <div className={styles.formGroup}>

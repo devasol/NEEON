@@ -1,57 +1,57 @@
-/* Light theme variables */
+
 :root, :root[data-theme="light"] {
-  --categories-bg: #f8fafc; /* slate-50 */
-  --categories-container-bg: #ffffff; /* white */
-  --categories-text: #1e293b; /* slate-800 */
-  --categories-text-secondary: #64748b; /* slate-600 */
-  --categories-text-light: #94a3b8; /* slate-400 */
-  --categories-border: #cbd5e1; /* slate-300 */
-  --categories-border-light: #e2e8f0; /* slate-200 */
+  --categories-bg: #f8fafc; 
+  --categories-container-bg: #ffffff; 
+  --categories-text: #1e293b; 
+  --categories-text-secondary: #64748b; 
+  --categories-text-light: #94a3b8; 
+  --categories-border: #cbd5e1; 
+  --categories-border-light: #e2e8f0; 
   --categories-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   --categories-card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  --categories-error-bg: #fee2e2; /* red-50 */
-  --categories-error-text: #dc2626; /* red-600 */
-  --categories-btn-primary: #3b82f6; /* blue-500 */
-  --categories-btn-primary-hover: #2563eb; /* blue-600 */
-  --categories-btn-edit: #dbeafe; /* blue-100 */
-  --categories-btn-edit-border: #3b82f6; /* blue-500 */
-  --categories-btn-delete: #fee2e2; /* red-50 */
-  --categories-btn-delete-border: #ef4444; /* red-500 */
-  --categories-btn-save: #10b981; /* emerald-500 */
-  --categories-btn-save-hover: #059669; /* emerald-600 */
-  --categories-btn-cancel: #ef4444; /* red-500 */
-  --categories-btn-cancel-hover: #dc2626; /* red-600 */
-  --categories-input-bg: #ffffff; /* white */
-  --categories-input-border: #cbd5e1; /* slate-300 */
-  --categories-no-data-text: #64748b; /* slate-600 */
+  --categories-error-bg: #fee2e2; 
+  --categories-error-text: #dc2626; 
+  --categories-btn-primary: #3b82f6; 
+  --categories-btn-primary-hover: #2563eb; 
+  --categories-btn-edit: #dbeafe; 
+  --categories-btn-edit-border: #3b82f6; 
+  --categories-btn-delete: #fee2e2; 
+  --categories-btn-delete-border: #ef4444; 
+  --categories-btn-save: #10b981; 
+  --categories-btn-save-hover: #059669; 
+  --categories-btn-cancel: #ef4444; 
+  --categories-btn-cancel-hover: #dc2626; 
+  --categories-input-bg: #ffffff; 
+  --categories-input-border: #cbd5e1; 
+  --categories-no-data-text: #64748b; 
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
-  --categories-bg: #0f172a; /* indigo-950 */
-  --categories-container-bg: #1e293b; /* slate-800 */
-  --categories-text: #e2e8f0; /* slate-200 */
-  --categories-text-secondary: #94a3b8; /* slate-400 */
-  --categories-text-light: #64748b; /* slate-500 */
-  --categories-border: #475569; /* slate-600 */
-  --categories-border-light: #334155; /* slate-700 */
+  --categories-bg: #0f172a; 
+  --categories-container-bg: #1e293b; 
+  --categories-text: #e2e8f0; 
+  --categories-text-secondary: #94a3b8; 
+  --categories-text-light: #64748b; 
+  --categories-border: #475569; 
+  --categories-border-light: #334155; 
   --categories-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   --categories-card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  --categories-error-bg: #43272e; /* rose-900/30 */
-  --categories-error-text: #f87171; /* rose-400 */
-  --categories-btn-primary: #60a5fa; /* blue-400 */
-  --categories-btn-primary-hover: #3b82f6; /* blue-500 */
-  --categories-btn-edit: #334155; /* slate-700 */
-  --categories-btn-edit-border: #60a5fa; /* blue-400 */
-  --categories-btn-delete: #43272e; /* rose-900/30 */
-  --categories-btn-delete-border: #f87171; /* rose-400 */
-  --categories-btn-save: #34d399; /* emerald-400 */
-  --categories-btn-save-hover: #10b981; /* emerald-500 */
-  --categories-btn-cancel: #f87171; /* rose-400 */
-  --categories-btn-cancel-hover: #ef4444; /* rose-500 */
-  --categories-input-bg: #334155; /* slate-700 */
-  --categories-input-border: #475569; /* slate-600 */
-  --categories-no-data-text: #94a3b8; /* slate-400 */
+  --categories-error-bg: #43272e; 
+  --categories-error-text: #f87171; 
+  --categories-btn-primary: #60a5fa; 
+  --categories-btn-primary-hover: #3b82f6; 
+  --categories-btn-edit: #334155; 
+  --categories-btn-edit-border: #60a5fa; 
+  --categories-btn-delete: #43272e; 
+  --categories-btn-delete-border: #f87171; 
+  --categories-btn-save: #34d399; 
+  --categories-btn-save-hover: #10b981; 
+  --categories-btn-cancel: #f87171; 
+  --categories-btn-cancel-hover: #ef4444; 
+  --categories-input-bg: #334155; 
+  --categories-input-border: #475569; 
+  --categories-no-data-text: #94a3b8; 
 }
 
 .container {
@@ -124,7 +124,7 @@
   margin-top: 10px;
 }
 
-/* Responsive form layout */
+
 @media (max-width: 768px) {
   .card form {
     flex-direction: column;
@@ -177,7 +177,7 @@
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
-/* Style for other buttons (edit, delete, save, cancel) */
+
 .editBtn, .deleteBtn, .saveBtn, .cancelBtn {
   padding: 6px 10px;
   border: 1px solid var(--categories-input-border);

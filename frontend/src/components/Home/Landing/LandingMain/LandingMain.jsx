@@ -90,7 +90,7 @@ function LandingMain() {
             likes: 0,
             comments: 0,
           },
-          // ... other fallback posts
+          
         ];
 
         setMainPost(fallbackPosts[0]);
@@ -222,7 +222,7 @@ function LandingMain() {
         </div>
       </main>
 
-      {/* Read More Modal */}
+      {}
       {isModalOpen &&
         selectedItem &&
         createPortal(

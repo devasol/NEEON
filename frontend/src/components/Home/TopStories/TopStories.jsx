@@ -12,16 +12,16 @@ const TopStories = () => {
   const [selectedStory, setSelectedStory] = useState(null);
 
   useEffect(() => {
-    // Trigger entrance animation
+    
     setVisible(true);
     
-    // Fetch more blog posts from backend for the Top Stories section
+    
     const fetchStories = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:9000/api/v1'}/blogs/public?limit=6`);
         const data = await response.json();
         if (data.status === 'success' && data.blogs) {
-          // Define static images from the public postsImg folder
+          
           const staticImages = [
             "/postsImg/photo-1421789665209-c9b2a435e3dc.avif",
             "/postsImg/photo-1445307806294-bff7f67ff225.avif",
@@ -39,14 +39,14 @@ const TopStories = () => {
             "/postsImg/photo-1649972904349-6e44c42644a7.avif"
           ];
           
-          // Transform the blog data to match the expected structure for the component
+          
           const transformedStories = data.blogs.allBlogs.map((blog, index) => ({
             id: blog._id || index + 1,
             category: blog.category || "Uncategorized",
             title: blog.newsTitle || "Untitled",
             author: blog.postedBy || "ADMIN",
             date: blog.datePosted ? new Date(blog.datePosted).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : "Unknown Date",
-            image: staticImages[index % staticImages.length], // Use static images from postsImg
+            image: staticImages[index % staticImages.length], 
             excerpt: blog.newsDescription?.substring(0, 100) + (blog.newsDescription?.length > 100 ? "..." : "") || "No description available.",
             likes: blog.likes || 0,
             comments: blog.comments || 0
@@ -323,7 +323,7 @@ const TopStories = () => {
         <div className={styles.indicatorBar}></div>
       </div>
 
-      {/* Comment Modal */}
+      {}
       <CommentModal 
         postId={selectedStory?.id} 
         postTitle={selectedStory?.title} 

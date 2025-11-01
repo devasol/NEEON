@@ -3,7 +3,7 @@ import { FaFileAlt, FaComments, FaUsers, FaTag, FaChartPie, FaEye, FaHeart, FaCa
 import styles from "./StatsCard.module.css";
 
 const StatsCard = ({ title, value, change, icon }) => {
-  // Map icon names to React Icons
+  
   const getIcon = (iconName) => {
     const iconMap = {
       'file-alt': <FaFileAlt size={32} className={styles.statsIcon} />,
@@ -17,7 +17,7 @@ const StatsCard = ({ title, value, change, icon }) => {
       'chart-line': <FaChartLine size={32} className={styles.statsIcon} />,
       'comments-dollar': <FaCommentsDollar size={32} className={styles.statsIcon} />
     };
-    return iconMap[iconName] || <FaChartPie size={32} className={styles.statsIcon} />; // Default to chart icon
+    return iconMap[iconName] || <FaChartPie size={32} className={styles.statsIcon} />; 
   };
 
   return (

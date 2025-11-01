@@ -15,7 +15,7 @@ export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
   const addToast = (message, type = 'info') => {
-    const id = Date.now() + Math.random(); // unique id
+    const id = Date.now() + Math.random(); 
     setToasts((prev) => [...prev, { id, message, type }]);
   };
 
@@ -23,7 +23,7 @@ export const ToastProvider = ({ children }) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
   };
 
-  // Listen for global toast events
+  
   React.useEffect(() => {
     const handleGlobalToast = (e) => {
       const { message, type } = e.detail;

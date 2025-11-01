@@ -1,5 +1,5 @@
-// variables
-// --------------------------
+
+
 
 $css-prefix            : fa !default;
 $style                 : 900 !default;
@@ -48,11 +48,11 @@ $stack-vertical-align  : middle !default;
 $stack-width           : ($fw-width * 2) !default;
 $stack-z-index         : auto !default;
 
-// web fonts-related variables
+
 $font-display          : block !default;
 $font-path             : "../webfonts" !default;
 
-// deprecated: these older SCSS variables will be removed with Font Awesome's next major release
+
 $style-family          : $family;
 
 $var-0: \30;

@@ -1,8 +1,8 @@
-/* Use theme variables */
 
-/* Base Styles */
+
+
 .loginContainer {
-  /* Default standalone/full-page layout */
+  
   min-height: 100vh;
   width: 100%;
   display: flex;
@@ -664,7 +664,7 @@
   }
 }
 
-/* Footer */
+
 .footer {
   text-align: center;
   margin-top: 2rem;
@@ -677,9 +677,9 @@
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
-  background: transparent; /* ensure anchors and buttons have no white background */
-  border: none; /* remove default button border */
-  padding: 0; /* remove default button padding */
+  background: transparent; 
+  border: none; 
+  padding: 0; 
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
@@ -690,7 +690,7 @@
   text-decoration: underline;
 }
 
-/* Demo Hint */
+
 .demoHint {
   margin-top: 1.5rem;
   padding: 1rem;
@@ -712,7 +712,7 @@
   }
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .loginContainer {
     padding: 0.5rem;
@@ -761,7 +761,7 @@
   }
 }
 
-/* Reduced motion support */
+
 @media (prefers-reduced-motion: reduce) {
   .loginCard,
   .googleButton,
@@ -778,7 +778,7 @@
   }
 }
 
-/* Dark mode support */
+
 @media (prefers-color-scheme: dark) {
   :root {
     --text-primary: #f9fafb;

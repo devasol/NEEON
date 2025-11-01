@@ -1,4 +1,4 @@
-/* Light theme variables */
+
 :root, :root[data-theme="light"] {
   --users-table-bg: #ffffff;
   --users-table-text: #1f2937;
@@ -20,7 +20,7 @@
   --users-table-empty-state-text: #6b7280;
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
   --users-table-bg: #1e293b;
   --users-table-text: #e2e8f0;
@@ -290,7 +290,7 @@
   font-size: 0.9rem;
 }
 
-/* Modal Styles */
+
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -367,7 +367,7 @@
   align-items: center;
 }
 
-/* Skeleton Loading */
+
 .skeletonLoader {
   display: flex;
   flex-direction: column;
@@ -382,7 +382,7 @@
   animation: loading 1.5s infinite;
 }
 
-/* Animations */
+
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -423,7 +423,7 @@
   }
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .usersTable {
     padding: 1rem;

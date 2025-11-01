@@ -1,4 +1,4 @@
-/* Light theme variables */
+
 :root, :root[data-theme="light"] {
   --top-stories-bg: #ffffff;
   --top-stories-text: #222;
@@ -15,7 +15,7 @@
   --top-stories-overlay: linear-gradient(135deg, rgba(230, 57, 70, 0.8), rgba(244, 162, 97, 0.8));
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
   --top-stories-bg: #2d2d2d;
   --top-stories-text: #e2e8f0;
@@ -116,8 +116,8 @@
 .scrollContainer {
   overflow-x: auto;
   overflow-y: hidden;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
   padding: 1rem 2rem;
   scroll-behavior: smooth;
   cursor: grab;
@@ -128,7 +128,7 @@
 }
 
 .scrollContainer::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
+  display: none; 
 }
 
 .horizontalGrid {
@@ -411,7 +411,7 @@
   }
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .header {
     padding: 0 1.5rem;
@@ -466,7 +466,7 @@
   }
 }
 
-/* Reduced motion for accessibility */
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -484,7 +484,7 @@
   }
 }
 
-/* Hover effects for touch devices */
+
 @media (hover: none) {
   .card:hover {
     transform: none;
@@ -497,7 +497,7 @@
   }
 }
 
-/* Loading styles */
+
 .loading {
   padding: 2rem;
   text-align: center;

@@ -409,7 +409,7 @@
   }
 }
 
-/* ✨ Animations */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -443,7 +443,7 @@
   }
 }
 
-/* 📱 Responsive */
+
 @media (max-width: 768px) {
   .banner {
     margin-top: 120px;
@@ -509,7 +509,7 @@
   }
 }
 
-/* Reduced motion for accessibility */
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

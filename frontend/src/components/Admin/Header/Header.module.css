@@ -1,5 +1,5 @@
-/* Header.module.css */
-/* Light theme variables */
+
+
 :root, :root[data-theme="light"] {
   --header-bg: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   --header-text: #1e293b;
@@ -31,7 +31,7 @@
   --header-user-border: #e2e8f0;
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
   --header-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
   --header-text: #e2e8f0;
@@ -118,7 +118,7 @@
   align-items: center;
 }
 
-/* Search Container */
+
 .searchContainer {
   position: relative;
   min-width: 300px;
@@ -171,7 +171,7 @@
   color: var(--header-text-secondary);
 }
 
-/* Search Suggestions */
+
 .searchSuggestions {
   position: absolute;
   top: 100%;
@@ -219,7 +219,7 @@
   border-bottom: none;
 }
 
-/* Icon Buttons */
+
 .iconBtn {
   background: var(--header-icon-bg);
   border: 2px solid var(--header-icon-border);
@@ -239,7 +239,7 @@
   box-shadow: var(--header-icon-shadow);
 }
 
-/* Notifications */
+
 .notificationsContainer {
   position: relative;
 }
@@ -375,7 +375,7 @@
   color: var(--header-btn-text-hover);
 }
 
-/* Action Button */
+
 .actionBtn {
   background: var(--header-button-bg);
   color: white;
@@ -400,7 +400,7 @@
   transform: translateY(0);
 }
 
-/* User Menu */
+
 .userMenuContainer {
   position: relative;
 }
@@ -437,7 +437,7 @@
   border: 2px solid rgba(255, 255, 255, 0.25);
 }
 
-/* Unique login-specific accent */
+
 .userAvatar.login {
   background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
   box-shadow: 0 8px 26px rgba(99, 102, 241, 0.18),
@@ -450,7 +450,7 @@
   box-shadow: 0 12px 36px rgba(78, 205, 196, 0.2);
 }
 
-/* keyboard focus ring for accessibility */
+
 .userBtn:focus-visible .userAvatar,
 .userAvatar:focus-visible {
   outline: 3px solid rgba(124, 58, 237, 0.18);
@@ -538,7 +538,7 @@
   margin: 0.5rem 0;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1200px) {
   .header {
     flex-direction: column;
@@ -552,34 +552,69 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .newPostBtn .btnText {
+    display: none;
+  }
+  
+  .actionBtn {
+    padding: 0.75rem;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 992px) {
+  .searchContainer {
+    min-width: 200px;
+  }
+}
+
 @media (max-width: 900px) {
   .menuButton {
     display: block;
   }
 
   .searchContainer {
-    min-width: 250px;
+    min-width: 180px;
+  }
+  
+  .searchWrapper {
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .titleMain {
+    font-size: 1.2rem;
+  }
+  
+  .titleSub {
+    display: none;
   }
 }
 
 @media (max-width: 768px) {
   .header {
-    padding: 1rem;
+    padding: 0.8rem 1rem;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .title {
-    display: none;
+    gap: 0.5rem;
   }
 
   .headerRight {
-    width: auto;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
   }
 
   .searchContainer {
     display: none;
+  }
+  
+  .newPostBtn {
+    display: none; 
+  }
+  
+  .actionBtn {
+    padding: 0.6rem;
   }
 }
 
@@ -599,7 +634,19 @@
   }
 
   .actionBtn {
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 0.8rem;
     font-size: 0.8rem;
+  }
+  
+  .menuButton {
+    padding: 0.6rem;
+  }
+  
+  .iconBtn {
+    padding: 0.6rem;
+  }
+  
+  .userBtn {
+    padding: 0.4rem 0.6rem;
   }
 }

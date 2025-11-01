@@ -24,16 +24,16 @@ const NewsSection = () => {
   const { token } = useAuth();
 
   useEffect(() => {
-    // Animation on component mount
+    
     setIsVisible(true);
 
-    // Fetch all blog posts from backend
+    
     const fetchArticles = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:9000/api/v1'}/blogs/public?limit=20`);
         const data = await response.json();
         if (data.status === 'success' && data.blogs) {
-          // Define static images from the public postsImg folder
+          
           const staticImages = [
             "/postsImg/photo-1421789665209-c9b2a435e3dc.avif",
             "/postsImg/photo-1445307806294-bff7f67ff225.avif",
@@ -51,13 +51,13 @@ const NewsSection = () => {
             "/postsImg/photo-1649972904349-6e44c42644a7.avif"
           ];
           
-          // Transform the blog data to match the expected structure for the component
+          
           const transformedArticles = data.blogs.allBlogs.map((blog, index) => ({
             id: blog._id || index + 1,
             category: blog.category || "Uncategorized",
             title: blog.newsTitle || "Untitled",
             date: blog.datePosted ? new Date(blog.datePosted).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : "Unknown Date",
-            image: staticImages[index % staticImages.length], // Use static images from postsImg
+            image: staticImages[index % staticImages.length], 
             excerpt: blog.newsDescription?.substring(0, 150) + (blog.newsDescription?.length > 150 ? "..." : "") || "No description available.",
             content: blog.newsDescription || "",
             postedBy: blog.postedBy || "Admin"
@@ -67,7 +67,7 @@ const NewsSection = () => {
         }
       } catch (error) {
         console.error("Error fetching articles:", error);
-        // Fallback to static data with images from postsImg if API fails
+        
         const staticImages = [
           "/postsImg/photo-1421789665209-c9b2a435e3dc.avif",
           "/postsImg/photo-1445307806294-bff7f67ff225.avif",
@@ -119,17 +119,17 @@ const NewsSection = () => {
 
   const tabs = ["All", "Technology", "Design", "Business", "Marketing"];
 
-  // Filter articles by active tab
+  
   const filteredArticles = activeTab === "All" 
     ? allArticles 
     : allArticles.filter(article => 
         article.category.toLowerCase().includes(activeTab.toLowerCase())
       );
 
-  // Get the featured article (first one)
+  
   const featuredArticle = filteredArticles.length > 0 ? filteredArticles[0] : null;
   
-  // Get the next two articles
+  
   const secondaryArticles = filteredArticles.length > 1 ? filteredArticles.slice(1, 3) : [];
 
   const socialLinks = [
@@ -168,14 +168,14 @@ const NewsSection = () => {
   const handleReadMore = (article) => {
     setSelectedArticle(article);
     setIsModalOpen(true);
-    // Prevent body scrolling when modal is open
+    
     document.body.style.overflow = "hidden";
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedArticle(null);
-    // Re-enable body scrolling when modal is closed
+    
     document.body.style.overflow = "unset";
   };
 
@@ -204,7 +204,7 @@ const NewsSection = () => {
             ))}
           </div>
           
-          {/* Featured Article Skeleton */}
+          {}
           <div className={`${styles.mainArticle} ${styles.loadingSkeleton} ${styles.loadingMainArticle}`}>
             <div className={styles.imageContainer}>
               <div className={`${styles.loadingSkeleton}`} style={{width: '100%', height: '100%'}}></div>
@@ -219,7 +219,7 @@ const NewsSection = () => {
             </div>
           </div>
 
-          {/* Secondary Articles Skeleton */}
+          {}
           <div className={styles.articleList}>
             {[...Array(2)].map((_, index) => (
               <div key={index} className={`${styles.articleItem} ${styles.loadingSkeleton} ${styles.loadingArticleItem}`}>
@@ -237,13 +237,13 @@ const NewsSection = () => {
             ))}
           </div>
 
-          {/* View all button skeleton */}
+          {}
           <div className={styles.viewAllButtonContainer}>
             <div className={`${styles.viewAllButton} ${styles.loadingSkeleton}`} style={{width: '200px', height: '40px', margin: '0 auto'}}></div>
           </div>
         </div>
         
-        {/* Right section skeleton */}
+        {}
         <div className={styles.right}>
           <h2 className={styles.title}>Stay Connected</h2>
           <div className={styles.socialList}>
@@ -271,7 +271,7 @@ const NewsSection = () => {
       className={`${styles.container} ${isVisible ? styles.visible : ""}`}
       style={{ position: "relative" }}
     >
-      {/* Left Section */}
+      {}
       <div className={styles.left}>
         <h2 className={styles.title}>What's New</h2>
         <div className={styles.tabs}>
@@ -291,7 +291,7 @@ const NewsSection = () => {
 
         {featuredArticle ? (
           <>
-            {/* Featured Article */}
+            {}
             <div className={styles.mainArticle}>
               <div className={styles.imageContainer}>
                 <img src={featuredArticle.image} alt="main" />
@@ -321,7 +321,7 @@ const NewsSection = () => {
               </div>
             </div>
 
-            {/* Secondary Articles */}
+            {}
             <div className={styles.articleList}>
               {secondaryArticles.map((article, index) => (
                 <div key={article.id || index} className={styles.articleItem}>
@@ -350,7 +350,7 @@ const NewsSection = () => {
               ))}
             </div>
 
-            {/* Button to get all posts */}
+            {}
             <div className={styles.viewAllButtonContainer}>
               {token ? (
                 <Link to="/posts" className={styles.viewAllButton}>
@@ -370,7 +370,7 @@ const NewsSection = () => {
         )}
       </div>
 
-      {/* Right Section */}
+      {}
       <div className={styles.right}>
         <h2 className={styles.title}>Stay Connected</h2>
         <div className={styles.socialList}>
@@ -405,7 +405,7 @@ const NewsSection = () => {
         </div>
       </div>
 
-      {/* Modal Popup - rendered via portal to document.body so it covers viewport */}
+      {}
       {isModalOpen && selectedArticle
         ? createPortal(
             <div className={styles.modalOverlay} onClick={closeModal}>

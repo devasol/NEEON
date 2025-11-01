@@ -37,7 +37,7 @@ function MainHeader() {
       const isPostsPage = location.pathname === '/posts';
       
       if (isHomePage) {
-        // For home page, use the original logic with landing page detection
+        
         const landingPage =
           document.querySelector("section:first-of-type") ||
           document.querySelector(".landing-page") ||
@@ -45,20 +45,20 @@ function MainHeader() {
 
         if (landingPage) {
           const landingHeight = landingPage.offsetHeight;
-          // Check if we've scrolled past the landing page
+          
           setIsSticky(window.scrollY > landingHeight - 100);
         }
       } else if (isPostsPage) {
-        // For the posts page, make header sticky after minimal scroll to match home page behavior
+        
         setIsSticky(window.scrollY > 50);
       } else {
-        // For other pages, make header sticky after minimal scroll
+        
         setIsSticky(window.scrollY > 100);
       }
     };
 
     window.addEventListener("scroll", handleScroll);
-    // Initial check
+    
     handleScroll();
 
     return () => {
@@ -66,7 +66,7 @@ function MainHeader() {
     };
   }, [location.pathname]);
 
-  // Close modal on Escape and return focus to the login icon
+  
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape" && showLogin) {
@@ -78,7 +78,7 @@ function MainHeader() {
     return () => window.removeEventListener("keydown", onKey);
   }, [showLogin]);
 
-  // Listen for the custom event to open login modal
+  
   useEffect(() => {
     const handleOpenLoginModal = () => {
       setShowLogin(true);
@@ -96,12 +96,12 @@ function MainHeader() {
       try {
         loginIconRef.current.focus();
       } catch {
-        // ignore
+        
       }
     }
   }, [showLogin]);
 
-  // Prevent body scroll while either modal is open
+  
   useEffect(() => {
     const original = document.body.style.overflow;
     if (showLogin || showSignup) {
@@ -114,7 +114,7 @@ function MainHeader() {
     };
   }, [showLogin, showSignup]);
   
-  // Close search when clicking outside
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       const searchContainer = document.querySelector(`.${styles.searchContainer}`);
@@ -122,7 +122,7 @@ function MainHeader() {
       
       if (isSearchOpen && searchContainer && !searchContainer.contains(event.target)) {
         if (!searchIcon || !searchIcon.contains(event.target)) {
-          // Check if it's not the search results container either
+          
           const resultsContainer = document.querySelector(`.${styles.searchResults}`);
           if (!resultsContainer || !resultsContainer.contains(event.target)) {
             closeSearch();
@@ -140,16 +140,16 @@ function MainHeader() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        // Try the most common endpoint format used in the app
+        
         const response = await api.get("/api/categories", false);
         if (response) {
-          // Check different possible response structures
+          
           if (response.categories) {
             setCategories(response.categories);
           } else if (response.data && response.data.categories) {
             setCategories(response.data.categories);
           } else if (Array.isArray(response)) {
-            // If response is directly an array of categories
+            
             setCategories(response);
           } else {
             setCategories([]);
@@ -159,9 +159,9 @@ function MainHeader() {
         }
       } catch (error) {
         console.error("Error fetching categories from /api/categories:", error);
-        // Try alternative endpoints
+        
         try {
-          // Try the original endpoint again
+          
           const response = await api.get("/api/categories", false);
           if (response) {
             if (response.categories) {
@@ -171,13 +171,13 @@ function MainHeader() {
             } else if (Array.isArray(response)) {
               setCategories(response);
             } else {
-              // Try to get categories from blogs endpoint since that might include categories
+              
               const blogResponse = await api.get("/api/v1/blogs/public?limit=100", false);
               if (blogResponse && blogResponse.blogs && blogResponse.blogs.allBlogs) {
-                // Extract unique categories from blogs
+                
                 const uniqueCategories = [...new Set(blogResponse.blogs.allBlogs.map(blog => blog.category))];
                 const categoryObjects = uniqueCategories
-                  .filter(cat => cat) // Remove null/undefined categories
+                  .filter(cat => cat) 
                   .map((cat, index) => ({ name: cat, _id: `cat-${index}` }));
                 setCategories(categoryObjects);
               } else {
@@ -187,7 +187,7 @@ function MainHeader() {
           }
         } catch (secondError) {
           console.error("Error fetching categories from /api/categories:", secondError);
-          // Try with the API_BASE constant
+          
           try {
             const response = await fetch(`${API_BASE}/api/categories`);
             if (response.ok) {
@@ -202,16 +202,16 @@ function MainHeader() {
             }
           } catch (thirdError) {
             console.error("All attempts to fetch categories failed:", thirdError);
-            // As a last resort, try to get categories from the blog posts
+            
             try {
               const blogResponse = await fetch(`${API_BASE}/api/v1/blogs/public?limit=100`);
               if (blogResponse.ok) {
                 const blogData = await blogResponse.json();
                 if (blogData.blogs && blogData.blogs.allBlogs) {
-                  // Extract unique categories from blogs
+                  
                   const uniqueCategories = [...new Set(blogData.blogs.allBlogs.map(blog => blog.category))];
                   const categoryObjects = uniqueCategories
-                    .filter(cat => cat) // Remove null/undefined categories
+                    .filter(cat => cat) 
                     .map((cat, index) => ({ name: cat, _id: `cat-${index}` }));
                   setCategories(categoryObjects);
                 } else {
@@ -222,7 +222,7 @@ function MainHeader() {
               }
             } catch (fourthError) {
               console.error("Could not fetch categories from blogs either:", fourthError);
-              setCategories([]); // Final fallback
+              setCategories([]); 
             }
           }
         }
@@ -246,13 +246,13 @@ function MainHeader() {
 
   const { token, isAdmin, logout } = useAuth();
 
-  // Function to handle search
+  
   const handleSearch = async (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       setIsSearching(true);
       try {
-        // Search in blog posts
+        
         const response = await api.get(`/api/v1/blogs/search?q=${encodeURIComponent(searchQuery)}`, false);
         if (response && response.blogs && response.blogs.allBlogs) {
           setSearchResults(response.blogs.allBlogs);
@@ -261,7 +261,7 @@ function MainHeader() {
         }
       } catch (error) {
         console.error('Search error:', error);
-        // Fallback: search in all blogs
+        
         try {
           const allBlogsResponse = await api.get('/api/v1/blogs/public?limit=100', false);
           if (allBlogsResponse && allBlogsResponse.blogs && allBlogsResponse.blogs.allBlogs) {
@@ -286,12 +286,12 @@ function MainHeader() {
     }
   };
   
-  // Function to open search
+  
   const openSearch = () => {
     setIsSearchOpen(true);
   };
   
-  // Function to close search
+  
   const closeSearch = () => {
     setIsSearchOpen(false);
     setSearchQuery('');
@@ -490,7 +490,7 @@ function MainHeader() {
         </div>
       )}
       
-      {/* No results message */}
+      {}
       {isSearchOpen && searchQuery && !isSearching && searchResults.length === 0 && (
         <div className={styles.searchResults}>
           <div className={styles.resultsContainer}>

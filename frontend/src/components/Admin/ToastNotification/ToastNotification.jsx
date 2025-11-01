@@ -5,12 +5,12 @@ const ToastNotification = ({ message, type, onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
   
   useEffect(() => {
-    // Trigger animation after component mounts
+    
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 10);
     
-    // Auto close after 5 seconds
+    
     const closeTimer = setTimeout(() => {
       setIsVisible(false);
       setTimeout(() => {

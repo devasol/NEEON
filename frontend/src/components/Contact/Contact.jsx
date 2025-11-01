@@ -158,7 +158,7 @@ const Contact = () => {
           )}
         </form>
 
-        {/* Quick Contact Info */}
+        {}
         <div className={styles.quickContact}>
           <div className={styles.contactItem}>
             <div className={styles.contactIcon}>📧</div>

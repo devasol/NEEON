@@ -21,7 +21,7 @@ const AdminLayout = ({ children, selectedView, setSelectedView }) => {
     };
 
     window.addEventListener('resize', handleResize);
-    handleResize(); // Set initial state
+    handleResize(); 
 
     return () => {
       window.removeEventListener('resize', handleResize);

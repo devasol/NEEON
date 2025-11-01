@@ -1,5 +1,5 @@
-/* StatsCard.module.css */
-/* Light theme variables */
+
+
 :root, :root[data-theme="light"] {
   --stats-card-bg: #ffffff;
   --stats-card-text: #1e293b;
@@ -11,7 +11,7 @@
   --stats-card-negative: #ef4444;
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
   --stats-card-bg: #1e293b;
   --stats-card-text: #e2e8f0;

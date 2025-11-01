@@ -1,8 +1,8 @@
-/*!
- * Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com
- * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
- * Copyright 2025 Fonticons, Inc.
- */
+
+
+
+
+
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
   typeof define === 'function' && define.amd ? define(factory) :
@@ -91,7 +91,7 @@
   try {
     if (typeof window !== 'undefined') _WINDOW = window;
     if (typeof document !== 'undefined') _DOCUMENT = document;
-  } catch (e) {} // eslint-disable-line no-empty
+  } catch (e) {} 
 
   var _ref = _WINDOW.navigator || {},
     _ref$userAgent = _ref.userAgent,
@@ -182,115 +182,115 @@
   var md5 = createCommonjsModule(function (module) {
     (function ($) {
 
-      /**
-       * Add integers, wrapping at 2^32.
-       * This uses 16-bit operations internally to work around bugs in interpreters.
-       *
-       * @param {number} x First integer
-       * @param {number} y Second integer
-       * @returns {number} Sum
-       */
+      
+
+
+
+
+
+
+
       function safeAdd(x, y) {
         var lsw = (x & 0xffff) + (y & 0xffff);
         var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
         return msw << 16 | lsw & 0xffff;
       }
 
-      /**
-       * Bitwise rotate a 32-bit number to the left.
-       *
-       * @param {number} num 32-bit number
-       * @param {number} cnt Rotation count
-       * @returns {number} Rotated number
-       */
+      
+
+
+
+
+
+
       function bitRotateLeft(num, cnt) {
         return num << cnt | num >>> 32 - cnt;
       }
 
-      /**
-       * Basic operation the algorithm uses.
-       *
-       * @param {number} q q
-       * @param {number} a a
-       * @param {number} b b
-       * @param {number} x x
-       * @param {number} s s
-       * @param {number} t t
-       * @returns {number} Result
-       */
+      
+
+
+
+
+
+
+
+
+
+
       function md5cmn(q, a, b, x, s, t) {
         return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b);
       }
-      /**
-       * Basic operation the algorithm uses.
-       *
-       * @param {number} a a
-       * @param {number} b b
-       * @param {number} c c
-       * @param {number} d d
-       * @param {number} x x
-       * @param {number} s s
-       * @param {number} t t
-       * @returns {number} Result
-       */
+      
+
+
+
+
+
+
+
+
+
+
+
       function md5ff(a, b, c, d, x, s, t) {
         return md5cmn(b & c | ~b & d, a, b, x, s, t);
       }
-      /**
-       * Basic operation the algorithm uses.
-       *
-       * @param {number} a a
-       * @param {number} b b
-       * @param {number} c c
-       * @param {number} d d
-       * @param {number} x x
-       * @param {number} s s
-       * @param {number} t t
-       * @returns {number} Result
-       */
+      
+
+
+
+
+
+
+
+
+
+
+
       function md5gg(a, b, c, d, x, s, t) {
         return md5cmn(b & d | c & ~d, a, b, x, s, t);
       }
-      /**
-       * Basic operation the algorithm uses.
-       *
-       * @param {number} a a
-       * @param {number} b b
-       * @param {number} c c
-       * @param {number} d d
-       * @param {number} x x
-       * @param {number} s s
-       * @param {number} t t
-       * @returns {number} Result
-       */
+      
+
+
+
+
+
+
+
+
+
+
+
       function md5hh(a, b, c, d, x, s, t) {
         return md5cmn(b ^ c ^ d, a, b, x, s, t);
       }
-      /**
-       * Basic operation the algorithm uses.
-       *
-       * @param {number} a a
-       * @param {number} b b
-       * @param {number} c c
-       * @param {number} d d
-       * @param {number} x x
-       * @param {number} s s
-       * @param {number} t t
-       * @returns {number} Result
-       */
+      
+
+
+
+
+
+
+
+
+
+
+
       function md5ii(a, b, c, d, x, s, t) {
         return md5cmn(c ^ (b | ~d), a, b, x, s, t);
       }
 
-      /**
-       * Calculate the MD5 of an array of little-endian words, and a bit length.
-       *
-       * @param {Array} x Array of little-endian words
-       * @param {number} len Bit length
-       * @returns {Array<number>} MD5 Array
-       */
+      
+
+
+
+
+
+
       function binlMD5(x, len) {
-        /* append padding */
+        
         x[len >> 5] |= 0x80 << len % 32;
         x[(len + 64 >>> 9 << 4) + 14] = len;
         var i;
@@ -379,12 +379,12 @@
         return [a, b, c, d];
       }
 
-      /**
-       * Convert an array of little-endian words to a string
-       *
-       * @param {Array<number>} input MD5 Array
-       * @returns {string} MD5 string
-       */
+      
+
+
+
+
+
       function binl2rstr(input) {
         var i;
         var output = '';
@@ -598,7 +598,7 @@
             if (nextCumulativeDuration <= maxDuration) {
               poll(nextDuration, nextCumulativeDuration);
             } else {
-              reject('timeout'); // eslint-disable-line prefer-promise-reject-errors
+              reject('timeout'); 
             }
           }
         }, duration);
@@ -615,9 +615,9 @@
         return false;
       }
 
-      // If the browser has loaded the FA5 CSS, let's not test that <style> element.
-      // Its enough that we'll be testing for traces of the corresponding JS being loaded, and testing
-      // this <style> would only produce a false negative anyway.
+      
+      
+      
       if (WINDOW.FontAwesomeConfig && t.innerText.match(new RegExp("svg:not\\(:root\\)\\.".concat(WINDOW.FontAwesomeConfig.replacementClass)))) {
         return false;
       }
@@ -625,8 +625,8 @@
     });
     function runDiag(scriptOrLinkTag, md5) {
       var diagFrame = DOCUMENT.createElement('iframe');
-      // Using "visibility: hidden; position: absolute" instead of "display: none;" because
-      // Firefox will not return the expected results for getComputedStyle if our iframe has display: none.
+      
+      
       diagFrame.setAttribute('style', 'visibility: hidden; position: absolute; height: 0; width: 0;');
       var testIconId = 'fa-test-icon-' + md5;
       var iTag = DOCUMENT.createElement('i');
@@ -635,13 +635,13 @@
       var diagScript = DOCUMENT.createElement('script');
       diagScript.setAttribute('id', diagScriptId);
 
-      // WARNING: this function will be toString()'d and assigned to innerText of the diag script
-      // element that we'll be putting into a diagnostic iframe.
-      // That means that this code won't compile until after the outer script has run and injected
-      // this code into the iframe. There are some compile time errors that might occur there.
-      // For example, using single line (double-slash) comments like this one inside that function
-      // will probably cause it to choke. Chrome will show an error like this:
-      // Uncaught SyntaxError: Unexpected end of input
+      
+      
+      
+      
+      
+      
+      
       var diagScriptFun = function diagScriptFun(nodeUnderTestId, testIconId, md5, parentOrigin) {
         parent.FontAwesomeDetection.__pollUntil({
           fn: function fn() {
@@ -812,12 +812,12 @@
     var nodesFound = _objectSpread2(_objectSpread2({}, scriptsToTest), cssToTest);
     var testCount = Object.keys(scriptsToTest).length + Object.keys(cssToTest).length;
 
-    // The resultsCollectionMaxWait allows for the time between when the tests running under
-    // child iframes call postMessage with their results, and when the parent window
-    // receives and handles those events with window.onmessage.
-    // Making it configurable allows us to test the scenario where this timeout is exceeded.
-    // Naming it something very different from "timeout" is to help avoid the potential ambiguity between
-    // these two timeout-related settings.
+    
+    
+    
+    
+    
+    
     var masterTimeout = WINDOW.FontAwesomeDetection.timeout + WINDOW.FontAwesomeDetection.resultsCollectionMaxWait;
     console.group('Font Awesome Detector');
     if (testCount === 0) {
@@ -830,7 +830,7 @@
       console.info("\t%c".concat(timeoutAttr, "%c: milliseconds to wait for each test before deciding whether it's a conflict."), 'font-weight: bold;', 'font-size: normal;');
       console.info("\t%c".concat(resultsCollectionMaxWaitAttr, "%c: milliseconds to wait for the browser to accumulate test results before giving up."), 'font-weight: bold;', 'font-size: normal;');
       pollUntil({
-        // Give this overall timer a little extra cushion
+        
         maxDuration: masterTimeout,
         showProgress: true,
         progressIndicator: 'waiting...',
@@ -876,17 +876,17 @@
     }
   }
 
-  // Allow clients to access, and in some cases, override some properties
+  
   var initialConfig = WINDOW.FontAwesomeDetection || {};
 
-  // These can be overridden
+  
   var _default = {
     report: report,
     timeout: +(DOCUMENT.currentScript.getAttribute(timeoutAttr) || '2000'),
     resultsCollectionMaxWait: +(DOCUMENT.currentScript.getAttribute(resultsCollectionMaxWaitAttr) || '5000')
   };
   var _config = _objectSpread2(_objectSpread2(_objectSpread2({}, _default), initialConfig), {}, {
-    // These cannot be overridden
+    
     __pollUntil: pollUntil,
     md5ForNode: md5ForNode,
     detectionDone: false,
@@ -1379,7 +1379,7 @@
     }
   }();
   function familyProxy(obj) {
-    // Defaults to the classic family if family is not available
+    
     return new Proxy(obj, {
       get: function get(target, prop) {
         return prop in target ? target[prop] : target[a];
@@ -1388,17 +1388,17 @@
   }
   var _PREFIX_TO_STYLE = _objectSpread2({}, z);
 
-  // We changed FACSSClassesToStyleId in the icons repo to be canonical and as such, "classic" family does not have any
-  // duotone styles.  But we do still need duotone in _PREFIX_TO_STYLE below, so we are manually adding
-  // {'fa-duotone': 'duotone'}
+  
+  
+  
   _PREFIX_TO_STYLE[a] = _objectSpread2(_objectSpread2(_objectSpread2(_objectSpread2({}, {
     'fa-duotone': 'duotone'
   }), z[a]), Oo['kit']), Oo['kit-duotone']);
   var PREFIX_TO_STYLE = familyProxy(_PREFIX_TO_STYLE);
   var _STYLE_TO_PREFIX = _objectSpread2({}, Ro);
 
-  // We changed FAStyleIdToShortPrefixId in the icons repo to be canonical and as such, "classic" family does not have any
-  // duotone styles.  But we do still need duotone in _STYLE_TO_PREFIX below, so we are manually adding {duotone: 'fad'}
+  
+  
   _STYLE_TO_PREFIX[a] = _objectSpread2(_objectSpread2(_objectSpread2(_objectSpread2({}, {
     duotone: 'fad'
   }), _STYLE_TO_PREFIX[a]), dt['kit']), dt['kit-duotone']);

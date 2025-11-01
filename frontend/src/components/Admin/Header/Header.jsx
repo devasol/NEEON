@@ -3,7 +3,7 @@ import useAuth from "../../../hooks/useAuth";
 import ThemeToggle from "../../Theme/ThemeToggle.jsx";
 import styles from "./Header.module.css";
 
-// Icons (you can replace with actual icon components)
+
 const SearchIcon = () => <i className="fas fa-search"></i>;
 const BellIcon = () => <i className="fas fa-bell"></i>;
 const PlusIcon = () => <i className="fas fa-plus"></i>;
@@ -44,7 +44,7 @@ const Header = ({ toggleSidebar }) => {
   const notificationsRef = useRef(null);
   const userMenuRef = useRef(null);
 
-  // Close dropdowns when clicking outside
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -73,11 +73,11 @@ const Header = ({ toggleSidebar }) => {
   };
 
   const handleNewPost = () => {
-    // Dispatch a global event so PostsView (or others) can open the new post modal
+    
     try {
       window.dispatchEvent(new CustomEvent("open-new-post"));
     } catch {
-      // fallback for older browsers
+      
       alert("Creating new post...");
     }
   };
@@ -112,7 +112,7 @@ const Header = ({ toggleSidebar }) => {
         >
           ↩ Website
         </button>
-        {/* Search Bar with Suggestions */}
+        {}
         <div className={styles.searchContainer}>
           <div
             className={`${styles.searchWrapper} ${

@@ -12,7 +12,7 @@
   transform: translateY(0);
 }
 
-/* Newsletter Section */
+
 .newsletter {
   display: flex;
   justify-content: space-between;
@@ -462,7 +462,7 @@
   width: 100%;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1024px) {
   .newsletter {
     padding: 2.5rem 1.5rem;
@@ -571,7 +571,7 @@
   }
 }
 
-/* Focus states for accessibility */
+
 .emailInput:focus,
 .subscribeBtn:focus,
 .socialLink:focus,
@@ -582,7 +582,7 @@
   border-radius: 4px;
 }
 
-/* Reduced motion for accessibility */
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

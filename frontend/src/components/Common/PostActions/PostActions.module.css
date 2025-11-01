@@ -21,7 +21,7 @@
 	border-radius: 9999px;
 	border: 0;
 	background: rgba(255, 255, 255, 0.1);
-	color: #111827; /* fallback */
+	color: #111827; 
 	cursor: pointer;
 	backdrop-filter: blur(6px);
 	transition: transform 0.16s ease, background 0.16s ease;
@@ -63,7 +63,7 @@
 	to { opacity: 1 }
 }
 
-/* Icons adopt button text color for proper contrast */
+
 .actionBtn i {
 	color: currentColor;
 	opacity: 1;
@@ -190,7 +190,7 @@
 	color: #9ca3af;
 }
 
-/* Comments Modal Styles */
+
 .commentsModalOverlay {
 	position: fixed;
 	top: 0;

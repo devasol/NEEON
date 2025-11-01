@@ -1,8 +1,8 @@
-/*!
- * Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com
- * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
- * Copyright 2025 Fonticons, Inc.
- */
+
+
+
+
+
 :root, :host {
   --fa-font-solid: normal 900 1em/1 "Font Awesome 7 Free";
   --fa-font-regular: normal 400 1em/1 "Font Awesome 7 Free";
@@ -73,7 +73,7 @@
 .svg-inline--fa.fa-li {
   width: var(--fa-li-width, 2em);
   inset-inline-start: calc(-1 * var(--fa-li-width, 2em));
-  inset-block-start: 0.25em; /* syncing vertical alignment with Web Font rendering */
+  inset-block-start: 0.25em; 
 }
 
 .fa-layers-counter, .fa-layers-text {
@@ -194,39 +194,39 @@
 }
 
 .fa-2xs {
-  font-size: calc(10 / 16 * 1em); /* converts a 10px size into an em-based value that's relative to the scale's 16px base */
-  line-height: calc(1 / 10 * 1em); /* sets the line-height of the icon back to that of it's parent */
-  vertical-align: calc((6 / 10 - 0.375) * 1em); /* vertically centers the icon taking into account the surrounding text's descender */
+  font-size: calc(10 / 16 * 1em); 
+  line-height: calc(1 / 10 * 1em); 
+  vertical-align: calc((6 / 10 - 0.375) * 1em); 
 }
 
 .fa-xs {
-  font-size: calc(12 / 16 * 1em); /* converts a 12px size into an em-based value that's relative to the scale's 16px base */
-  line-height: calc(1 / 12 * 1em); /* sets the line-height of the icon back to that of it's parent */
-  vertical-align: calc((6 / 12 - 0.375) * 1em); /* vertically centers the icon taking into account the surrounding text's descender */
+  font-size: calc(12 / 16 * 1em); 
+  line-height: calc(1 / 12 * 1em); 
+  vertical-align: calc((6 / 12 - 0.375) * 1em); 
 }
 
 .fa-sm {
-  font-size: calc(14 / 16 * 1em); /* converts a 14px size into an em-based value that's relative to the scale's 16px base */
-  line-height: calc(1 / 14 * 1em); /* sets the line-height of the icon back to that of it's parent */
-  vertical-align: calc((6 / 14 - 0.375) * 1em); /* vertically centers the icon taking into account the surrounding text's descender */
+  font-size: calc(14 / 16 * 1em); 
+  line-height: calc(1 / 14 * 1em); 
+  vertical-align: calc((6 / 14 - 0.375) * 1em); 
 }
 
 .fa-lg {
-  font-size: calc(20 / 16 * 1em); /* converts a 20px size into an em-based value that's relative to the scale's 16px base */
-  line-height: calc(1 / 20 * 1em); /* sets the line-height of the icon back to that of it's parent */
-  vertical-align: calc((6 / 20 - 0.375) * 1em); /* vertically centers the icon taking into account the surrounding text's descender */
+  font-size: calc(20 / 16 * 1em); 
+  line-height: calc(1 / 20 * 1em); 
+  vertical-align: calc((6 / 20 - 0.375) * 1em); 
 }
 
 .fa-xl {
-  font-size: calc(24 / 16 * 1em); /* converts a 24px size into an em-based value that's relative to the scale's 16px base */
-  line-height: calc(1 / 24 * 1em); /* sets the line-height of the icon back to that of it's parent */
-  vertical-align: calc((6 / 24 - 0.375) * 1em); /* vertically centers the icon taking into account the surrounding text's descender */
+  font-size: calc(24 / 16 * 1em); 
+  line-height: calc(1 / 24 * 1em); 
+  vertical-align: calc((6 / 24 - 0.375) * 1em); 
 }
 
 .fa-2xl {
-  font-size: calc(32 / 16 * 1em); /* converts a 32px size into an em-based value that's relative to the scale's 16px base */
-  line-height: calc(1 / 32 * 1em); /* sets the line-height of the icon back to that of it's parent */
-  vertical-align: calc((6 / 32 - 0.375) * 1em); /* vertically centers the icon taking into account the surrounding text's descender */
+  font-size: calc(32 / 16 * 1em); 
+  line-height: calc(1 / 32 * 1em); 
+  vertical-align: calc((6 / 32 - 0.375) * 1em); 
 }
 
 .fa-width-auto {
@@ -255,16 +255,16 @@
   line-height: inherit;
 }
 
-/* Heads Up: Bordered Icons will not be supported in the future!
-  - This feature will be deprecated in the next major release of Font Awesome (v8)!
-  - You may continue to use it in this version *v7), but it will not be supported in Font Awesome v8.
-*/
-/* Notes:
-* --@{v.$css-prefix}-border-width = 1/16 by default (to render as ~1px based on a 16px default font-size)
-* --@{v.$css-prefix}-border-padding =
-  ** 3/16 for vertical padding (to give ~2px of vertical whitespace around an icon considering it's vertical alignment)
-  ** 4/16 for horizontal padding (to give ~4px of horizontal whitespace around an icon)
-*/
+
+
+
+
+
+
+
+
+
+
 .fa-border {
   border-color: var(--fa-border-color, #eee);
   border-radius: var(--fa-border-radius, 0.1em);

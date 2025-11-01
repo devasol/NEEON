@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 
-/* Light theme variables (default) */
+
 :root, :root[data-theme="light"] {
   --bg-color: #ffffff;
   --text-color: #333333;
@@ -15,7 +15,7 @@
   --success-color: #28a745;
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"],
 :root[data-theme="dark"] .dark,
 html.dark,
@@ -46,7 +46,7 @@ body.dark {
 
 html,
 body {
-  overflow-x: hidden; /* prevent horizontal scroll */
+  overflow-x: hidden; 
   font-family: "Rubik", sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
@@ -57,9 +57,9 @@ body {
   overflow-x: hidden;
 }
 
-/* Global image loading styles ------------------------------------------------- */
+
 .img--loading {
-  /* keep layout size but hide crisp details while loading */
+  
   filter: blur(6px) saturate(0.9);
   transition: filter 300ms ease, opacity 300ms ease;
   opacity: 0.95;
@@ -67,9 +67,9 @@ body {
 }
 
 .img--loading::after {
-  /* shimmer using a pseudo-element on the img wrapper is not possible on img itself
-     so we use a background linear-gradient on a parent in many cases; however
-     some browsers allow it on replaced elements — keep a lightweight fallback */
+  
+
+
   content: "";
   pointer-events: none;
 }
@@ -108,7 +108,7 @@ img:not(.img--loading) {
   }
 }
 
-/* Error state */
+
 .img--error {
   opacity: 0.8;
   filter: grayscale(1) contrast(0.9) brightness(0.9);

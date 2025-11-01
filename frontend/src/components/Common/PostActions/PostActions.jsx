@@ -17,7 +17,7 @@ function PostActions({
 	const [likeCount, setLikeCount] = useState(initialLikes);
 	const [commentCount, setCommentCount] = useState(initialComments);
 	const [toastMessage, setToastMessage] = useState("");
-	const [toastType, setToastType] = useState("info"); // 'info', 'success', 'error'
+	const [toastType, setToastType] = useState("info"); 
 	const [showCommentBox, setShowCommentBox] = useState(false);
 	const [commentText, setCommentText] = useState("");
 	const [comments, setComments] = useState([]);
@@ -53,7 +53,7 @@ function PostActions({
         setLikeCount(res.data.likes);
       }
     } catch {
-      // revert on failure
+      
       setLiked(!nextLiked);
       setLikeCount((c) => (nextLiked ? Math.max(0, c - 1) : c + 1));
       setToastMessage("Couldn't update like");
@@ -71,7 +71,7 @@ function PostActions({
         try {
           await navigator.clipboard.writeText(shareData.url);
         } catch {
-          // some browsers require HTTPS/user gesture; show the URL fallback
+          
           setToastMessage("Copy this link: " + shareData.url);
           setToastType("info");
           return;
@@ -92,7 +92,7 @@ function PostActions({
 			return;
 		}
 		
-		// Open the modern comment modal
+		
 		setCommentModalOpen(true);
 		setShowCommentBox(false);
 	};
@@ -122,7 +122,7 @@ function PostActions({
 			setCommentCount((c) => c + 1);
 			setToastMessage("Comment added");
 			setToastType("success");
-			fetchComments(); // Refresh comments after adding a new one
+			fetchComments(); 
 		} catch {
 			setToastMessage("Couldn't comment");
 			setToastType("error");
@@ -139,7 +139,7 @@ function PostActions({
 					if (typeof blog.likes === "number") setLikeCount(blog.likes);
 					if (typeof blog.comments === "number") setCommentCount(blog.comments);
 					
-					// Check if user has already liked this post
+					
 					if (blog.likedBy && token) {
 						try {
 							const userRes = await api.get('/api/v1/users/me', !!token);
@@ -153,7 +153,7 @@ function PostActions({
 					}
 				}
 			} catch {
-				// ignore load failures
+				
 			}
 		})();
 		return () => { ignore = true };
@@ -188,7 +188,7 @@ function PostActions({
 				<FloatingToast message={toastMessage} type={toastType} onClose={() => setToastMessage("")} />
 			</div>
 			
-			{/* Modern Comment Modal */}
+			{}
 			<CommentModal 
 				postId={postId} 
 				postTitle={postTitle} 

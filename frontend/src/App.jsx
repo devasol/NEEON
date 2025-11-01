@@ -9,7 +9,7 @@ import AdminLayout from "./pages/Admin/AdminLayout.jsx";
 import { ToastProvider } from "./context/ToastContext.jsx";
 import ScrollToTop from "./components/Common/ScrollToTop/ScrollToTop.jsx";
 
-// Component to handle page titles
+
 function PageTitle() {
   const location = useLocation();
   
@@ -34,7 +34,7 @@ function PageTitle() {
         title = "NEEON | Admin Dashboard";
         break;
       default:
-        // For any other routes, keep "NEEON" as the base title
+        
         title = "NEEON";
         break;
     }

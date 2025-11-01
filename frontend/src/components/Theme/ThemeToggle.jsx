@@ -8,7 +8,7 @@ const ThemeToggle = () => {
   const [isAnimating, setIsAnimating] = useState(false);
 
   const getThemeIcon = () => {
-    // Simplified to just show sun/moon based on current theme
+    
     if (theme === THEMES.DARK) {
       return <FaMoon className="theme-icon" />;
     }
@@ -20,17 +20,17 @@ const ThemeToggle = () => {
   };
 
   const handleClick = () => {
-    // Add animation class
+    
     setIsAnimating(true);
-    // Remove the animation class after the animation completes
+    
     setTimeout(() => setIsAnimating(false), 500);
     
-    // Toggle between light and dark (simplified)
+    
     const newTheme = theme === THEMES.DARK ? THEMES.LIGHT : THEMES.DARK;
     toggleTheme(newTheme);
   };
 
-  // Add class based on current theme for styling
+  
   const themeClass = theme === THEMES.DARK ? 'dark-theme' : 'light-theme';
 
   return (

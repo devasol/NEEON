@@ -85,9 +85,9 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Main Footer Section */}
+      {}
       <div className={styles.footerContent}>
-        {/* Left Side Logo & Social */}
+        {}
         <div className={styles.brand}>
           <h3 className={styles.logo}>NEEON</h3>
           <p>
@@ -118,7 +118,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Links */}
+        {}
         <div className={styles.links}>
           <div className={styles.linkColumn}>
             <h4>Company</h4>
@@ -186,7 +186,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Row */}
+      {}
       <div className={styles.bottom}>
         <p>
           © {new Date().getFullYear()} NEEON Blog. All rights reserved. Made with <FaHeart className={styles.heartIcon} /> by the NEEON Team

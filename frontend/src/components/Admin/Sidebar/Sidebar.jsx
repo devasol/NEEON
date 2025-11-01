@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Sidebar.module.css";
 
-// Icons for each section (you can replace with actual icon components)
+
 const DashboardIcon = () => <i className="fas fa-chart-pie"></i>;
 const PostsIcon = () => <i className="fas fa-file-alt"></i>;
 const CommentsIcon = () => <i className="fas fa-comments"></i>;
@@ -71,7 +71,7 @@ const Sidebar = ({ selectedView, setSelectedView, isSidebarOpen }) => {
     setSelectedView(item.id);
   };
 
-  // quick actions removed — sidebar now directly changes views on click
+  
 
   return (
     <>
@@ -95,7 +95,7 @@ const Sidebar = ({ selectedView, setSelectedView, isSidebarOpen }) => {
         <div className={styles.footer}>Logged in as Admin</div>
       </aside>
 
-      {/* Removed preview/quick-action modal per user request */}
+      {}
     </>
   );
 };

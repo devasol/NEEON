@@ -1,46 +1,96 @@
-/* RecentPosts.module.css */
-/* Light theme variables */
+
+
 :root, :root[data-theme="light"] {
   --recent-posts-bg: #ffffff;
   --recent-posts-text: #1e293b;
-  --recent-posts-text-secondary: #6c757d;
-  --recent-posts-border: rgba(0, 0, 0, 0.05);
-  --recent-posts-btn-border: rgba(0, 0, 0, 0.06);
-  --recent-posts-btn-hover: #f8fafc;
+  --recent-posts-text-secondary: #64748b;
+  --recent-posts-text-light: #94a3b8;
+  --recent-posts-border: #e2e8f0;
+  --recent-posts-btn-border: #e2e8f0;
+  --recent-posts-btn-hover: #f1f5f9;
+  --recent-posts-status-published: #10b981;
+  --recent-posts-status-draft: #f59e0b;
+  --recent-posts-status-pending: #f97316;
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
-  --recent-posts-bg: #2d3748;
+  --recent-posts-bg: #1e293b;
   --recent-posts-text: #e2e8f0;
   --recent-posts-text-secondary: #94a3b8;
-  --recent-posts-border: rgba(255, 255, 255, 0.1);
-  --recent-posts-btn-border: rgba(255, 255, 255, 0.1);
+  --recent-posts-text-light: #64748b;
+  --recent-posts-border: #334155;
+  --recent-posts-btn-border: #475569;
   --recent-posts-btn-hover: #334155;
+  --recent-posts-status-published: #34d399;
+  --recent-posts-status-draft: #fbbf24;
+  --recent-posts-status-pending: #fdba74;
 }
 
 .recentPosts {
   background: var(--recent-posts-bg);
   border-radius: 12px;
-  padding: 1rem;
+  padding: 1.5rem;
   color: var(--recent-posts-text);
+  border: 1px solid var(--recent-posts-border);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
+.recentPosts h3 {
+  margin: 0 0 1.25rem 0;
+  color: var(--recent-posts-text);
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .postItem {
   display: flex;
   justify-content: space-between;
-  padding: 0.65rem 0.25rem;
-  border-bottom: 1px dashed var(--recent-posts-border);
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--recent-posts-border);
+}
+
+.postItem:last-child {
+  border-bottom: none;
 }
 
 .postTitle {
-  font-weight: 700;
+  font-weight: 600;
   color: var(--recent-posts-text);
+  margin: 0 0 0.25rem 0;
+  line-height: 1.4;
 }
 
 .postMeta {
+  display: flex;
+  gap: 0.75rem;
   color: var(--recent-posts-text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.statusPublished {
+  background: color-mix(in srgb, var(--recent-posts-status-published) 15%, transparent);
+  color: var(--recent-posts-status-published);
+}
+
+.statusDraft {
+  background: color-mix(in srgb, var(--recent-posts-status-draft) 15%, transparent);
+  color: var(--recent-posts-status-draft);
+}
+
+.statusPending {
+  background: color-mix(in srgb, var(--recent-posts-status-pending) 15%, transparent);
+  color: var(--recent-posts-status-pending);
 }
 
 .postActions {
@@ -51,12 +101,35 @@
 .smallBtn {
   background: transparent;
   border: 1px solid var(--recent-posts-btn-border);
-  padding: 0.35rem 0.6rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 8px;
   cursor: pointer;
   color: var(--recent-posts-text);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .smallBtn:hover {
   background: var(--recent-posts-btn-hover);
+  border-color: #4f46e5;
+  color: #4f46e5;
+}
+
+
+@media (max-width: 768px) {
+  .recentPosts {
+    padding: 1rem;
+  }
+  
+  .postItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .postActions {
+    width: 100%;
+    justify-content: flex-end;
+  }
 }

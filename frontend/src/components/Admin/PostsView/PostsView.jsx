@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import api from "../../../utils/api";
 import styles from "./PostsView.module.css";
 
-// Icons
+
 const EditIcon = () => <span>✏️</span>;
 const DeleteIcon = () => <span>🗑️</span>;
 const ViewIcon = () => <span>👁️</span>;
@@ -22,7 +22,7 @@ const PostsView = () => {
   const [activeTab, setActiveTab] = useState("content");
   const fileInputRef = useRef(null);
 
-  // new-post modal/form state
+  
   const [newOpen, setNewOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState("");
@@ -43,12 +43,12 @@ const PostsView = () => {
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [sortBy, setSortBy] = useState("newest");
 
-  // Get unique categories
+  
   const categories = ["All", ...new Set(posts.map((post) => post.category))];
   const statuses = ["All", "Published", "Draft", "Scheduled"];
 
-  // listen for global 'open-new-post' events (dispatched from Header)
-  // Store the full blog data to access when editing
+  
+  
   const [fullBlogData, setFullBlogData] = useState([]);
 
   useEffect(() => {
@@ -57,15 +57,15 @@ const PostsView = () => {
     return () => window.removeEventListener("open-new-post", handleOpen);
   }, []);
 
-  // fetch blogs from backend on mount
+  
   useEffect(() => {
     let mounted = true;
-    api.get("/api/v1/blogs", true) // Include auth for admin endpoints
+    api.get("/api/v1/blogs", true) 
       .then((res) => {
         if (!mounted) return;
         const blogs = res.blogs?.allBlogs || [];
-        setFullBlogData(blogs); // Store full blog data
-        // Define static images from the public postsImg folder
+        setFullBlogData(blogs); 
+        
         const staticImages = [
           "/postsImg/photo-1421789665209-c9b2a435e3dc.avif",
           "/postsImg/photo-1445307806294-bff7f67ff225.avif",
@@ -83,7 +83,7 @@ const PostsView = () => {
           "/postsImg/photo-1649972904349-6e44c42644a7.avif"
         ];
         
-        // map backend blog shape to UI post shape with static images
+        
         const mapped = blogs.map((b, index) => ({
           id: b._id,
           title: b.newsTitle,
@@ -95,14 +95,14 @@ const PostsView = () => {
           date: b.datePosted || b.createdAt || new Date().toISOString(),
           views: b.views || 0,
           comments: b.comments || 0,
-          image: b.imageUrl || staticImages[index % staticImages.length], // Use static image if no imageUrl
+          image: b.imageUrl || staticImages[index % staticImages.length], 
           staticImage: staticImages[index % staticImages.length]
         }));
         setPosts(mapped);
       })
       .catch((err) => {
         console.error("Could not fetch blogs:", err.message || err);
-        // Fallback dummy data for demonstration with static image
+        
         setPosts([
           {
             id: 1,
@@ -127,7 +127,7 @@ const PostsView = () => {
     };
   }, []);
 
-  // Filter and sort posts
+  
   const filteredPosts = posts
     .filter(
       (post) =>
@@ -160,23 +160,23 @@ const PostsView = () => {
   };
 
   const handleEditPost = (post) => {
-    // Find the original blog data to populate imageUrl
+    
     const originalBlog = fullBlogData.find(b => b._id === post.id);
     
-    // open the create/edit modal in edit mode and populate fields
+    
     setIsEditing(true);
     setNewTitle(post.title || "");
     setNewDescription(post.content || "");
     setNewCategory(post.category || "Uncategorized");
     setNewStatus(post.status || "Draft");
-    // image handling: we keep preview if available
+    
     setNewImagePreview(post.image || null);
     setNewImageUrl(originalBlog?.imageUrl || ""); // Set imageUrl field if it exists in the original blog data
     setNewImageFile(null); // clear file input until user selects new file
     setFormErrors({});
     setActiveTab("content");
     setNewOpen(true);
-    // store the editing post id in selectedPost for PATCH
+    
     setSelectedPost(post);
   };
 
@@ -217,7 +217,7 @@ const PostsView = () => {
     setActiveTab("content");
   };
 
-  // Enhanced image handling with drag & drop
+  
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
@@ -297,7 +297,7 @@ const PostsView = () => {
 
       let res;
       if (isEditing && selectedPost && selectedPost.id) {
-        // PATCH existing post
+        
         res = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:9000'}/api/v1/blogs/${selectedPost.id}`, {
           method: 'PATCH',
           body: form,
@@ -312,7 +312,7 @@ const PostsView = () => {
       if (res.status >= 200 && res.status < 300) {
         const data = await res.json();
         const b = data.blog || data.blog?.updatedBlog || data.blog?.blog;
-        // If editing, update the existing post in state
+        
         if (isEditing && selectedPost && selectedPost.id) {
           const updated = {
             id: selectedPost.id,
@@ -333,7 +333,7 @@ const PostsView = () => {
               newImageUrl ||
               (b && (b.imageUrl || b.image)) ||
               selectedPost.image,
-            staticImage: selectedPost.staticImage, // Preserve the static image
+            staticImage: selectedPost.staticImage, 
           };
           setPosts((prev) =>
             prev.map((p) => (p.id === selectedPost.id ? updated : p))
@@ -355,14 +355,14 @@ const PostsView = () => {
             views: 0,
             comments: 0,
             image: newImagePreview || newImageUrl || b.imageUrl || null,
-            staticImage: "/postsImg/photo-1421789665209-c9b2a435e3dc.avif", // Add static image to new post
+            staticImage: "/postsImg/photo-1421789665209-c9b2a435e3dc.avif", 
           };
           setPosts((prev) => [newPost, ...prev]);
           resetForm();
           setNewOpen(false);
         }
 
-        // Success message
+        
         const successMessage = isEditing ? "Post updated successfully! 🎉" : "Post created successfully! 🎉";
         const successEvent = new CustomEvent("showToast", {
           detail: { message: successMessage, type: "success" },
@@ -443,7 +443,7 @@ const PostsView = () => {
     ? newDescription.trim().split(/\s+/).length
     : 0;
 
-  // Use static image from postsImg folder
+  
   const getPostImage = (post) => {
     return post.staticImage || post.image || "/postsImg/photo-1421789665209-c9b2a435e3dc.avif";
   };
@@ -461,7 +461,7 @@ const PostsView = () => {
         </button>
       </div>
 
-      {/* Controls */}
+      {}
       <div className={styles.controls}>
         <div className={styles.searchBox}>
           <SearchIcon />
@@ -512,7 +512,7 @@ const PostsView = () => {
         </div>
       </div>
 
-      {/* Stats */}
+      {}
       <div className={styles.stats}>
         <div className={styles.statCard}>
           <span className={styles.statNumber}>{posts.length}</span>
@@ -538,7 +538,7 @@ const PostsView = () => {
         </div>
       </div>
 
-      {/* Posts Table */}
+      {}
       <div className={styles.tableCard}>
         <div className={styles.tableContainer}>
           <table className={styles.postsTable}>
@@ -648,7 +648,7 @@ const PostsView = () => {
         </div>
       </div>
 
-      {/* Post Detail Modal */}
+      {}
       {isModalOpen && selectedPost && (
         <div className={styles.modalOverlay} onClick={closeModal}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -736,7 +736,7 @@ const PostsView = () => {
         </div>
       )}
 
-      {/* Enhanced New Post Modal */}
+      {}
       {newOpen && (
         <div className={styles.modalOverlay} onClick={closeNewPostModal}>
           <div

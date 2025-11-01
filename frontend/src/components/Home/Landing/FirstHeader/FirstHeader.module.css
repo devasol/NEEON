@@ -136,36 +136,36 @@
 }
 
 .linksContainer span:nth-child(1) i:hover {
-  /* Calendar */
+  
   color: #ff6b6b;
   transform: rotate(10deg) scale(1.3);
 }
 
 .linksContainer span:nth-child(5) i:hover {
-  /* Facebook */
+  
   color: #3b5998;
   transform: translateY(-2px) scale(1.3);
 }
 
 .linksContainer span:nth-child(6) i:hover {
-  /* Twitter */
+  
   color: #1da1f2;
   transform: translateY(-2px) scale(1.3);
 }
 
 .linksContainer span:nth-child(7) i:hover {
-  /* Instagram */
+  
   color: #e1306c;
   transform: translateY(-2px) scale(1.3);
 }
 
 .linksContainer span:nth-child(8) i:hover {
-  /* YouTube */
+  
   color: #ff0000;
   transform: translateY(-2px) scale(1.3);
 }
 
-/* Responsive Design */
+
 @media (max-width: 1024px) {
   .container {
     height: auto;
@@ -237,7 +237,7 @@
     padding-right: 0;
   }
   
-  /* Hide social icons when screen is very small */
+  
   .linksContainer span:nth-child(5),
   .linksContainer span:nth-child(6),
   .linksContainer span:nth-child(7),
@@ -246,7 +246,7 @@
   }
 }
 
-/* Also hide social icons on medium screens if needed */
+
 @media (max-width: 768px) {
   .linksContainer span:nth-child(5),
   .linksContainer span:nth-child(6),
@@ -256,7 +256,7 @@
   }
 }
 
-/* Animation for date update */
+
 @keyframes dateUpdate {
   0% {
     opacity: 0;
@@ -272,7 +272,7 @@
   animation: dateUpdate 0.5s ease;
 }
 
-/* Hover effects for separator */
+
 .linksContainer span:nth-child(3) {
   transition: all 0.3s ease;
 }
@@ -282,12 +282,12 @@
   color: #ccc;
 }
 
-/* Smooth transitions for all interactive elements */
+
 * {
   transition: color 0.3s ease, background-color 0.3s ease;
 }
 
-/* Focus states for accessibility */
+
 .linksContainer span:focus-visible,
 .logoAndTitle:focus-visible {
   outline: 2px solid var(--primary-white);

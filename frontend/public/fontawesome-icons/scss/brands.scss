@@ -1,8 +1,8 @@
-/*!
- * Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com
- * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
- * Copyright 2025 Fonticons, Inc.
- */
+
+
+
+
+
 @use "sass:string";
 @use 'variables' as v;
 @use 'mixins' as m;
@@ -33,8 +33,8 @@
   }
 }
 
-// convenience mixin for declaring pseudo-elements by CSS variable,
-// including all style-specific font properties and ::before elements.
+
+
 @mixin icon($var) {
   @include m.fa-icon(Font Awesome 7 Brands);
   @extend .#{v.$css-prefix}-brands;

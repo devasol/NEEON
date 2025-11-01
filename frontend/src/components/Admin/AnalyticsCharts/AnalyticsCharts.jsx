@@ -20,7 +20,7 @@ const AnalyticsCharts = () => {
       try {
         setLoading(true);
         
-        // Fetch all analytics data in parallel
+        
         const [viewsResponse, categoryResponse, userResponse] = await Promise.allSettled([
           api.get('/api/v1/analytics/top-posts', true),
           api.get('/api/v1/analytics/posts-by-category', true),
@@ -68,7 +68,7 @@ const AnalyticsCharts = () => {
     fetchAnalyticsData();
   }, []);
 
-  // Define colors for the pie chart
+  
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82ca9d'];
 
   if (loading) {
@@ -84,7 +84,7 @@ const AnalyticsCharts = () => {
       <h3>Analytics Overview</h3>
       
       <div className={styles.chartGrid}>
-        {/* Top Posts by Views */}
+        {}
         <div className={styles.chartContainer}>
           <h4>Top Posts by Views</h4>
           <ResponsiveContainer width="100%" height={300}>
@@ -100,7 +100,7 @@ const AnalyticsCharts = () => {
           </ResponsiveContainer>
         </div>
         
-        {/* Posts by Category */}
+        {}
         <div className={styles.chartContainer}>
           <h4>Posts by Category</h4>
           <ResponsiveContainer width="100%" height={300}>
@@ -125,7 +125,7 @@ const AnalyticsCharts = () => {
           </ResponsiveContainer>
         </div>
         
-        {/* User Registration Trends */}
+        {}
         <div className={styles.chartContainer}>
           <h4>User Registration Trends (Last 30 Days)</h4>
           <ResponsiveContainer width="100%" height={300}>

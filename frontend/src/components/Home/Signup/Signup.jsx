@@ -5,7 +5,7 @@ import api, { API_BASE } from "../../../utils/api";
 import useAuth from "../../../hooks/useAuth";
 import Toast from "../../Ui/Toast";
 
-// Inline Google icon reused for parity with Login
+
 const GoogleIcon = () => (
   <svg className={styles.googleIcon} viewBox="0 0 24 24">
     <path
@@ -68,7 +68,7 @@ const Signup = ({ noContainer = false, onClose, onLoginClick }) => {
     e.preventDefault();
     if (!validate()) return;
     setIsLoading(true);
-    setToast({ message: "", type: "success" }); // Clear previous messages
+    setToast({ message: "", type: "success" }); 
     try {
       const res = await api.post("/api/v1/users/signup", {
         fullName: formData.name,
@@ -76,7 +76,7 @@ const Signup = ({ noContainer = false, onClose, onLoginClick }) => {
         username: formData.email.split("@")[0],
         password: formData.password,
         passwordConfirm: formData.confirmPassword,
-      }, false); // Don't include auth for signup
+      }, false); 
 
       if (res && res.token) {
         auth.login(res.token, { isAdmin: false });
@@ -123,7 +123,7 @@ const Signup = ({ noContainer = false, onClose, onLoginClick }) => {
 
   const handleGoogleSignup = () => {
     setIsLoading(true);
-    // Redirect to backend Google OAuth endpoint
+    
     window.location.href = `${API_BASE}/auth/google`;
   };
 

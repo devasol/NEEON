@@ -8,10 +8,10 @@ const ProductCard = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    // Animation trigger on component mount
+    
     setIsVisible(true);
 
-    // Cleanup animation on component unmount
+    
     return () => setIsVisible(false);
   }, []);
 
@@ -95,7 +95,7 @@ const ProductCard = () => {
         </div>
       </div>
 
-      {/* Animated background elements */}
+      {}
       <div className={styles.backgroundOrbs}>
         <div className={styles.orb1}></div>
         <div className={styles.orb2}></div>

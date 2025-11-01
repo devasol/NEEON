@@ -1,4 +1,4 @@
-/* Light theme variables */
+
 :root, :root[data-theme="light"] {
   --admin-bg: #ffffff;
   --admin-text: #1e293b;
@@ -8,7 +8,7 @@
   --admin-hover-bg: #f8fafc;
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
   --admin-bg: #0f172a;
   --admin-text: #e2e8f0;
@@ -20,10 +20,10 @@
 
 .adminLayout {
   display: flex;
-  min-height: 100vh; /* Ensure layout takes full viewport height */
+  min-height: 100vh; 
 }
 
-/* Apply box-sizing to all elements for consistent box model */
+
 * {
   box-sizing: border-box;
 }
@@ -31,20 +31,20 @@
 .mainContent {
   flex-grow: 1;
   transition: margin-left 0.3s ease;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-x: hidden; 
   background: var(--admin-bg);
   color: var(--admin-text);
 }
 
 .mainContent.shifted {
-  margin-left: 240px; /* Same as sidebar width */
+  margin-left: 240px; 
 }
 
 .content {
   padding: 2rem;
-  width: 100%; /* Ensure content takes full width */
-  max-width: 100%; /* Prevent content overflow */
-  margin: 0 auto; /* Center content */
+  width: 100%; 
+  max-width: 100%; 
+  margin: 0 auto; 
   background: var(--admin-bg);
   color: var(--admin-text);
 }

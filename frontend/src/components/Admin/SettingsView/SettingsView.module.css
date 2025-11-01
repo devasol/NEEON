@@ -1,5 +1,5 @@
-/* SettingsView.module.css */
-/* Light theme variables */
+
+
 :root, :root[data-theme="light"] {
   --settings-bg: #ffffff;
   --settings-text: #333;
@@ -24,7 +24,7 @@
   --settings-status-error-text: #721c24;
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
   --settings-bg: #1e293b;
   --settings-text: #e2e8f0;

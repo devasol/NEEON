@@ -1,6 +1,6 @@
-/* LandingMain.module.css */
 
-/* Light theme variables */
+
+
 :root, :root[data-theme="light"] {
   --main-bg: #ffffff;
   --item-bg: #ffffff;
@@ -18,7 +18,7 @@
   --accent-secondary: #4ecdc4;
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
   --main-bg: #1a1a1a;
   --item-bg: #2d2d2d;
@@ -307,7 +307,7 @@
   font-style: italic;
 }
 
-/* Main Modal Styles */
+
 .modalOverlay {
   font-family: "Rubik", sans-serif;
   position: fixed;
@@ -461,7 +461,7 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Comments Modal Styles */
+
 .commentsModalOverlay {
   font-family: "Rubik", sans-serif;
   position: fixed;
@@ -657,7 +657,7 @@
   transform: none;
 }
 
-/* Scrollbar styling for comments list */
+
 .commentsList::-webkit-scrollbar {
   width: 6px;
 }
@@ -676,7 +676,7 @@
   background: linear-gradient(135deg, #3db8a8, #e55c5c);
 }
 
-/* Responsive Design */
+
 @media (max-width: 1024px) {
   .container {
     gap: 1.5rem;
@@ -711,7 +711,7 @@
     padding: 0 1rem;
   }
 
-  /* Modal responsive adjustments */
+  
   .modal {
     max-height: 95vh;
   }
@@ -733,7 +733,7 @@
     gap: 0.5rem;
   }
 
-  /* Comments modal responsive adjustments */
+  
   .commentsModalOverlay {
     padding: 1rem;
   }
@@ -789,7 +789,7 @@
     align-items: flex-start;
   }
 
-  /* Modal responsive adjustments */
+  
   .modalOverlay {
     padding: 0.5rem;
   }
@@ -802,7 +802,7 @@
     font-size: 1.2rem;
   }
 
-  /* Comments modal responsive adjustments */
+  
   .commentsModalOverlay {
     padding: 0.5rem;
   }
@@ -831,7 +831,7 @@
   }
 }
 
-/* Reduced motion for accessibility */
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

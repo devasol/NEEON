@@ -4,7 +4,7 @@ import styles from "./ModernCommentModal.module.css";
 import api from "../../utils/api";
 import useAuth from "../../hooks/useAuth";
 
-// Comment Icon Component
+
 const CommentIcon = () => (
   <svg className={styles.inputIcon} viewBox="0 0 24 24">
     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -72,7 +72,7 @@ const ModernCommentModal = ({ postId, postTitle, isOpen, onClose, onCommentAdded
       }, true);
 
       if (response && response.blog) {
-        // Add the new comment to the list
+        
         const newCommentObj = {
           text: newComment.trim(),
           user: user?._id,
@@ -118,11 +118,11 @@ const ModernCommentModal = ({ postId, postTitle, isOpen, onClose, onCommentAdded
 
   const handleLikeComment = async (commentId) => {
     if (!token) {
-      // User needs to be logged in to like a comment
+      
       return;
     }
 
-    // Optimistically update the UI
+    
     setLikedComments(prev => {
       const newSet = new Set(prev);
       if (newSet.has(commentId)) {
@@ -134,11 +134,11 @@ const ModernCommentModal = ({ postId, postTitle, isOpen, onClose, onCommentAdded
     });
 
     try {
-      // In a real implementation, you would make an API call here
-      // await api.post(`/api/v1/blogs/comments/${commentId}/like`, {}, token);
+      
+      
     } catch (error) {
       console.error("Error liking comment:", error);
-      // Revert the optimistic update if the API call fails
+      
       setLikedComments(prev => {
         const newSet = new Set(prev);
         if (newSet.has(commentId)) {
@@ -156,7 +156,7 @@ const ModernCommentModal = ({ postId, postTitle, isOpen, onClose, onCommentAdded
   return createPortal(
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={`${styles.modalContent} ${animate ? styles.animate : ''}`} onClick={(e) => e.stopPropagation()}>
-        {/* Modal Header */}
+        {}
         <div className={styles.modalHeader}>
           <button className={styles.closeButton} onClick={onClose}>
             ×
@@ -171,7 +171,7 @@ const ModernCommentModal = ({ postId, postTitle, isOpen, onClose, onCommentAdded
           </div>
         </div>
 
-        {/* Comments List */}
+        {}
         <div className={styles.commentsSection}>
           {loadingComments ? (
             <div className={styles.loadingComments}>
@@ -220,7 +220,7 @@ const ModernCommentModal = ({ postId, postTitle, isOpen, onClose, onCommentAdded
           )}
         </div>
 
-        {/* Add Comment Form */}
+        {}
         {!token ? (
           <div className={styles.loginPrompt}>
             <p>Please <a href="/login">login</a> to add a comment</p>

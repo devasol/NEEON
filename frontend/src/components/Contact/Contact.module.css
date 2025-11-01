@@ -1,4 +1,4 @@
-/* Modern CSS Variables */
+
 :root, :root[data-theme="light"] {
   --primary: #6366f1;
   --primary-dark: #4f46e5;
@@ -13,7 +13,7 @@
   --form-bg: rgba(255, 255, 255, 0.95);
 }
 
-/* Dark theme variables */
+
 :root[data-theme="dark"] {
   --primary: #818cf8;
   --primary-dark: #6366f1;
@@ -276,7 +276,7 @@
   font-size: 16px;
 }
 
-/* Animations */
+
 @keyframes cardEntrance {
   from {
     opacity: 0;
@@ -314,7 +314,7 @@
   }
 }
 
-/* Input focus effects */
+
 .inputGroup:hover .label {
   color: var(--primary);
 }
@@ -324,7 +324,7 @@
   opacity: 0.5;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .card {
     padding: 40px 24px;
@@ -391,7 +391,7 @@
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
-/* Reduced motion for accessibility */
+
 @media (prefers-reduced-motion: reduce) {
   .card,
   .logo,

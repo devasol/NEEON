@@ -16,8 +16,8 @@ const CategoriesView = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/api/categories', true); // Include auth token
-      // Handle different response structures
+      const response = await api.get('/api/categories', true); 
+      
       if (response.data && response.data.data && response.data.data.categories) {
         setCategories(response.data.data.categories);
       } else if (response.data && response.data.categories) {
@@ -31,7 +31,7 @@ const CategoriesView = () => {
     } catch (error) {
       console.error('Error fetching categories:', error);
       setError(error.message);
-      // Show error toast
+      
       const errorEvent = new CustomEvent("showToast", {
         detail: { message: "Error fetching categories: " + error.message, type: "error" },
       });
@@ -44,7 +44,7 @@ const CategoriesView = () => {
   const handleCreateCategory = async (e) => {
     e.preventDefault();
     if (!newCategory.trim()) {
-      // Show warning toast
+      
       const errorEvent = new CustomEvent("showToast", {
         detail: { message: "Please enter a category name", type: "error" },
       });
@@ -54,7 +54,7 @@ const CategoriesView = () => {
 
     try {
       const response = await api.post('/api/categories', { name: newCategory }, true);
-      // Handle different response structures for created category
+      
       let newCategoryObj;
       if (response.data && response.data.data && response.data.data.category) {
         newCategoryObj = response.data.data.category;
@@ -136,7 +136,7 @@ const CategoriesView = () => {
       window.dispatchEvent(successEvent);
     } catch (error) {
       console.error('Error deleting category:', error);
-      // Show error toast
+      
       const errorEvent = new CustomEvent("showToast", {
         detail: { message: "Error deleting category: " + error.message, type: "error" },
       });
