@@ -1,12 +1,13 @@
 # NEEON - Full-Stack Blog Platform
 
-![NEEON Logo](frontend/public/logo.png)
+![NEEON Logo](/frontend/public/favicon/favicon.ico)
 
 **NEEON** is a modern, full-stack blog platform built with React, Node.js, Express, and MongoDB. It provides a complete solution for content creation, management, and presentation with both user-facing and admin interfaces.
 
 ## 🌟 Features
 
 ### User Features
+
 - **Browse Content**: Beautifully designed landing page with featured posts
 - **Category Browsing**: Filter posts by categories
 - **Interactive Posts**: Like and comment on posts
@@ -16,6 +17,7 @@
 - **Dark/Light Theme**: Toggle between different themes
 
 ### Admin Features
+
 - **Dashboard Analytics**: Real-time statistics and insights
 - **Content Management**: Create, edit, and delete posts
 - **User Management**: View and manage registered users
@@ -24,6 +26,7 @@
 - **Post Analytics**: Track views and engagement
 
 ### Technical Features
+
 - **Authentication & Authorization**: JWT-based security
 - **File Upload**: Support for images and other media
 - **API Documentation**: RESTful API endpoints
@@ -33,6 +36,7 @@
 ## 🛠 Tech Stack
 
 ### Frontend
+
 - **React 19.1.1** - Modern JavaScript library for building user interfaces
 - **React Router DOM 7.9.4** - Declarative routing for React
 - **Vite 7.1.6** - Next-generation frontend build tool
@@ -42,6 +46,7 @@
 - **React Icons** - SVG icon library
 
 ### Backend
+
 - **Node.js** - JavaScript runtime environment
 - **Express 5.1.0** - Web application framework
 - **MongoDB** - NoSQL database
@@ -53,6 +58,7 @@
 - **Dotenv** - Environment variable management
 
 ### Additional Tools
+
 - **ESLint** - Code linting
 - **Cors** - Cross-Origin Resource Sharing
 - **Validator** - String validation
@@ -98,18 +104,21 @@ NEEON/
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/your-username/NEEON.git
    cd NEEON
    ```
 
 2. **Install backend dependencies**
+
    ```bash
    cd backend
    npm install
    ```
 
 3. **Install frontend dependencies**
+
    ```bash
    cd ../frontend
    npm install
@@ -122,26 +131,26 @@ NEEON/
    ```env
    # Database Configuration
    DATABASE_URL=mongodb+srv://<username>:<password>@cluster.mongodb.net/neeon_db
-   
+
    # Server Configuration
    PORT=9000
    NODE_ENV=development
-   
+
    # Security Configuration
    JWT_SECRET=your_super_secret_jwt_key_here
    JWT_EXPIRES_IN=90d
-   
+
    # Google OAuth Configuration
    GOOGLE_CLIENT_ID=your_google_client_id
    GOOGLE_CLIENT_SECRET=your_google_client_secret
-   
+
    # Session Configuration
    SESSION_SECRET=your_session_secret
-   
+
    # Application URLs
    FRONTEND_URL=http://localhost:5173
    BACKEND_URL=http://localhost:9000
-   
+
    # Email Configuration (optional)
    EMAIL=your_email@gmail.com
    EMAIL_PASSWORD=your_app_password
@@ -150,11 +159,12 @@ NEEON/
 5. **Run the application**
 
    - **Start the backend server:**
+
      ```bash
      cd backend
      npm start
      ```
-   
+
    - **Start the frontend development server:**
      ```bash
      cd frontend
@@ -166,17 +176,20 @@ NEEON/
 ## 🧪 Available Scripts
 
 ### Frontend
+
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
 
 ### Backend
+
 - `npm start` - Start server with nodemon
 
 ## 🔧 API Endpoints
 
 ### Authentication
+
 - `POST /api/v1/users/signup` - User registration
 - `POST /api/v1/users/login` - User login
 - `POST /api/v1/users/logout` - User logout
@@ -184,6 +197,7 @@ NEEON/
 - `GET /auth/google/callback` - Google OAuth callback
 
 ### Posts
+
 - `GET /api/v1/blogs` - Get all posts
 - `GET /api/v1/blogs/:id` - Get specific post
 - `POST /api/v1/blogs` - Create new post (Admin only)
@@ -193,17 +207,20 @@ NEEON/
 - `GET /api/v1/blogs/:id/comments` - Get comments for post
 
 ### Categories
+
 - `GET /api/categories` - Get all categories
 - `POST /api/categories` - Create category (Admin only)
 - `PATCH /api/categories/:id` - Update category (Admin only)
 - `DELETE /api/categories/:id` - Delete category (Admin only)
 
 ### Analytics
+
 - `GET /api/v1/analytics/dashboard-stats` - Dashboard statistics
 - `GET /api/v1/analytics/recent-posts` - Recent posts data
 - `GET /api/v1/analytics/users` - User analytics
 
 ### Contact
+
 - `POST /api/contact` - Submit contact form
 
 ## 🔐 Authentication
@@ -215,6 +232,7 @@ OAuth with Google is also supported for easy registration and login.
 ## 🗂 Database Schema
 
 ### User
+
 - `_id`: ObjectId
 - `email`: String
 - `password`: String (hashed)
@@ -223,6 +241,7 @@ OAuth with Google is also supported for easy registration and login.
 - `googleId`: String (optional)
 
 ### Blog Post
+
 - `_id`: ObjectId
 - `newsTitle`: String
 - `newsDescription`: String
@@ -236,6 +255,7 @@ OAuth with Google is also supported for easy registration and login.
 - `published`: Boolean
 
 ### Category
+
 - `_id`: ObjectId
 - `name`: String
 - `description`: String (optional)
