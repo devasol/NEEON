@@ -1,5 +1,41 @@
 /* LandingMain.module.css */
 
+/* Light theme variables */
+:root, :root[data-theme="light"] {
+  --main-bg: #ffffff;
+  --item-bg: #ffffff;
+  --modal-bg: #ffffff;
+  --text-color: #2c3e50;
+  --text-light: #4a5568;
+  --text-secondary: #6c757d;
+  --border-color: #eaeaea;
+  --hover-bg: #f8f9fa;
+  --shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  --hover-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  --card-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --primary-color: #4ca1af;
+  --accent-color: #ff6b6b;
+  --accent-secondary: #4ecdc4;
+}
+
+/* Dark theme variables */
+:root[data-theme="dark"] {
+  --main-bg: #1a1a1a;
+  --item-bg: #2d2d2d;
+  --modal-bg: #2d2d2d;
+  --text-color: #e2e8f0;
+  --text-light: #cbd5e1;
+  --text-secondary: #94a3b8;
+  --border-color: #475569;
+  --hover-bg: #3a3a3a;
+  --shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  --hover-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  --card-gradient: linear-gradient(135deg, #4f46e5 0%, #7e22ce 100%);
+  --primary-color: #818cf8;
+  --accent-color: #f87171;
+  --accent-secondary: #5eead4;
+}
+
 .container {
   display: flex;
   gap: 2rem;
@@ -9,6 +45,7 @@
   min-height: 100vh;
   align-items: flex-start;
   font-family: "Rubik", sans-serif;
+  background: var(--main-bg);
 }
 
 .imageContainer {
@@ -16,13 +53,13 @@
   position: relative;
   border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .imageContainer:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--hover-shadow);
 }
 
 .imageWrapper {
@@ -119,9 +156,9 @@
   display: flex;
   gap: 1rem;
   padding: 1.5rem;
-  background: white;
+  background: var(--item-bg);
   border-radius: 12px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   animation: slideIn 0.6s ease both;
   overflow: hidden;
@@ -131,7 +168,7 @@
 .item:hover,
 .itemHovered {
   transform: translateY(-5px) translateX(5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--hover-shadow);
 }
 
 @keyframes slideIn {
@@ -211,7 +248,7 @@
 .itemTitle {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--text-color);
   margin-bottom: 0.8rem;
   line-height: 1.4;
   transition: color 0.3s ease;
@@ -219,7 +256,7 @@
 
 .item:hover .itemTitle,
 .itemHovered .itemTitle {
-  color: #ff6b6b;
+  color: var(--accent-color);
 }
 
 .itemMeta {
@@ -232,7 +269,7 @@
 .itemBy,
 .itemDate {
   font-size: 0.8rem;
-  color: #6c757d;
+  color: var(--text-secondary);
   transition: color 0.3s ease;
 }
 
@@ -240,7 +277,7 @@
 .item:hover .itemDate,
 .itemHovered .itemBy,
 .itemHovered .itemDate {
-  color: #4ecdc4;
+  color: var(--accent-secondary);
 }
 
 .readMoreBtn {
@@ -249,7 +286,7 @@
   gap: 0.5rem;
   background: transparent;
   border: none;
-  color: #4ca1af;
+  color: var(--primary-color);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -258,7 +295,7 @@
 }
 
 .readMoreBtn:hover {
-  color: #2c3e50;
+  color: var(--text-color);
   gap: 0.8rem;
 }
 
@@ -266,7 +303,7 @@
 .noPosts {
   text-align: center;
   padding: 2rem;
-  color: #6c757d;
+  color: var(--text-secondary);
   font-style: italic;
 }
 
@@ -305,7 +342,7 @@
 }
 
 .modal {
-  background: white;
+  background: var(--modal-bg);
   border-radius: 12px;
   max-width: 800px;
   width: 100%;
@@ -376,7 +413,7 @@
 .modalTitle {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #2c3e50;
+  color: var(--text-color);
   margin-bottom: 1rem;
   line-height: 1.4;
 }
@@ -386,13 +423,13 @@
   gap: 1.5rem;
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .modalBy,
 .modalDate {
   font-size: 0.9rem;
-  color: #6c757d;
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -401,7 +438,7 @@
 .modalText {
   margin-bottom: 2rem;
   line-height: 1.7;
-  color: #4a5568;
+  color: var(--text-light);
 }
 
 .modalText p {
@@ -409,7 +446,7 @@
 }
 
 .modalCloseBtn {
-  background: linear-gradient(135deg, #4ecdc4, #ff6b6b);
+  background: linear-gradient(135deg, var(--accent-secondary), var(--accent-color));
   color: white;
   border: none;
   padding: 0.8rem 1.5rem;
@@ -439,7 +476,7 @@
 }
 
 .commentsModal {
-  background: white;
+  background: var(--modal-bg);
   border-radius: 16px;
   max-width: 600px;
   width: 100%;
@@ -482,15 +519,15 @@
 }
 
 .commentsCloseButton:hover {
-  background: #ff6b6b;
+  background: var(--accent-color);
   color: white;
   transform: rotate(90deg);
 }
 
 .commentsModalHeader {
   padding: 2rem 2rem 1rem;
-  border-bottom: 1px solid #eaeaea;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--card-gradient);
   color: white;
 }
 
@@ -512,30 +549,30 @@
   padding: 1.5rem 2rem;
   overflow-y: auto;
   max-height: 300px;
-  background: #f8f9fa;
+  background: var(--hover-bg);
 }
 
 .commentsLoading,
 .noComments {
   text-align: center;
-  color: #6c757d;
+  color: var(--text-secondary);
   padding: 2rem;
   font-style: italic;
 }
 
 .commentItem {
-  background: white;
+  background: var(--item-bg);
   border-radius: 12px;
   padding: 1.5rem;
   margin-bottom: 1rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  border-left: 4px solid #4ecdc4;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--accent-secondary);
   transition: all 0.3s ease;
 }
 
 .commentItem:hover {
   transform: translateX(5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--hover-shadow);
 }
 
 .commentHeader {
@@ -547,54 +584,56 @@
 
 .commentAuthor {
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--text-color);
   font-size: 0.9rem;
 }
 
 .commentDate {
   font-size: 0.8rem;
-  color: #6c757d;
+  color: var(--text-secondary);
 }
 
 .commentContent {
-  color: #4a5568;
+  color: var(--text-light);
   line-height: 1.6;
   font-size: 0.95rem;
 }
 
 .addCommentSection {
   padding: 2rem;
-  border-top: 1px solid #eaeaea;
-  background: white;
+  border-top: 1px solid var(--border-color);
+  background: var(--modal-bg);
 }
 
 .addCommentTitle {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--text-color);
   margin-bottom: 1rem;
 }
 
 .commentTextarea {
   width: 100%;
   padding: 1rem;
-  border: 2px solid #eaeaea;
+  border: 2px solid var(--border-color);
   border-radius: 12px;
   resize: vertical;
   font-family: "Rubik", sans-serif;
   font-size: 0.95rem;
   transition: all 0.3s ease;
   margin-bottom: 1rem;
+  background: var(--item-bg);
+  color: var(--text-color);
 }
 
 .commentTextarea:focus {
   outline: none;
-  border-color: #4ecdc4;
+  border-color: var(--accent-secondary);
   box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.1);
 }
 
 .submitCommentBtn {
-  background: linear-gradient(135deg, #4ecdc4, #44a08d);
+  background: linear-gradient(135deg, var(--accent-secondary), #44a08d);
   color: white;
   border: none;
   padding: 0.8rem 2rem;
@@ -624,12 +663,12 @@
 }
 
 .commentsList::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--hover-bg);
   border-radius: 3px;
 }
 
 .commentsList::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #4ecdc4, #ff6b6b);
+  background: linear-gradient(135deg, var(--accent-secondary), var(--accent-color));
   border-radius: 3px;
 }
 

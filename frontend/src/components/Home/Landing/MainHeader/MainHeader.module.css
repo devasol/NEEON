@@ -1,13 +1,41 @@
+/* Light theme variables */
+:root, :root[data-theme="light"] {
+  --header-bg: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  --header-text: #1e293b;
+  --header-accent: #4ecdc4;
+  --header-accent-secondary: #ff6b6b;
+  --header-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --header-item-bg: rgba(255, 255, 255, 0.1);
+  --header-sticky-bg: rgba(255, 255, 255, 0.98);
+  --nav-hover: #4ecdc4;
+  --login-btn-gradient: linear-gradient(135deg, #4ecdc4 0%, #7c3aed 100%);
+  --logout-btn-gradient: linear-gradient(135deg, #ff6b6b 0%, #7c3aed 100%);
+}
+
+/* Dark theme variables */
+:root[data-theme="dark"] {
+  --header-bg: linear-gradient(135deg, #2c3e50 0%, #1a1f25 100%);
+  --header-text: #ffffff;
+  --header-accent: #5eead4;
+  --header-accent-secondary: #f87171;
+  --header-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --header-item-bg: rgba(255, 255, 255, 0.1);
+  --header-sticky-bg: rgba(44, 62, 80, 0.98);
+  --nav-hover: #5eead4;
+  --login-btn-gradient: linear-gradient(135deg, #5eead4 0%, #7c3aed 100%);
+  --logout-btn-gradient: linear-gradient(135deg, #f87171 0%, #7c3aed 100%);
+}
+
 .container {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem 2rem;
-  background: linear-gradient(135deg, #2c3e50 0%, #1a1f25 100%);
-  color: white;
+  background: var(--header-bg);
+  color: var(--header-text);
   font-family: "Poppins", sans-serif;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--header-shadow);
   position: relative;
   z-index: 1000;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -19,7 +47,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background: rgba(44, 62, 80, 0.98);
+  background: var(--header-sticky-bg);
   backdrop-filter: blur(10px);
   animation: slideDown 0.5s ease-out;
   padding: 1rem 2rem;
@@ -47,12 +75,12 @@
   height: 3px;
   background: linear-gradient(
     90deg,
-    #ff6b6b,
-    #4ecdc4,
+    var(--header-accent-secondary),
+    var(--header-accent),
     #45b7d1,
     #96ceb4,
     #ffeaa7,
-    #ff6b6b
+    var(--header-accent-secondary)
   );
   background-size: 200% 100%;
   animation: shimmer 3s infinite linear;
@@ -117,7 +145,7 @@
   font-size: 1.8rem;
   font-weight: 700;
   letter-spacing: 2px;
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+  background: linear-gradient(45deg, var(--header-accent-secondary), var(--header-accent), #45b7d1);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -143,6 +171,7 @@
   opacity: 0.8;
   letter-spacing: 1px;
   transition: all 0.3s ease;
+  color: var(--header-text);
 }
 
 .logoContainer:hover .titleAndDesc span:last-child {
@@ -179,17 +208,17 @@
 
 .navigator li a {
   text-decoration: none;
-  color: white;
+  color: var(--header-text);
   transition: all 0.3s ease;
 }
 
 .navigator li a:hover {
-  color: #4ecdc4;
+  color: var(--nav-hover);
 }
 
 .activeLink {
   position: relative;
-  color: #4ecdc4 !important;
+  color: var(--nav-hover) !important;
 }
 
 .activeLink::after {
@@ -199,7 +228,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+  background: linear-gradient(90deg, var(--header-accent-secondary), var(--header-accent));
 }
 
 
@@ -210,7 +239,7 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+  background: linear-gradient(90deg, var(--header-accent-secondary), var(--header-accent));
   transition: width 0.3s ease;
 }
 
@@ -228,7 +257,7 @@
 }
 
 .navigator li:hover {
-  color: #4ecdc4;
+  color: var(--nav-hover);
   transform: translateY(-2px);
 }
 
@@ -296,7 +325,7 @@
   background: rgba(255, 255, 255, 0.05); /* Subtle hover for non-links */
   padding-left: 1.8rem; /* Slight indent on hover */
   color: #fff; /* White on hover */
-  border-left-color: #4ecdc4;
+  border-left-color: var(--header-accent);
 }
 
 .iconsWrapper {
@@ -316,7 +345,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--header-item-bg);
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -330,7 +359,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  background: linear-gradient(45deg, var(--header-accent-secondary), var(--header-accent));
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 0; /* keep pseudo behind content but non-negative to avoid stacking issues */
@@ -358,7 +387,7 @@
 .loginIcon {
   width: 100px;
   height: 44px;
-  background: linear-gradient(135deg, #ff6b6b 0%, #7c3aed 100%);
+  background: var(--login-btn-gradient);
   border: none;
   border-radius: 10%;
   display: inline-flex;
@@ -396,7 +425,7 @@
   color: #ffffff;
   font-weight: 700;
   letter-spacing: 0.3px;
-  background: linear-gradient(135deg, #4ecdc4 0%, #7c3aed 100%);
+  background: var(--login-btn-gradient);
   box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.12),
     0 10px 25px rgba(18, 18, 23, 0.25);
   transition: transform 0.18s ease, box-shadow 0.2s ease, filter 0.2s ease;
@@ -429,7 +458,7 @@
   color: #ffffff;
   font-weight: 700;
   letter-spacing: 0.2px;
-  background: linear-gradient(135deg, #ff6b6b 0%, #7c3aed 100%);
+  background: var(--logout-btn-gradient);
   box-shadow: 0 10px 25px rgba(18, 18, 23, 0.25);
   transition: transform 0.18s ease, box-shadow 0.2s ease, filter 0.2s ease;
   position: relative;
@@ -550,7 +579,7 @@
 }
 
 .confirmBtn {
-  background: linear-gradient(135deg, #ff6b6b 0%, #7c3aed 100%);
+  background: var(--logout-btn-gradient);
   color: #fff;
   border: 0;
   height: 40px;
@@ -636,7 +665,7 @@
 }
 
 .iconsWrapper span:nth-child(2):hover {
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  background: linear-gradient(45deg, var(--header-accent-secondary), var(--header-accent));
 }
 
 .iconsWrapper span:nth-child(2):hover i {
@@ -682,7 +711,7 @@
 .mobileMenuButton span {
   width: 30px;
   height: 3px;
-  background: #fff;
+  background: var(--header-text);
   margin: 3px 0;
   transition: 0.4s;
   border-radius: 2px;
@@ -690,7 +719,7 @@
 
 .bar1Open {
   transform: rotate(-45deg) translate(-6px, 6px);
-  background: #ff6b6b !important;
+  background: var(--header-accent-secondary) !important;
 }
 
 .bar2Open {
@@ -699,7 +728,7 @@
 
 .bar3Open {
   transform: rotate(45deg) translate(-6px, -6px);
-  background: #ff6b6b !important;
+  background: var(--header-accent-secondary) !important;
 }
 
 /* Close button in sidebar - FIXED Z-INDEX */
@@ -720,7 +749,7 @@
 .closeButton span {
   width: 30px;
   height: 3px;
-  background: #ff6b6b;
+  background: var(--header-accent-secondary);
   margin: 3px 0;
   border-radius: 2px;
   position: absolute;
@@ -736,7 +765,7 @@
 }
 
 .closeButton:hover span {
-  background: #fff;
+  background: var(--header-text);
   transform: scale(1.1);
 }
 
@@ -911,7 +940,7 @@
   border: none;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.15);
-  color: white;
+  color: var(--header-text);
   font-size: 14px;
   outline: none;
   min-width: 200px;
@@ -924,14 +953,14 @@
 
 .searchInput:focus {
   background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 0 0 2px #4ecdc4;
+  box-shadow: 0 0 0 2px var(--header-accent);
 }
 
 .searchButton {
   padding: 8px;
   background: transparent;
   border: none;
-  color: white;
+  color: var(--header-text);
   cursor: pointer;
   border-radius: 4px;
   transition: background 0.2s ease;
@@ -944,7 +973,7 @@
 .closeSearchButton {
   background: transparent;
   border: none;
-  color: white;
+  color: var(--header-text);
   cursor: pointer;
   border-radius: 4px;
   margin-left: 5px;
@@ -980,7 +1009,7 @@
   display: block;
   padding: 12px 15px;
   text-decoration: none;
-  color: white;
+  color: var(--header-text);
   transition: background 0.2s ease;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -996,7 +1025,7 @@
 .resultItem h4 {
   margin: 0 0 5px 0;
   font-size: 14px;
-  color: #4ecdc4;
+  color: var(--header-accent);
 }
 
 .resultItem p {
@@ -1010,7 +1039,7 @@
   font-size: 10px;
   padding: 2px 6px;
   background: rgba(78, 205, 196, 0.2);
-  color: #4ecdc4;
+  color: var(--header-accent);
   border-radius: 10px;
   text-transform: uppercase;
 }
@@ -1030,7 +1059,7 @@
 .searchInput:focus,
 .searchButton:focus,
 .closeSearchButton:focus {
-  outline: 2px solid #4ecdc4;
+  outline: 2px solid var(--header-accent);
   outline-offset: 2px;
   border-radius: 4px;
 }
