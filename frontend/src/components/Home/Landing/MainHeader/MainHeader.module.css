@@ -898,6 +898,103 @@
   transform: scale(1.1);
 }
 
+/* Mobile Header Icons - Visible only on mobile screens */
+.mobileHeaderIcons {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+  margin-right: 1rem;
+}
+
+/* Mobile Icons Section - Appears below navigation in mobile menu */
+.mobileIconsSection {
+  display: none;
+  width: 100%;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+}
+
+.mobileIconsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  width: 100%;
+}
+
+.mobileSearchSection {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.mobileSearchSection .mobileIconButton {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.85rem 1.6rem;
+  background: var(--header-item-bg);
+  border: none;
+  border-radius: 50px;
+  color: var(--header-text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.mobileSearchSection .mobileIconButton:hover {
+  background: var(--header-accent);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.mobileActionsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+}
+
+.userActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  align-items: center;
+  width: 100%;
+}
+
+.mobileButton {
+  width: 100% !important;
+  justify-content: center !important;
+  text-align: center;
+  margin: 0.5rem 0 !important;
+  padding: 0.85rem 1.6rem !important;
+  border-radius: 50px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  min-height: 44px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+  border: none !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  color: white !important;
+  transition: all 0.3s ease !important;
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
+}
+
+.mobileButton:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+  filter: brightness(1.05) !important;
+}
+
 @media (max-width: 1024px) {
   .navigator ul {
     gap: 1.5rem;
@@ -923,7 +1020,7 @@
   }
 
   .iconsWrapper {
-    display: none; /* Hide on mobile since it's in the mobile menu */
+    display: flex; /* Show on desktop */
   }
 
   .navigator {
@@ -936,6 +1033,7 @@
     background: #2c3e50;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: flex-start;
     padding-top: 80px;
     transition: right 0.4s ease;
     box-shadow: -5px 0 25px rgba(0, 0, 0, 0.3);
@@ -948,25 +1046,31 @@
   }
 
   .navigator ul {
-    display: none; /* Hide navigation in header area on mobile */
+    display: flex;
     flex-direction: column;
     gap: 0;
     width: 100%;
     padding: 0 2rem;
-  }
-
-  .navOpen ul {
-    display: flex; /* Show navigation only in mobile menu when open */
+    margin-bottom: 2rem;
   }
 
   .navigator li {
     width: 100%;
     padding: 1rem 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    justify-content: space-between;
   }
 
   .navigator li:last-child {
     border-bottom: none;
+  }
+
+  .navigator li a {
+    color: white !important;
+  }
+
+  .navigator li a:hover {
+    color: var(--header-accent) !important;
   }
 
   .dropdown {
@@ -994,235 +1098,20 @@
     margin-right: 55px;
   }
 
+  /* Show mobile header icons (theme toggle) on mobile */
+  .mobileHeaderIcons {
+    display: flex;
+    order: 2;
+  }
+
+  /* Show mobile icons section in mobile menu */
   .mobileIconsSection {
-    width: 100%;
-    padding: 1.5rem 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .mobileIconsWrapper {
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    align-items: center;
-    padding: 1rem 0;
-    width: 100%;
-    box-sizing: border-box;
   }
 
-  .mobileSearchSection {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-  }
-
-  .mobileSearchSection span {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--header-item-bg);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
-    font-size: inherit;
-    color: var(--header-text);
-    position: relative;
-    align-self: center;
-  }
-
-  .mobileActionsWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
-    width: 100%;
-    margin-top: 1rem;
-  }
-
-  .userActions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    align-items: center;
-    width: 100%;
-  }
-
-  .mobileIconsWrapper > * {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--header-item-bg);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
-    font-size: inherit;
-    color: var(--header-text);
-    position: relative;
-  }
-
-  .mobileIconsWrapper .loginButton,
-  .mobileIconsWrapper .logoutButton {
-    height: auto;
-    padding: 0.85rem 1.6rem;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    min-height: 44px;
-    font-weight: 600;
-    background: var(--login-btn-gradient);
-    width: 100%;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    color: white;
-    transition: all 0.3s ease;
-    margin: 0.5rem 0;
-    box-sizing: border-box;
-    text-align: center;
-    white-space: nowrap;
-  }
-
-  .mobileIconsWrapper .loginButton:hover,
-  .mobileIconsWrapper .logoutButton:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-    filter: brightness(1.05);
-  }
-
-  .mobileIconsWrapper .loginButton:active,
-  .mobileIconsWrapper .logoutButton:active {
-    transform: translateY(0);
-  }
-
-  .mobileIconsWrapper .logoutButton {
-    background: var(--logout-btn-gradient);
-  }
-
-  .mobileIconsWrapper > *::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      45deg,
-      var(--header-accent-secondary),
-      var(--header-accent)
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 0;
-  }
-
-  .mobileSearchSection span::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      45deg,
-      var(--header-accent-secondary),
-      var(--header-accent)
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 0;
-  }
-
-  .mobileSearchSection span:hover::before {
-    opacity: 1;
-  }
-
-  .mobileSearchSection span:hover {
-    transform: translateY(-3px) scale(1.1);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    color: white;
-  }
-
-  .mobileSearchSection span i {
-    transition: transform 0.3s ease;
-    z-index: 1;
-  }
-
-  .mobileSearchSection span:hover i {
-    transform: scale(1.2);
-  }
-
-  .mobileIconsWrapper span:hover::before,
-  .mobileIconsWrapper button:hover::before {
-    opacity: 1;
-  }
-
-  .mobileIconsWrapper span:hover,
-  .mobileIconsWrapper button:hover {
-    transform: translateY(-3px) scale(1.1);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    color: white;
-  }
-
-  .mobileIconsWrapper span i,
-  .mobileIconsWrapper button i {
-    transition: transform 0.3s ease;
-    z-index: 1;
-  }
-
-  .mobileIconsWrapper span:hover i,
-  .mobileIconsWrapper button:hover i {
-    transform: scale(1.2);
-  }
-
-  .mobileIconsWrapper .loginButton,
-  .mobileIconsWrapper .logoutButton {
-    width: 100%;
-    height: auto;
-    padding: 0.85rem 1.6rem;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    min-height: 44px;
-    font-weight: 600;
-    margin: 0.5rem 0;
-    box-sizing: border-box;
-    text-align: center;
-    white-space: nowrap;
-  }
-
-  .mobileIconsWrapper .loginButton i,
-  .mobileIconsWrapper .logoutButton i {
-    margin: 0;
-    transform: none;
-  }
-
-  .iconsWrapper {
-    position: fixed;
-    bottom: -100%;
-    left: 0;
-    width: 100%;
-    justify-content: center;
-    background: #2c3e50;
-    padding: 1.5rem;
-    transition: bottom 0.4s ease;
-    box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.2);
-    z-index: 2001;
-  }
-
-  .iconsOpen {
-    bottom: 0;
+  /* Hide desktop icons on mobile */
+  .desktopIcons {
+    display: none;
   }
 }
 
@@ -1274,6 +1163,19 @@
     top: 0;
     height: 100vh;
     z-index: 2005;
+  }
+
+  .mobileIconsSection {
+    padding: 1rem;
+  }
+
+  .mobileButton {
+    padding: 0.75rem 1.3rem !important;
+    font-size: 0.9rem;
+  }
+
+  .mobileHeaderIcons {
+    gap: 0.8rem;
   }
 }
 
@@ -1337,6 +1239,10 @@
 
   .iconsWrapper span i {
     font-size: 0.8rem;
+  }
+
+  .mobileHeaderIcons {
+    gap: 0.6rem;
   }
 }
 
@@ -1491,7 +1397,8 @@
 .closeButton:focus,
 .searchInput:focus,
 .searchButton:focus,
-.closeSearchButton:focus {
+.closeSearchButton:focus,
+.mobileIconButton:focus {
   outline: 2px solid var(--header-accent);
   outline-offset: 2px;
   border-radius: 4px;
@@ -1510,6 +1417,16 @@
     flex-direction: row;
     gap: 0.8rem;
     width: auto;
+  }
+
+  /* Hide mobile icons section on desktop */
+  .mobileIconsSection {
+    display: none;
+  }
+
+  /* Hide mobile header icons on desktop */
+  .mobileHeaderIcons {
+    display: none;
   }
 }
 

@@ -111,7 +111,7 @@ function MainHeader() {
       const searchContainer = document.querySelector(
         `.${styles.searchContainer}`
       );
-      const searchIcon = document.querySelector(".desktopIcons span");
+      const searchIcon = document.querySelector(`.${styles.desktopIcons} span`);
 
       if (
         isSearchOpen &&
@@ -362,7 +362,7 @@ function MainHeader() {
         </div>
       </div>
 
-      {/* Mobile menu button (hamburger) */}
+      {/* Mobile menu button (hamburger) - Always visible */}
       <div className={styles.mobileMenuButton} onClick={toggleMenu}>
         <span className={isMenuOpen ? styles.bar1Open : styles.bar1}></span>
         <span className={isMenuOpen ? styles.bar2Open : styles.bar2}></span>
@@ -412,7 +412,9 @@ function MainHeader() {
               >
                 {item.name}
               </NavLink>
-              {(item.name === "Features" || item.name === "Pages" || item.name === "Categories") && (
+              {(item.name === "Features" ||
+                item.name === "Pages" ||
+                item.name === "Categories") && (
                 <i className="fa-solid fa-chevron-down"></i>
               )}
               {item.name === "Features" && isFeaturesHovered && (
@@ -428,8 +430,8 @@ function MainHeader() {
                 <div className={`${styles.dropdown} ${styles.dropdownOpen}`}>
                   <div className={styles.dropdownContent}>
                     {categories.map((category, catIndex) => (
-                      <Link 
-                        key={catIndex} 
+                      <Link
+                        key={catIndex}
                         to={`/categories/${category._id || category.name}`}
                         onClick={closeMenu}
                       >
@@ -453,11 +455,104 @@ function MainHeader() {
             </li>
           ))}
         </ul>
+
+        {/* Mobile Icons Section - appears below navigation links in mobile menu */}
+        <div className={styles.mobileIconsSection}>
+          <div className={styles.mobileIconsWrapper}>
+            {/* Mobile Search */}
+            <div className={styles.mobileSearchSection}>
+              {isSearchOpen ? (
+                <div className={styles.searchContainer}>
+                  <form onSubmit={handleSearch} className={styles.searchForm}>
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search posts, articles, categories..."
+                      className={styles.searchInput}
+                      autoFocus
+                    />
+                    <button type="submit" className={styles.searchButton}>
+                      <i className="fa-solid fa-search"></i>
+                    </button>
+                  </form>
+                  <button
+                    className={styles.closeSearchButton}
+                    onClick={() => {
+                      closeSearch();
+                      closeMenu();
+                    }}
+                  >
+                    <i className="fa-solid fa-times"></i>
+                  </button>
+                </div>
+              ) : (
+                <button
+                  className={styles.mobileIconButton}
+                  onClick={() => {
+                    openSearch();
+                  }}
+                  title="Search"
+                >
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                  <span>Search</span>
+                </button>
+              )}
+            </div>
+
+            {/* Mobile Login/Logout Actions */}
+            <div className={styles.mobileActionsWrapper}>
+              {token ? (
+                // User is logged in
+                <div className={styles.userActions}>
+                  {isAdmin && (
+                    // Show admin button for admin users
+                    <button
+                      className={`${styles.loginButton} ${styles.mobileButton}`}
+                      onClick={() => {
+                        window.location.href = "/admin";
+                        closeMenu();
+                      }}
+                      aria-label="Admin Dashboard"
+                    >
+                      <i className="fa-solid fa-gauge"></i>
+                      <span>Admin</span>
+                    </button>
+                  )}
+                  {/* Show logout button for all logged in users */}
+                  <button
+                    className={`${styles.logoutButton} ${styles.mobileButton}`}
+                    onClick={() => {
+                      setShowLogoutConfirm(true);
+                      closeMenu();
+                    }}
+                    aria-label="Logout"
+                  >
+                    <i className="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                  </button>
+                </div>
+              ) : (
+                // No user is logged in: show login button
+                <button
+                  className={`${styles.loginButton} ${styles.mobileButton}`}
+                  aria-label="Login"
+                  onClick={() => {
+                    setShowLogin(true);
+                    closeMenu();
+                  }}
+                >
+                  <i className="fa-solid fa-right-to-bracket"></i>
+                  <span>Login</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
       </nav>
 
-      {/* Desktop Icons - This section handles both desktop and mobile through CSS */}
+      {/* Desktop Icons - Hidden on mobile */}
       <div className={styles.desktopIcons}>
-        <ThemeToggle />
         <div className={styles.iconsWrapper}>
           {isSearchOpen ? (
             <div className={styles.searchContainer}>
@@ -486,6 +581,7 @@ function MainHeader() {
               <i className="fa-solid fa-magnifying-glass"></i>
             </span>
           )}
+          <ThemeToggle />
           {token ? (
             // User is logged in
             <div className={styles.userActions}>
@@ -537,6 +633,11 @@ function MainHeader() {
         </div>
       </div>
 
+      {/* Mobile Header Icons - Visible only on mobile screens */}
+      <div className={styles.mobileHeaderIcons}>
+        <ThemeToggle />
+      </div>
+
       {/* Search Results */}
       {isSearchOpen && searchResults.length > 0 && (
         <div className={styles.searchResults}>
@@ -560,7 +661,6 @@ function MainHeader() {
         </div>
       )}
 
-      {}
       {isSearchOpen &&
         searchQuery &&
         !isSearching &&
