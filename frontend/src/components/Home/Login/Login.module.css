@@ -715,12 +715,16 @@
 
 @media (max-width: 768px) {
   .loginContainer {
-    padding: 0.5rem;
+    padding: 1rem;
+    align-items: center;
+    justify-content: center;
   }
 
   .loginCard {
     padding: 2rem 1.5rem;
-    margin: 1rem;
+    margin: 0;
+    width: 90%;
+    max-width: 450px;
   }
 
   .header h1 {
@@ -740,8 +744,18 @@
 }
 
 @media (max-width: 480px) {
+  .loginContainer {
+    padding: 0.75rem;
+    align-items: center;
+    justify-content: center;
+  }
+
   .loginCard {
     padding: 1.5rem 1rem;
+    margin: 0;
+    width: 95%;
+    max-width: 100%;
+    border-radius: 16px;
   }
 
   .header h1 {
@@ -758,6 +772,80 @@
 
   .label {
     left: 2.5rem;
+  }
+  
+  .loginForm {
+    gap: 1.5rem;
+  }
+  
+  .googleButton {
+    padding: 0.9rem 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .optionsRow {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .loginContainer {
+    padding: 0.5rem;
+    min-height: 100vh;
+  }
+
+  .loginCard {
+    padding: 1.25rem 0.75rem;
+    width: 100%;
+    border-radius: 12px;
+  }
+
+  .header h1 {
+    font-size: 1.4rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .input {
+    padding: 0.75rem 0.75rem 0.75rem 2.25rem;
+    font-size: 0.9rem;
+  }
+
+  .label {
+    font-size: 0.85rem;
+    left: 2.25rem;
+  }
+
+  .input:focus + .label,
+  .input:not(:placeholder-shown) + .label {
+    top: -0.9rem;
+    font-size: 0.75rem;
+  }
+
+  .loginForm {
+    gap: 1.25rem;
+  }
+
+  .submitButton,
+  .googleButton {
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .footer {
+    font-size: 0.85rem;
+  }
+
+  .optionsRow {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+
+  .checkboxLabel {
+    font-size: 0.85rem;
   }
 }
 

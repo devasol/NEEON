@@ -326,6 +326,8 @@ function MainHeader() {
     setSearchResults([]);
   };
 
+  const [isCategoriesHovered, setIsCategoriesHovered] = useState(false);
+
   const navItems = [
     { name: "Home", path: "/", hasDropdown: false },
     {
@@ -340,7 +342,7 @@ function MainHeader() {
         { name: "Commenting System" },
       ],
     },
-    { name: "Categories", path: "/categories", hasDropdown: false },
+    { name: "Categories", path: "#", hasDropdown: true }, // Changed to "#" and hasDropdown: true
     { name: "Posts/Blogs", path: "/posts", hasDropdown: false },
     { name: "Contact", path: "/contact", hasDropdown: false },
   ];
@@ -382,10 +384,12 @@ function MainHeader() {
               key={index}
               onMouseEnter={() => {
                 if (item.name === "Features") setIsFeaturesHovered(true);
+                if (item.name === "Categories") setIsCategoriesHovered(true);
                 if (item.name === "Pages") setIsPagesHovered(true);
               }}
               onMouseLeave={() => {
                 if (item.name === "Features") setIsFeaturesHovered(false);
+                if (item.name === "Categories") setIsCategoriesHovered(false);
                 if (item.name === "Pages") setIsPagesHovered(false);
               }}
               className={`${item.hasDropdown ? styles.hasDropdown : ""} ${
@@ -399,11 +403,16 @@ function MainHeader() {
                 className={({ isActive }) =>
                   isActive && item.path !== "#" ? styles.activeLink : undefined
                 }
-                onClick={closeMenu}
+                onClick={(e) => {
+                  if (item.path === "#") {
+                    e.preventDefault(); // Prevent navigation for "#" links
+                  }
+                  closeMenu();
+                }}
               >
                 {item.name}
               </NavLink>
-              {(item.name === "Features" || item.name === "Pages") && (
+              {(item.name === "Features" || item.name === "Pages" || item.name === "Categories") && (
                 <i className="fa-solid fa-chevron-down"></i>
               )}
               {item.name === "Features" && isFeaturesHovered && (
@@ -411,6 +420,21 @@ function MainHeader() {
                   <div className={styles.dropdownContent}>
                     {item.dropdown.map((dropdownItem, dropdownIndex) => (
                       <span key={dropdownIndex}>{dropdownItem.name}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {item.name === "Categories" && isCategoriesHovered && (
+                <div className={`${styles.dropdown} ${styles.dropdownOpen}`}>
+                  <div className={styles.dropdownContent}>
+                    {categories.map((category, catIndex) => (
+                      <Link 
+                        key={catIndex} 
+                        to={`/categories/${category._id || category.name}`}
+                        onClick={closeMenu}
+                      >
+                        {category.name}
+                      </Link>
                     ))}
                   </div>
                 </div>
