@@ -297,5 +297,5 @@ Project Link: [https://github.com/devasol/NEEON](https://github.com/devasol/NEEO
 ---
 
 <p align="center">
-Made with ❤️ using React, Node.js, and MongoDB
+Made with Dawit S. using React, Node.js, and MongoDB
 </p>
