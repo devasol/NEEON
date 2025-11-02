@@ -189,7 +189,7 @@ const Footer = () => {
       {}
       <div className={styles.bottom}>
         <p>
-          © {new Date().getFullYear()} NEEON Blog. All rights reserved. Made with <FaHeart className={styles.heartIcon} /> by the NEEON Team
+          © {new Date().getFullYear()} NEEON Blog. All rights reserved. Made with <FaHeart className={styles.heartIcon} /> Dawit S.
         </p>
         <div className={styles.bottomLinks}>
           <a href="/privacy-policy">Privacy Policy</a>

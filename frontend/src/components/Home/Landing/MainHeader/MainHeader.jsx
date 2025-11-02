@@ -21,7 +21,7 @@ function MainHeader() {
   const [categories, setCategories] = useState([]);
   const [isPagesHovered, setIsPagesHovered] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const headerRef = useRef(null);
@@ -32,12 +32,11 @@ function MainHeader() {
       if (!headerRef.current) return;
 
       // Check if we're on the home page (has landing section) or other pages
-      const isHomePage = location.pathname === '/' || 
-        location.pathname === '/home';
-      const isPostsPage = location.pathname === '/posts';
-      
+      const isHomePage =
+        location.pathname === "/" || location.pathname === "/home";
+      const isPostsPage = location.pathname === "/posts";
+
       if (isHomePage) {
-        
         const landingPage =
           document.querySelector("section:first-of-type") ||
           document.querySelector(".landing-page") ||
@@ -45,20 +44,18 @@ function MainHeader() {
 
         if (landingPage) {
           const landingHeight = landingPage.offsetHeight;
-          
+
           setIsSticky(window.scrollY > landingHeight - 100);
         }
       } else if (isPostsPage) {
-        
         setIsSticky(window.scrollY > 50);
       } else {
-        
         setIsSticky(window.scrollY > 100);
       }
     };
 
     window.addEventListener("scroll", handleScroll);
-    
+
     handleScroll();
 
     return () => {
@@ -66,7 +63,6 @@ function MainHeader() {
     };
   }, [location.pathname]);
 
-  
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape" && showLogin) {
@@ -78,16 +74,15 @@ function MainHeader() {
     return () => window.removeEventListener("keydown", onKey);
   }, [showLogin]);
 
-  
   useEffect(() => {
     const handleOpenLoginModal = () => {
       setShowLogin(true);
     };
 
-    document.addEventListener('openLoginModal', handleOpenLoginModal);
-    
+    document.addEventListener("openLoginModal", handleOpenLoginModal);
+
     return () => {
-      document.removeEventListener('openLoginModal', handleOpenLoginModal);
+      document.removeEventListener("openLoginModal", handleOpenLoginModal);
     };
   }, []);
 
@@ -95,13 +90,10 @@ function MainHeader() {
     if (!showLogin && loginIconRef.current) {
       try {
         loginIconRef.current.focus();
-      } catch {
-        
-      }
+      } catch {}
     }
   }, [showLogin]);
 
-  
   useEffect(() => {
     const original = document.body.style.overflow;
     if (showLogin || showSignup) {
@@ -113,17 +105,23 @@ function MainHeader() {
       document.body.style.overflow = original;
     };
   }, [showLogin, showSignup]);
-  
-  
+
   useEffect(() => {
     const handleClickOutside = (event) => {
-      const searchContainer = document.querySelector(`.${styles.searchContainer}`);
-      const searchIcon = document.querySelector(`.${styles.iconsWrapper} span`);
-      
-      if (isSearchOpen && searchContainer && !searchContainer.contains(event.target)) {
+      const searchContainer = document.querySelector(
+        `.${styles.searchContainer}`
+      );
+      const searchIcon = document.querySelector(".desktopIcons span");
+
+      if (
+        isSearchOpen &&
+        searchContainer &&
+        !searchContainer.contains(event.target)
+      ) {
         if (!searchIcon || !searchIcon.contains(event.target)) {
-          
-          const resultsContainer = document.querySelector(`.${styles.searchResults}`);
+          const resultsContainer = document.querySelector(
+            `.${styles.searchResults}`
+          );
           if (!resultsContainer || !resultsContainer.contains(event.target)) {
             closeSearch();
           }
@@ -131,25 +129,22 @@ function MainHeader() {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isSearchOpen]);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        
         const response = await api.get("/api/categories", false);
         if (response) {
-          
           if (response.categories) {
             setCategories(response.categories);
           } else if (response.data && response.data.categories) {
             setCategories(response.data.categories);
           } else if (Array.isArray(response)) {
-            
             setCategories(response);
           } else {
             setCategories([]);
@@ -159,9 +154,8 @@ function MainHeader() {
         }
       } catch (error) {
         console.error("Error fetching categories from /api/categories:", error);
-        
+
         try {
-          
           const response = await api.get("/api/categories", false);
           if (response) {
             if (response.categories) {
@@ -171,13 +165,22 @@ function MainHeader() {
             } else if (Array.isArray(response)) {
               setCategories(response);
             } else {
-              
-              const blogResponse = await api.get("/api/v1/blogs/public?limit=100", false);
-              if (blogResponse && blogResponse.blogs && blogResponse.blogs.allBlogs) {
-                
-                const uniqueCategories = [...new Set(blogResponse.blogs.allBlogs.map(blog => blog.category))];
+              const blogResponse = await api.get(
+                "/api/v1/blogs/public?limit=100",
+                false
+              );
+              if (
+                blogResponse &&
+                blogResponse.blogs &&
+                blogResponse.blogs.allBlogs
+              ) {
+                const uniqueCategories = [
+                  ...new Set(
+                    blogResponse.blogs.allBlogs.map((blog) => blog.category)
+                  ),
+                ];
                 const categoryObjects = uniqueCategories
-                  .filter(cat => cat) 
+                  .filter((cat) => cat)
                   .map((cat, index) => ({ name: cat, _id: `cat-${index}` }));
                 setCategories(categoryObjects);
               } else {
@@ -186,8 +189,11 @@ function MainHeader() {
             }
           }
         } catch (secondError) {
-          console.error("Error fetching categories from /api/categories:", secondError);
-          
+          console.error(
+            "Error fetching categories from /api/categories:",
+            secondError
+          );
+
           try {
             const response = await fetch(`${API_BASE}/api/categories`);
             if (response.ok) {
@@ -201,17 +207,25 @@ function MainHeader() {
               }
             }
           } catch (thirdError) {
-            console.error("All attempts to fetch categories failed:", thirdError);
-            
+            console.error(
+              "All attempts to fetch categories failed:",
+              thirdError
+            );
+
             try {
-              const blogResponse = await fetch(`${API_BASE}/api/v1/blogs/public?limit=100`);
+              const blogResponse = await fetch(
+                `${API_BASE}/api/v1/blogs/public?limit=100`
+              );
               if (blogResponse.ok) {
                 const blogData = await blogResponse.json();
                 if (blogData.blogs && blogData.blogs.allBlogs) {
-                  
-                  const uniqueCategories = [...new Set(blogData.blogs.allBlogs.map(blog => blog.category))];
+                  const uniqueCategories = [
+                    ...new Set(
+                      blogData.blogs.allBlogs.map((blog) => blog.category)
+                    ),
+                  ];
                   const categoryObjects = uniqueCategories
-                    .filter(cat => cat) 
+                    .filter((cat) => cat)
                     .map((cat, index) => ({ name: cat, _id: `cat-${index}` }));
                   setCategories(categoryObjects);
                 } else {
@@ -221,8 +235,11 @@ function MainHeader() {
                 setCategories([]);
               }
             } catch (fourthError) {
-              console.error("Could not fetch categories from blogs either:", fourthError);
-              setCategories([]); 
+              console.error(
+                "Could not fetch categories from blogs either:",
+                fourthError
+              );
+              setCategories([]);
             }
           }
         }
@@ -246,36 +263,49 @@ function MainHeader() {
 
   const { token, isAdmin, logout } = useAuth();
 
-  
   const handleSearch = async (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       setIsSearching(true);
       try {
-        
-        const response = await api.get(`/api/v1/blogs/search?q=${encodeURIComponent(searchQuery)}`, false);
+        const response = await api.get(
+          `/api/v1/blogs/search?q=${encodeURIComponent(searchQuery)}`,
+          false
+        );
         if (response && response.blogs && response.blogs.allBlogs) {
           setSearchResults(response.blogs.allBlogs);
         } else {
           setSearchResults([]);
         }
       } catch (error) {
-        console.error('Search error:', error);
-        
+        console.error("Search error:", error);
+
         try {
-          const allBlogsResponse = await api.get('/api/v1/blogs/public?limit=100', false);
-          if (allBlogsResponse && allBlogsResponse.blogs && allBlogsResponse.blogs.allBlogs) {
-            const filtered = allBlogsResponse.blogs.allBlogs.filter(blog => 
-              blog.newsTitle?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              blog.newsDescription?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              blog.category?.toLowerCase().includes(searchQuery.toLowerCase())
+          const allBlogsResponse = await api.get(
+            "/api/v1/blogs/public?limit=100",
+            false
+          );
+          if (
+            allBlogsResponse &&
+            allBlogsResponse.blogs &&
+            allBlogsResponse.blogs.allBlogs
+          ) {
+            const filtered = allBlogsResponse.blogs.allBlogs.filter(
+              (blog) =>
+                blog.newsTitle
+                  ?.toLowerCase()
+                  .includes(searchQuery.toLowerCase()) ||
+                blog.newsDescription
+                  ?.toLowerCase()
+                  .includes(searchQuery.toLowerCase()) ||
+                blog.category?.toLowerCase().includes(searchQuery.toLowerCase())
             );
             setSearchResults(filtered);
           } else {
             setSearchResults([]);
           }
         } catch (fallbackError) {
-          console.error('Fallback search also failed:', fallbackError);
+          console.error("Fallback search also failed:", fallbackError);
           setSearchResults([]);
         }
       } finally {
@@ -285,16 +315,14 @@ function MainHeader() {
       setSearchResults([]);
     }
   };
-  
-  
+
   const openSearch = () => {
     setIsSearchOpen(true);
   };
-  
-  
+
   const closeSearch = () => {
     setIsSearchOpen(false);
-    setSearchQuery('');
+    setSearchQuery("");
     setSearchResults([]);
   };
 
@@ -302,7 +330,7 @@ function MainHeader() {
     { name: "Home", path: "/", hasDropdown: false },
     {
       name: "Features",
-      path: "#", // Changed to "#" to make it non-clickable 
+      path: "#", // Changed to "#" to make it non-clickable
       hasDropdown: true,
       dropdown: [
         { name: "Responsive Design" },
@@ -360,18 +388,22 @@ function MainHeader() {
                 if (item.name === "Features") setIsFeaturesHovered(false);
                 if (item.name === "Pages") setIsPagesHovered(false);
               }}
-              className={`${item.hasDropdown ? styles.hasDropdown : ""} ${item.name === "Categories" || item.name === "Features" ? styles.noUnderline : ""}`}
+              className={`${item.hasDropdown ? styles.hasDropdown : ""} ${
+                item.name === "Categories" || item.name === "Features"
+                  ? styles.noUnderline
+                  : ""
+              }`}
             >
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
                   isActive && item.path !== "#" ? styles.activeLink : undefined
                 }
+                onClick={closeMenu}
               >
                 {item.name}
               </NavLink>
-              {(item.name === "Features" ||
-                item.name === "Pages") && (
+              {(item.name === "Features" || item.name === "Pages") && (
                 <i className="fa-solid fa-chevron-down"></i>
               )}
               {item.name === "Features" && isFeaturesHovered && (
@@ -399,107 +431,124 @@ function MainHeader() {
         </ul>
       </nav>
 
-      <div
-        className={`${styles.iconsWrapper} ${
-          isMenuOpen ? styles.iconsOpen : ""
-        }`}
-      >
+      {/* Desktop Icons - This section handles both desktop and mobile through CSS */}
+      <div className={styles.desktopIcons}>
         <ThemeToggle />
-        {isSearchOpen ? (
-          <div className={styles.searchContainer}>
-            <form onSubmit={handleSearch} className={styles.searchForm}>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search posts, articles, categories..."
-                className={styles.searchInput}
-                autoFocus
-              />
-              <button type="submit" className={styles.searchButton}>
-                <i className="fa-solid fa-search"></i>
-              </button>
-            </form>
-            <button className={styles.closeSearchButton} onClick={closeSearch}>
-              <i className="fa-solid fa-times"></i>
-            </button>
-          </div>
-        ) : (
-          <span onClick={openSearch} title="Search">
-            <i className="fa-solid fa-magnifying-glass"></i>
-          </span>
-        )}
-        {token ? (
-          // User is logged in
-          <div className={styles.userActions}>
-            {isAdmin && (
-              // Show admin button for admin users
+        <div className={styles.iconsWrapper}>
+          {isSearchOpen ? (
+            <div className={styles.searchContainer}>
+              <form onSubmit={handleSearch} className={styles.searchForm}>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search posts, articles, categories..."
+                  className={styles.searchInput}
+                  autoFocus
+                />
+                <button type="submit" className={styles.searchButton}>
+                  <i className="fa-solid fa-search"></i>
+                </button>
+              </form>
               <button
-                className={styles.loginButton}
-                onClick={() => (window.location.href = "/admin")}
-                aria-label="Admin Dashboard"
-                title="Admin Dashboard"
+                className={styles.closeSearchButton}
+                onClick={closeSearch}
               >
-                <i className="fa-solid fa-gauge"></i>
-                Admin
+                <i className="fa-solid fa-times"></i>
               </button>
-            )}
-            {/* Show logout button for all logged in users */}
+            </div>
+          ) : (
+            <span onClick={openSearch} title="Search">
+              <i className="fa-solid fa-magnifying-glass"></i>
+            </span>
+          )}
+          {token ? (
+            // User is logged in
+            <div className={styles.userActions}>
+              {isAdmin && (
+                // Show admin button for admin users
+                <button
+                  className={styles.loginButton}
+                  onClick={() => {
+                    window.location.href = "/admin";
+                    closeMenu();
+                  }}
+                  aria-label="Admin Dashboard"
+                  title="Admin Dashboard"
+                >
+                  <i className="fa-solid fa-gauge"></i>
+                  Admin
+                </button>
+              )}
+              {/* Show logout button for all logged in users */}
+              <button
+                className={styles.logoutButton}
+                onClick={() => {
+                  setShowLogoutConfirm(true);
+                  closeMenu();
+                }}
+                aria-label="Logout"
+                title="Logout"
+              >
+                <i className="fa-solid fa-right-from-bracket"></i>
+                Logout
+              </button>
+            </div>
+          ) : (
+            // No user is logged in: show login button
             <button
-              className={styles.logoutButton}
-              onClick={() => setShowLogoutConfirm(true)}
-              aria-label="Logout"
-              title="Logout"
+              ref={loginIconRef}
+              className={styles.loginButton}
+              aria-label="Login"
+              title="Login"
+              onClick={() => {
+                setShowLogin(true);
+                closeMenu();
+              }}
             >
-              <i className="fa-solid fa-right-from-bracket"></i>
-              Logout
+              <i className="fa-solid fa-right-to-bracket"></i>
+              Login
             </button>
-          </div>
-        ) : (
-          // No user is logged in: show login button
-          <button
-            ref={loginIconRef}
-            className={styles.loginButton}
-            aria-label="Login"
-            title="Login"
-            onClick={() => setShowLogin(true)}
-          >
-            <i className="fa-solid fa-right-to-bracket"></i>
-            Login
-          </button>
-        )}
+          )}
+        </div>
       </div>
-      
+
       {/* Search Results */}
       {isSearchOpen && searchResults.length > 0 && (
         <div className={styles.searchResults}>
           <div className={styles.resultsContainer}>
             {searchResults.map((result) => (
-              <a 
-                key={result._id} 
-                href={`/posts#${result._id}`} 
+              <a
+                key={result._id}
+                href={`/posts#${result._id}`}
                 className={styles.resultItem}
                 onClick={closeSearch}
               >
                 <h4>{result.newsTitle}</h4>
-                <p>{result.newsDescription?.substring(0, 100) + (result.newsDescription?.length > 100 ? '...' : '')}</p>
+                <p>
+                  {result.newsDescription?.substring(0, 100) +
+                    (result.newsDescription?.length > 100 ? "..." : "")}
+                </p>
                 <span className={styles.resultCategory}>{result.category}</span>
               </a>
             ))}
           </div>
         </div>
       )}
-      
+
       {}
-      {isSearchOpen && searchQuery && !isSearching && searchResults.length === 0 && (
-        <div className={styles.searchResults}>
-          <div className={styles.resultsContainer}>
-            <div className={styles.noResults}>
-              No results found for "{searchQuery}"
+      {isSearchOpen &&
+        searchQuery &&
+        !isSearching &&
+        searchResults.length === 0 && (
+          <div className={styles.searchResults}>
+            <div className={styles.resultsContainer}>
+              <div className={styles.noResults}>
+                No results found for "{searchQuery}"
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
       {showLogoutConfirm &&
         createPortal(
           <div

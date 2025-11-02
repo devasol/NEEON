@@ -239,36 +239,56 @@
 
 .postInteractions {
   display: flex;
-  gap: 15px;
+  gap: 12px;
   padding-top: 15px;
   margin-top: 15px;
   border-top: 1px solid var(--border-color);
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .interactionButton {
   display: flex;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  gap: 6px;
   background: var(--hover-bg);
-  border: none;
-  padding: 8px 15px;
-  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  padding: 8px 14px;
+  border-radius: 50px;
   color: var(--text-color);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 36px;
+  flex: 0 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .interactionButton:hover {
   background: var(--primary-color);
   color: white;
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-color: var(--primary-color);
 }
 
 .interactionButton.liked {
   color: var(--error-color);
-  background: var(--hover-bg);
+  background: rgba(255, 107, 107, 0.1);
+  border-color: rgba(255, 107, 107, 0.3);
+}
+
+.interactionButton.liked:hover {
+  background: var(--error-color);
+  color: white;
+}
+
+.interactionButton span {
+  font-weight: 600;
+  min-width: 16px;
+  text-align: center;
+  font-size: 0.8rem;
 }
 
 .readMoreButton {
@@ -730,6 +750,22 @@
   .loginPromptContent p {
     font-size: 1rem;
   }
+  
+  .postInteractions {
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .interactionButton {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    min-height: 34px;
+    gap: 5px;
+  }
+  
+  .interactionButton span {
+    font-size: 0.75rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -993,5 +1029,67 @@
   
   .loginModalBtn, .cancelModalBtn {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .posts {
+    padding: 30px 10px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .postContent {
+    padding: 20px 15px;
+  }
+
+  .postsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .postFooter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .loadMoreButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .header {
+    margin-bottom: 40px;
+  }
+
+  .postMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .dot {
+    display: none;
+  }
+  
+  .postInteractions {
+    gap: 8px;
+    justify-content: center;
+  }
+  
+  .interactionButton {
+    padding: 7px 10px;
+    font-size: 0.75rem;
+    min-height: 32px;
+    gap: 4px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .interactionButton span {
+    font-size: 0.7rem;
   }
 }

@@ -2,7 +2,8 @@
   width: 90%;
   font-family: "Rubik", sans-serif;
   margin: auto;
-  margin-top: -200px;
+  margin-top: -200px; /* Keep the original negative margin for overall page layout */
+  margin-bottom: 4rem; /* Add bottom margin to ensure proper spacing from next component */
   background: linear-gradient(135deg, #4e00c2, #6a00ff, #8a2be2);
   padding: 2.5rem;
   border-radius: 25px;
@@ -446,7 +447,8 @@
 
 @media (max-width: 768px) {
   .banner {
-    margin-top: 120px;
+    margin-top: 120px; /* Restore original value to maintain design */
+    margin-bottom: 3rem; /* Keep bottom margin for spacing */
     padding: 1.5rem;
   }
 
@@ -486,7 +488,8 @@
 @media (max-width: 480px) {
   .banner {
     width: 95%;
-    margin-top: -120px;
+    margin-top: 3rem; /* Positive margin to prevent overlap */
+    margin-bottom: 2.5rem; /* Keep bottom margin for spacing */
     padding: 1.2rem;
   }
 

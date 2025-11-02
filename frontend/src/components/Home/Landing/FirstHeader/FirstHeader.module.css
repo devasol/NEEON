@@ -196,23 +196,8 @@
 }
 
 @media (max-width: 768px) {
-  .logoAndTitle img {
-    width: 80px;
-    height: 80px;
-    margin-left: 10px;
-  }
-
-  .logoAndTitle span {
-    font-size: 16px;
-    margin-right: 10px;
-  }
-
-  .linksContainer {
-    font-size: 14px;
-  }
-
-  .linksContainer span {
-    padding: 0 5px;
+  .container {
+    display: none;
   }
 }
 
@@ -236,25 +221,10 @@
   .linksContainer span:not(:last-child) {
     padding-right: 0;
   }
-  
-  
-  .linksContainer span:nth-child(5),
-  .linksContainer span:nth-child(6),
-  .linksContainer span:nth-child(7),
-  .linksContainer span:nth-child(8) {
-    display: none;
-  }
 }
 
 
-@media (max-width: 768px) {
-  .linksContainer span:nth-child(5),
-  .linksContainer span:nth-child(6),
-  .linksContainer span:nth-child(7),
-  .linksContainer span:nth-child(8) {
-    display: none;
-  }
-}
+
 
 
 @keyframes dateUpdate {
