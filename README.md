@@ -1,10 +1,10 @@
 # NEEON - Full-Stack Blog Platform
 
-![NEEON Logo](/frontend/public/favicon/favicon.ico)
+![NEEON Logo](/frontend/public/readme/homepage-light.png)
 
 **NEEON** is a modern, full-stack blog platform built with React, Node.js, Express, and MongoDB. It provides a complete solution for content creation, management, and presentation with both user-facing and admin interfaces.
 
-## 🌟 Features
+## Features
 
 ### User Features
 
@@ -106,7 +106,7 @@ NEEON/
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-username/NEEON.git
+   git clone https://github.com/devasol/NEEON.git
    cd NEEON
    ```
 
@@ -285,7 +285,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 📞 Contact
 
-Project Link: [https://github.com/your-username/NEEON](https://github.com/your-username/NEEON)
+Project Link: [https://github.com/devasol/NEEON](https://github.com/devasol/NEEON)
 
 ## 🙏 Acknowledgments
 
